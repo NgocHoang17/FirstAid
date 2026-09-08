@@ -1,0 +1,23 @@
+# Python / Virtual Environment
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.env
+
+# Flutter / Dart
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/build/
+mobile/.pub-cache/
+mobile/.pub/
+mobile/android/.gradle/
+mobile/android/local.properties
+mobile/ios/Pods/
+mobile/.idea/
+
+# IDE & OS
+.vscode/
+.DS_Store
+*.log
