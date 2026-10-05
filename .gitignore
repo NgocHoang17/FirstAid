@@ -13,6 +13,7 @@ mobile/build/
 mobile/.pub-cache/
 mobile/.pub/
 mobile/android/.gradle/
+mobile/android/build/
 mobile/android/local.properties
 mobile/ios/Pods/
 mobile/.idea/
