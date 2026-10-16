@@ -36,6 +36,15 @@ dependencies:
   # Tiện ích UI
   google_fonts: ^6.2.1
 
+  # SVG icons
+  flutter_svg: ^2.0.10+1
+
+  # Equatable cho BLoC state/event
+  equatable: ^2.0.5
+
+  # Google Maps SDK (setup cấu trúc, API key điền sau)
+  google_maps_flutter: ^2.6.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -48,3 +57,4 @@ flutter:
   assets:
     - assets/audio/
     - assets/images/
+    - assets/icons/
