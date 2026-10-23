@@ -1,16 +1,22 @@
-# mobile
+﻿# FirstAid mobile
 
-A new Flutter project.
+Flutter client dùng BLoC và SQLite, tổ chức theo feature với repository tách giao diện khỏi dữ liệu.
 
-## Getting Started
+## Tài liệu
 
-This project is a starting point for a Flutter application.
+Đọc [README dự án](../README.md), [hướng dẫn đọc](../docs/baseline-v2/README.md), [đặc tả](../docs/baseline-v2/01_SYSTEM_SPEC.md) và [contract](../docs/baseline-v2/06_SHARED_CONTRACTS.md). Frontend đọc thêm [03](../docs/baseline-v2/03_FRONTEND_GUIDE.md), [brief thiết kế](../docs/baseline-v2/02_FIGMA_DESIGN_BRIEF.md) và [tiêu chí nghiệm thu](../docs/baseline-v2/08_ACCEPTANCE_AND_PLAN.md).
 
-A few resources to get you started if this is your first Flutter project:
+## Nguyên tắc
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Không login mobile. Nội dung core bundled vào SQLite; quick/learn dùng cùng Article. Cập nhật full snapshot thủ công và không làm mất dữ liệu khi lỗi. Chat RAG text chỉ online; danh bạ vẫn xem được khi không cấp quyền vị trí. Không thay bài người lớn cho đối tượng khác khi thiếu bài phù hợp.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Phát triển local
+
+Dùng phiên bản Flutter/Dart tương thích cấu hình build và lockfile:
+
+```powershell
+flutter pub get
+flutter run
+```
+
+API chính dùng prefix `/api/v1`; base URL lấy từ cấu hình môi trường. Android emulator truy cập máy phát triển qua `10.0.2.2`. Kiểm nghiệm offline, quyền vị trí, font lớn và external actions theo tài liệu nghiệm thu.

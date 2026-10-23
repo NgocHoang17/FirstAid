@@ -1,22 +1,20 @@
-# Quy tắc đóng góp (Contributing Guidelines)
+# Quy tắc đóng góp
 
-Để dự án hoạt động trơn tru, các thành viên vui lòng tuân thủ các quy tắc sau:
+## Nhánh và commit
 
-## 1. Quy tắc tạo nhánh (Branching)
-Không code trực tiếp trên nhánh `main`. Khi làm task mới, hãy tạo nhánh theo cú pháp:
-- Tính năng mới: `feature/ten-tinh-nang` (VD: `feature/login-screen`, `feature/sos-button`)
-- Sửa lỗi: `bugfix/ten-loi` (VD: `bugfix/fix-gps-crash`)
-- Tài liệu: `docs/ten-tai-lieu` (VD: `docs/api-specs`)
+Không làm trực tiếp trên `main`. Dùng `feature/ten-tinh-nang`, `bugfix/ten-loi` hoặc `docs/ten-tai-lieu`. Commit dùng `feat:`, `fix:`, `docs:`, `chore:` hoặc `refactor:` theo nội dung thực tế. Không gộp thay đổi sẵn của người khác vào task.
 
-## 2. Quy tắc viết code (Naming Conventions)
-Do dự án sử dụng nhiều công nghệ khác nhau, cần lưu ý:
-- **Mobile (Flutter/Dart):** Tên biến và hàm dùng `camelCase` (VD: `getUserLocation`). Tên Class dùng `PascalCase` (VD: `LocationService`).
-- **Backend (Python/FastAPI):** Tên biến và hàm dùng `snake_case` (VD: `get_user_location`). Tên Class dùng `PascalCase`.
+## Đọc tài liệu theo công việc
 
-## 3. Quy tắc viết Commit Message
-Bắt đầu commit bằng các tiền tố sau:
-- `feat:` Thêm tính năng mới
-- `fix:` Sửa lỗi code
-- `docs:` Thêm/sửa tài liệu (như file README này)
-- `chore:` Cấu hình linh tinh (thêm thư viện, sửa file config)
-- `refactor:` Chỉnh sửa lại code cho sạch đẹp mà không làm thay đổi tính năng
+Bắt đầu với [README baseline](docs/baseline-v2/README.md), [01](docs/baseline-v2/01_SYSTEM_SPEC.md) và [06](docs/baseline-v2/06_SHARED_CONTRACTS.md); đọc guide chuyên trách theo thứ tự trong README. Coding agent đọc thêm [09](docs/baseline-v2/09_CODEX_WORKFLOW.md) và AGENTS.md thực sự áp dụng nếu có. Prompt mẫu không phải yêu cầu tự triển khai mọi tính năng.
+
+Scope theo 01, payload/API theo 06, catalog theo 07; khi thay contract phải cập nhật tài liệu và kiểm liên quan trong cùng tác vụ. Nêu khác biệt giữa baseline và code trước khi đổi stack. Docs là đặc tả dùng chung, không ghi tiến độ hoặc kiểm kê code. Chỉ sửa khi yêu cầu, kiến trúc hoặc contract thay đổi. Báo tiến độ, kết quả kiểm thử và việc còn lại trong task/PR; không báo test hoặc dữ liệu y khoa chưa kiểm là đã đạt.
+
+## Quy ước tên
+
+- Flutter/Dart: biến/hàm `camelCase`, class `PascalCase`.
+- Java/Spring Boot: biến/phương thức `camelCase`, class `PascalCase`.
+- Python/FastAPI RAG (mục tiêu): biến/hàm `snake_case`, class `PascalCase`.
+- JSON/API: field `snake_case` theo 06, không suy từ cách đặt tên của ngôn ngữ.
+
+Giữ BLoC và tổ chức hiện có khi phù hợp. Không thêm dependency hoặc chức năng ngoài scope chỉ vì xuất hiện trong tài liệu cũ. Chạy kiểm phù hợp với phần thay đổi, báo giới hạn thực tế; không commit secret hoặc PDF gốc mặc định.
