@@ -1,6 +1,6 @@
 # FirstAid Development Pack
 
-**Baseline 2.0 — ngày 23/10/2026 — phạm vi dành cho nhóm 3 sinh viên trong hơn một tháng.**
+**Baseline 2.0 **
 
 Bộ tài liệu này mô tả phạm vi đã thống nhất: ứng dụng Flutter hỗ trợ khoảng 18 nhóm tình huống sơ cứu, đọc ngoại tuyến, chatbot RAG bằng văn bản, danh bạ cơ sở y tế và web quản trị với một vai trò Admin. Người dùng mobile không cần tài khoản.
 
