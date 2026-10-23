@@ -1,7 +1,6 @@
-name: mobile
-description: "A new Flutter project."
+﻿name: mobile
+description: "FirstAid offline first-aid reference app."
 publish_to: 'none'
-
 version: 1.0.0+1
 
 environment:
@@ -10,40 +9,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^1.0.8
-
-  # Quản lý trạng thái & Dependency Injection
   flutter_bloc: ^8.1.5
   get_it: ^7.7.0
-
-  # Kết nối mạng với Spring Boot
   dio: ^5.4.3+1
-
-  # Phần cứng: Âm thanh, Giọng nói, Cảm biến, Định vị
-  flutter_tts: ^4.0.2
-  audioplayers: ^6.0.0
-  geolocator: ^11.0.0
-  sensors_plus: ^5.0.1
-  wakelock_plus: ^1.2.8
-  speech_to_text: ^7.0.0
-  url_launcher: ^6.3.0
-
-  # Lưu trữ ngoại tuyến (Offline-First)
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
-
-  # Tiện ích UI
-  google_fonts: ^6.2.1
-
-  # SVG icons
-  flutter_svg: ^2.0.10+1
-
-  # Equatable cho BLoC state/event
   equatable: ^2.0.5
-
-  # Google Maps SDK (setup cấu trúc, API key điền sau)
-  google_maps_flutter: ^2.6.1
+  geolocator: ^11.0.0
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:
@@ -52,9 +23,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  # Cấu hình nạp assets cục bộ cho Offline-First & Metronome
-  assets:
-    - assets/audio/
-    - assets/images/
-    - assets/icons/
