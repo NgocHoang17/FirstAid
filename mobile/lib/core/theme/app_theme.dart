@@ -4,6 +4,7 @@ import 'app_colors.dart';
 abstract final class AppTheme {
   static ThemeData get lightTheme => ThemeData(
     useMaterial3: true,
+    fontFamily: 'Be Vietnam Pro',
     scaffoldBackgroundColor: AppColors.background,
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary,

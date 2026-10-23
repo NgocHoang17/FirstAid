@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
+import 'features/first_aid/presentation/quick_aid_pages.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -10,9 +11,7 @@ class MyApp extends StatelessWidget {
       title: 'FirstAid',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const Scaffold(
-        body: SafeArea(child: Center(child: Text('FirstAid'))),
-      ),
+      home: const QuickAidHome(),
     );
   }
 }
