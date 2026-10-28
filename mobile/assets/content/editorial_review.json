@@ -13,10 +13,20 @@
   ],
   "excluded": [
     "NHI2022 trang 89 và các phần CÂU HỎI LƯỢNG GIÁ: không chuyển thành lời khuyên.",
-    "PNT2024 trang 36: không sao chép hướng dẫn uống ORESOL/nước; bỏng người lớn chưa biên soạn vì cần rà soát điều kiện dùng, cách che phủ và nguy cơ uống khi giảm ý thức.",
     "Không chuyển phần thuốc/liều, kỹ thuật chuyên sâu và mô tả chấn thương sang thủ thuật tự động.",
-    "CPR, hóc dị vật và luồng hỏi đáp y khoa FA01–FA03 cần đánh giá riêng; giữ demo và trạng thái chưa hỗ trợ.",
-    "Không dùng hình/PDF gốc trong app; không giả lập có dữ liệu cho đủ 18 nhóm."
+    "Không dùng hình/PDF gốc trong app; không giả lập có dữ liệu cho đủ 18 nhóm.",
+    "NHI2022 trang 52: không dùng tư thế ngửa đầu khi chảy máu cam; đối chiếu NHS và PNT2024 trang 16.",
+    "NHI2022 trang 77,79,80: không dùng các đoạn thuốc/liều, gây nôn hoặc tự uống than hoạt.",
+    "Không suy co giật được nhắc trong ngộ độc thành nguồn đủ cho bài sơ cứu cơn.",
+    "PNT2024 trang 14 cần đọc hình; thứ tự text extraction không bảo toàn vị trí nhãn.",
+    "FA13 và FA15 dùng nguồn ngoài hai PDF theo lựa chọn người dùng."
   ],
-  "release_gate": "All articles stay DRAFT/content_checked=false; available only in debug editorial preview. Require human content check before public publishing."
+  "release_gate": "All articles stay DRAFT/content_checked=false; available only in debug editorial preview. Require human content check before public publishing.",
+  "catalogue_version": "reference-catalog-2026-10-28-v3",
+  "article_count": 24,
+  "categories_without_standalone_pdf_guide": [
+    "FA13",
+    "FA15"
+  ],
+  "audience_policy": "Shared initial care uses ALL with evidence for adults and children; CPR, choking and drowning keep separate age-specific instructions. No infant guidance."
 }
