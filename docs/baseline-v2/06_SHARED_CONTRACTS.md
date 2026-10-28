@@ -87,6 +87,8 @@ Source — chỉ metadata, không nhét PDF vào snapshot:
 }
 ```
 
+Nguồn bổ sung chính thức dạng WEB dùng `media_type: "WEB"`, `original_url` HTTPS và `page_count: null`. `publication_year` là năm xuất bản đã xác minh hoặc null, không suy từ ngày truy cập. Nguồn PDF dùng `media_type: "PDF"` và số trang dương. SourceReference của WEB để `page_start` và `page_end` cùng null; không đánh số trang giả. SourceReference PDF vẫn yêu cầu trang hợp lệ trong tài liệu. Metadata chi tiết và ghi chú đối chiếu là dữ liệu nội bộ; giao diện nguồn chỉ hiện tên tài liệu, đơn vị biên soạn và năm.
+
 Admin có thể lưu ghi chú nội bộ về đường dẫn file/hash; API public không lộ server path. `revision` tăng khi thay tệp gốc hoặc thay metadata có ảnh hưởng provenance. Không coi mỗi sửa typo metadata là một tài liệu y khoa mới; quy tắc tăng revision phải thống nhất trong service.
 
 ## 4. Article

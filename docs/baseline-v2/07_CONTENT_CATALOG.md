@@ -2,6 +2,8 @@
 
 Baseline 2.0 | Tài liệu quản lý phạm vi và dữ liệu, **không phải bản phác đồ để sử dụng sơ cứu trực tiếp**.
 
+Nội dung và độ phủ nguồn cho toàn bộ 18 nhóm được tổng hợp tại [Dữ liệu chuẩn tham chiếu](../DATA_REFERENCE.md).
+
 ## 1. Nguyên tắc tổ chức
 
 Giữ đủ 18 nhóm tình huống trong ứng dụng. Mỗi nhóm là Category có mã FA01–FA18, thuộc một trong bốn group_code. Một Category có một hoặc nhiều Article tùy biến thể đối tượng/nguyên nhân. Chỉ thêm bài con khi có khác biệt cần thiết, không sao chép một bài để tăng số lượng.
@@ -55,7 +57,7 @@ Không tự đặt timer, tần số, độ sâu, liều hoặc giới hạn tu�
 
 Các nhãn ADULT, CHILD và ALL là metadata dữ liệu, không phải lời khẳng định mọi trẻ cùng một nhóm đều thực hiện giống nhau. Phạm vi diễn giải phải theo nguồn. Ở FA02/FA03 cần kiểm đặc biệt việc không dùng nhầm bài giữa các nhóm.
 
-Ví dụ variant_key kỹ thuật có thể là `adult_basic`, `child_basic`, `thermal_burn`, `dog_cat_bite`. Đây không phải danh sách bắt buộc; chỉ tạo khi có bài thật đủ nguồn. `variant_key` duy nhất trong category và giữ ổn định khi đổi tiêu đề. Nếu bài đã nêu rõ dùng chung thật, ALL hợp lệ; không dùng ALL để lấp thiếu nội dung nhi khoa.
+Ví dụ variant_key kỹ thuật có thể là `adult_basic`, `child_basic`, `thermal_burn`, `dog_cat_bite`. Đây không phải danh sách bắt buộc; chỉ tạo khi có bài thật đủ nguồn. `variant_key` duy nhất trong category và giữ ổn định khi đổi tiêu đề. Dùng ALL cho người lớn và trẻ em khi nguồn hỗ trợ cùng thao tác sơ cứu; lưu ý riêng về giám sát hoặc thời điểm khám nằm trong bài chung. Chỉ tạo bài riêng theo tuổi khi kỹ thuật xử trí khác nhau, như CPR, hóc dị vật và hồi sức sau đuối nước. Không suy việc nguồn không nêu tuổi thành bằng chứng áp dụng cho mọi tuổi.
 
 Mục tiêu nghiệm thu đủ 18 nhóm có nội dung phù hợp người dùng đã chọn; không cam kết mọi nhóm đều có đủ mọi lứa tuổi trong bản đầu. UI phải cho biết nhóm nào chưa có biến thể tương ứng. Khi chưa có nội dung phù hợp, không chuyển sang adult mặc định.
 
