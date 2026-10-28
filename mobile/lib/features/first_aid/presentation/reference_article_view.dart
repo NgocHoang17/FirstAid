@@ -184,7 +184,7 @@ class ReferenceSourcesView extends StatelessWidget {
           in article.references.map((ref) => ref.sourceId).toSet())
         AidCard(
           library.sources[sourceId]!.title,
-          'Biên soạn: ${library.sources[sourceId]!.publisher}\nNăm xuất bản: ${library.sources[sourceId]!.year}',
+          'Biên soạn: ${library.sources[sourceId]!.publisher}\nNăm xuất bản: ${library.sources[sourceId]!.year ?? 'Không nêu'}',
         ),
       AidButton('Về bài hướng dẫn', () => Navigator.pop(context)),
     ],
