@@ -36,6 +36,8 @@ Tài khoản mobile, hồ sơ bệnh án, nhật ký nạn nhân, bookmark đồ
 
 Không biến các mục P1 thành điều kiện ngầm để hoàn thành P0.
 
+Phạm vi đối tượng gồm **người lớn và trẻ em, không bao gồm nhũ nhi**. Bài trẻ em phải nêu rõ phạm vi áp dụng theo nguồn; không tự dùng cho nhũ nhi.
+
 ## 3. Tác nhân
 
 | Tác nhân | Khả năng |

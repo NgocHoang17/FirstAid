@@ -1,8 +1,10 @@
-﻿# PRD — FirstAid
+# PRD — FirstAid
 
 ## Mục tiêu
 
 Hỗ trợ người dân nhận biết tình huống sơ cứu, đọc hướng dẫn ban đầu có nguồn, tránh hành động sai và liên hệ hỗ trợ. Sản phẩm gồm ứng dụng mobile không yêu cầu tài khoản, web Admin một role và chatbot tra cứu kiến thức bằng văn bản.
+
+Phạm vi đối tượng gồm **người lớn và trẻ em, không bao gồm nhũ nhi**. Bài trẻ em phải nêu rõ phạm vi áp dụng theo nguồn; không tự dùng cho nhũ nhi.
 
 ## Phạm vi sản phẩm
 

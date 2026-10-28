@@ -42,10 +42,12 @@ Chi tiết một tài nguyên nằm trực tiếp trong `data`. List dùng `data
 | --- | --- |
 | ContentStatus | `DRAFT`, `PUBLISHED` |
 | GroupCode | `CIRCULATION`, `TRAUMA`, `ENVIRONMENT`, `OTHER` |
-| AgeGroup | `ADULT`, `CHILD`, `INFANT`, `ALL` |
+| AgeGroup | `ADULT`, `CHILD`, `ALL` |
 | ChatStatus | `answered`, `clarification_needed`, `emergency_redirect`, `insufficient_evidence`, `out_of_scope`, `unavailable` |
 | Emergency24h | `YES`, `NO`, `UNKNOWN` |
 | AppViewMode | `quick`, `learn` — giá trị UI, không tạo bảng riêng |
+
+Phạm vi chỉ gồm người lớn và trẻ em, không bao gồm nhũ nhi. `ALL` chỉ có nghĩa dùng chung cho hai nhóm trong phạm vi, không mở rộng sang nhũ nhi.
 
 `ALL` chỉ dùng khi người chuẩn bị nội dung đã xác nhận hướng dẫn đó dùng chung được. Không có bài đúng AgeGroup thì hiển thị không hỗ trợ, không lấy ADULT mặc định. Nhóm tuổi trong UI cần diễn giải theo nội dung nguồn, không tự gán ranh giới tuổi y khoa bằng code.
 
