@@ -25,6 +25,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/flows/
+    - assets/content/reference_library.json
   fonts:
     - family: Be Vietnam Pro
       fonts:

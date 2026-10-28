@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "kind": "editorial_preview",
+  "review_notice": "Nội dung tham khảo đã biên soạn và đối chiếu nguồn; chưa được chuyên gia y tế xác nhận độc lập. Không thay thế hướng dẫn trực tiếp của nhân viên y tế.",
+  "sources": [
+    {
+      "id": "0da603f1-f47f-5756-8179-90ff789e71f5",
+      "code": "PNT2024",
+      "title": "CẨM NANG SƠ CẤP CỨU",
+      "publisher": "CLB Cấp Cứu Ngoại Viện, Hội Sinh viên Việt Nam trường Đại học Y khoa Phạm Ngọc Thạch",
+      "publication_year": 2024,
+      "page_count": 47,
+      "revision": 1,
+      "original_url": null,
+      "is_active": true,
+      "rights_note": "Chỉ biên soạn lại phần hướng dẫn bằng chữ; không phân phối PDF hoặc hình gốc. Quyền tái sử dụng hình cần xác nhận."
+    },
+    {
+      "id": "fec4959c-796a-5568-9dd2-f5cec7e945a0",
+      "code": "NHI2022",
+      "title": "Hướng dẫn sơ cấp cứu ban đầu tai nạn thương tích thường gặp ở trẻ em, học sinh",
+      "publisher": "Bệnh viện Nhi Trung ương và Vụ Giáo dục thể chất, Bộ Giáo dục và Đào tạo",
+      "publication_year": 2022,
+      "page_count": 112,
+      "revision": 1,
+      "original_url": null,
+      "is_active": true,
+      "rights_note": "Chỉ biên soạn lại phần hướng dẫn bằng chữ; không phân phối PDF hoặc hình gốc. Quyền tái sử dụng hình cần xác nhận."
+    }
+  ],
+  "articles": [
+    {
+      "id": "8efbb2fe-1b35-5c89-a13a-f18739b453c2",
+      "category_id": "07b49d3d-1ae7-5a34-961d-96d9aa0708bf",
+      "slug": "adult_external_bleeding",
+      "variant_key": "adult_external_bleeding",
+      "category_code": "FA05",
+      "title": "Chảy máu ngoài — người lớn",
+      "age_group": "ADULT",
+      "applies_to": "Người lớn có vết thương ngoài da đang chảy máu. Không áp dụng cho chảy máu nội tạng, mắt, vết thương ngực/bụng hoặc vật đang cắm trong vết thương.",
+      "summary": "Dùng vật liệu sạch để tạo áp lực trực tiếp và tìm trợ giúp y tế sớm.",
+      "recognition": [
+        "Thấy máu chảy từ vết thương ngoài da."
+      ],
+      "quick_actions": [
+        "Chảy máu nhiều hoặc khó cầm: nhờ người gọi 115 ngay, đồng thời tiến hành cầm máu."
+      ],
+      "steps": [
+        {
+          "id": "c5c8cd55-99fd-552f-9856-1c51bca039b5",
+          "position": 1,
+          "title": "Bảo vệ người trợ giúp",
+          "instruction": "Đeo găng nếu có; dùng gạc hoặc vải sạch làm lớp ngăn giữa tay và máu.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        },
+        {
+          "id": "a6bcfe80-3f1a-565a-b7aa-1009c40d3115",
+          "position": 2,
+          "title": "Ép trực tiếp",
+          "instruction": "Nếu không có vật cắm trong vết thương, đặt gạc hoặc vải sạch lên chỗ chảy máu và ấn chắc, duy trì áp lực.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        },
+        {
+          "id": "9f310f75-296c-5451-b3ea-2453a9d9d5af",
+          "position": 3,
+          "title": "Giữ gạc tại chỗ",
+          "instruction": "Nếu máu thấm qua, thêm lớp gạc hoặc vải sạch lên trên và tiếp tục ép. Khi kiểm soát được máu, cố định gạc; không băng quá chặt.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        },
+        {
+          "id": "6c5d78b7-873f-5d60-ae9d-0fdd91176ca8",
+          "position": 4,
+          "title": "Liên hệ hỗ trợ",
+          "instruction": "Gọi 115 khi chảy máu nhiều hoặc chưa cầm được; tiếp tục giữ áp lực trong lúc chờ hướng dẫn và trợ giúp.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        }
+      ],
+      "warnings": [
+        "Không tự rút vật đang cắm trong vết thương; không ép trực tiếp lên vật đó. Tìm trợ giúp y tế.",
+        "Không coi việc máu tạm ngừng là đã loại trừ tổn thương sâu."
+      ],
+      "seek_help": [
+        "Chảy máu nhiều, phun thành tia hoặc không kiểm soát được.",
+        "Vết thương sâu/rộng, có vật cắm, mất cảm giác hoặc khó vận động: cần đánh giá y tế khẩn."
+      ],
+      "references": [
+        {
+          "source_id": "0da603f1-f47f-5756-8179-90ff789e71f5",
+          "page_start": 16,
+          "page_end": 16,
+          "section_key": "all",
+          "note": "Trang in 7, phần Trình tự cầm máu. Bổ sung kiểm tra trường hợp vật cắm, máu thấm gạc và dấu hiệu cần cấp cứu: NHS Cuts and grazes, https://www.nhs.uk/conditions/cuts-and-grazes/ (đọc 28/10/2026)."
+        }
+      ],
+      "status": "DRAFT",
+      "content_checked": false,
+      "checked_at": null,
+      "content_revision": 1,
+      "updated_at": "2026-10-28T00:00:00Z"
+    },
+    {
+      "id": "138c7347-7970-5f6f-b9e2-0544ee6c039c",
+      "category_id": "07b49d3d-1ae7-5a34-961d-96d9aa0708bf",
+      "slug": "child_external_bleeding",
+      "variant_key": "child_external_bleeding",
+      "category_code": "FA05",
+      "title": "Chảy máu ngoài — trẻ em",
+      "age_group": "CHILD",
+      "applies_to": "Trẻ em có vết cắt ngoài da, không có vật cắm. Không dùng cho nhũ nhi, chảy máu nội tạng, mắt hoặc vết thương ngực/bụng; các trường hợp này cần trợ giúp y tế.",
+      "summary": "Bảo vệ người sơ cứu, ép bằng gạc sạch và theo dõi trẻ.",
+      "recognition": [
+        "Máu chảy từ vết cắt hoặc vết thương ngoài da."
+      ],
+      "quick_actions": [
+        "Nếu chảy máu nặng, nhờ người gọi 115 ngay; không đợi đủ thời gian theo dõi."
+      ],
+      "steps": [
+        {
+          "id": "bf82aaa4-0e14-5b1f-ba02-3e78980f120a",
+          "position": 1,
+          "title": "Kiểm tra an toàn",
+          "instruction": "Quan sát nguy cơ xung quanh. Đeo găng nếu có và dùng gạc hoặc vải sạch ngăn tiếp xúc trực tiếp với máu.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        },
+        {
+          "id": "145df93d-71bc-5e92-b8b0-125afcceb779",
+          "position": 2,
+          "title": "Giữ áp lực",
+          "instruction": "Với vết thương không có vật cắm, phủ gạc hoặc vải sạch rồi ấn chắc và giữ cho đến khi máu ngừng chảy.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        },
+        {
+          "id": "510e3ae7-db70-5838-b2b6-e266146dfe2c",
+          "position": 3,
+          "title": "Giám sát và gọi trợ giúp",
+          "instruction": "Luôn ở cạnh trẻ, không để trẻ gỡ gạc nhỏ cho vào miệng. Gọi 115 nếu máu chảy nặng hoặc vẫn không cầm sau 5 phút ép trực tiếp; báo cha mẹ/người giám hộ.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        }
+      ],
+      "warnings": [
+        "Không dùng bài này để xử trí vật đang cắm: không rút vật ra, không ép lên vật, cần trợ giúp y tế.",
+        "Không để trẻ tự cầm hoặc ngậm gạc nhỏ.",
+        "Sau ngã cao, trẻ đau dữ dội/xanh xao: nghi tổn thương bên trong, gọi 115 và tránh di chuyển không cần thiết."
+      ],
+      "seek_help": [
+        "Chảy máu nặng: gọi 115 ngay.",
+        "Không cầm sau 5 phút ép trực tiếp, hoặc nghi chảy máu nội tạng: gọi 115."
+      ],
+      "references": [
+        {
+          "source_id": "fec4959c-796a-5568-9dd2-f5cec7e945a0",
+          "page_start": 39,
+          "page_end": 44,
+          "section_key": "all",
+          "note": "Các phần Tổng quan; Sử dụng băng, gạc; Gọi sự giúp đỡ (đặc biệt trang PDF 39–40, 41–42 và 44). Không dùng phần lượng giá. Ngoại lệ vật cắm đối chiếu NHS Cuts and grazes: https://www.nhs.uk/conditions/cuts-and-grazes/ (đọc 28/10/2026)."
+        }
+      ],
+      "status": "DRAFT",
+      "content_checked": false,
+      "checked_at": null,
+      "content_revision": 1,
+      "updated_at": "2026-10-28T00:00:00Z"
+    },
+    {
+      "id": "f7f33f26-6654-53bf-bdcb-ef048bc4b72d",
+      "category_id": "dab1b20c-fba7-5c3f-82f4-83ae17f9d626",
+      "slug": "adult_nosebleed",
+      "variant_key": "adult_nosebleed",
+      "category_code": "FA07",
+      "title": "Chảy máu cam — người lớn",
+      "age_group": "ADULT",
+      "applies_to": "Người lớn còn tỉnh, tự ngồi và thở được, chảy máu từ mũi. Nếu sau chấn thương đầu, khó thở, yếu/chóng mặt hoặc máu chảy nhiều: tìm trợ giúp khẩn ngay.",
+      "summary": "Cúi đầu về trước và bóp phần mềm của mũi liên tục 10–15 phút.",
+      "recognition": [
+        "Máu chảy ra từ một hoặc hai bên mũi."
+      ],
+      "quick_actions": [
+        "Ngồi và cúi nhẹ về trước; thở bằng miệng."
+      ],
+      "steps": [
+        {
+          "id": "db242873-97fe-594f-ad46-77d1c12e1480",
+          "position": 1,
+          "title": "Ngồi, cúi về trước",
+          "instruction": "Ngồi thẳng, đầu hơi cúi về trước, mở miệng và thở bằng miệng.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        },
+        {
+          "id": "654ca41a-c8c5-533b-91b2-00774caacad6",
+          "position": 2,
+          "title": "Bóp phần mềm của mũi",
+          "instruction": "Dùng ngón cái và ngón trỏ bóp phần mềm ngay trên lỗ mũi, giữ liên tục 10–15 phút.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        },
+        {
+          "id": "a34969a2-5dde-5433-b76e-a92e1af7bbbd",
+          "position": 3,
+          "title": "Kiểm tra và tìm trợ giúp",
+          "instruction": "Sau 10–15 phút, nếu vẫn chảy máu, đến cơ sở y tế. Nếu máu chảy nhiều, khó thở, yếu/chóng mặt hoặc xảy ra sau va đập đầu: gọi 115 hoặc nhờ đưa đi cấp cứu, không chờ hết thời gian.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        }
+      ],
+      "warnings": [
+        "Không ngửa đầu ra sau.",
+        "Không tự lái xe đi cấp cứu khi yếu hoặc chóng mặt."
+      ],
+      "seek_help": [
+        "Máu không ngừng sau 10–15 phút.",
+        "Chảy máu nhiều, nuốt nhiều máu gây nôn, khó thở, yếu/chóng mặt hoặc chấn thương đầu: cần cấp cứu.",
+        "Đang dùng thuốc chống đông hoặc chảy máu tái diễn: cần được nhân viên y tế đánh giá."
+      ],
+      "references": [
+        {
+          "source_id": "0da603f1-f47f-5756-8179-90ff789e71f5",
+          "page_start": 16,
+          "page_end": 16,
+          "section_key": "all",
+          "note": "Trang in 7, mục Xử lý chảy máu mũi đúng cách. Thời gian bóp liên tục và tiêu chí tìm trợ giúp bổ sung từ NHS Nosebleed: https://www.nhs.uk/conditions/nosebleed/ (đọc 28/10/2026); số gọi được địa phương hóa thành 115."
+        }
+      ],
+      "status": "DRAFT",
+      "content_checked": false,
+      "checked_at": null,
+      "content_revision": 1,
+      "updated_at": "2026-10-28T00:00:00Z"
+    },
+    {
+      "id": "961e4ac2-d66d-55c0-8e16-01c9b474f687",
+      "category_id": "7cf89dce-4b3e-5060-8173-af30dcbf1fa1",
+      "slug": "child_minor_thermal_burn",
+      "variant_key": "child_minor_thermal_burn",
+      "category_code": "FA11",
+      "title": "Bỏng nhiệt nhẹ — trẻ em",
+      "age_group": "CHILD",
+      "applies_to": "Trẻ em bị bỏng nhiệt nhỏ do nước/vật nóng, da chưa tróc. Không áp dụng cho nhũ nhi, bỏng điện/hóa chất, bỏng rộng/sâu, ở mặt hoặc vùng sinh dục; cần trợ giúp y tế cho các trường hợp đó.",
+      "summary": "Ngừng tiếp xúc với nguồn nhiệt, làm mát 20 phút, che bảo vệ và tìm tư vấn y tế.",
+      "recognition": [
+        "Vùng da sau tiếp xúc nguồn nóng bị đỏ, đau rát; bài này chỉ dành cho diện tích nhỏ, chưa tróc da."
+      ],
+      "quick_actions": [
+        "Đưa trẻ khỏi tác nhân nóng nếu an toàn; bắt đầu làm mát ngay."
+      ],
+      "steps": [
+        {
+          "id": "f93bea2b-b504-5193-986e-700cf9ad0b1c",
+          "position": 1,
+          "title": "Ngừng tác nhân nóng",
+          "instruction": "Đảm bảo an toàn rồi tách trẻ khỏi vật/nước nóng. Tháo trang sức và quần áo gần vùng bỏng nếu không dính; không bóc vật dính trên da.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        },
+        {
+          "id": "648e6b85-5ea0-5a59-a34d-199d7ca9fd29",
+          "position": 2,
+          "title": "Làm mát 20 phút",
+          "instruction": "Làm mát vùng bỏng nhỏ bằng nước sạch mát trong 20 phút. Giữ ấm những phần cơ thể không bị bỏng.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        },
+        {
+          "id": "b10d4f9a-9604-5966-be2a-1362c82ac93d",
+          "position": 3,
+          "title": "Che bảo vệ",
+          "instruction": "Sau làm mát, phủ nhẹ bằng gạc vô khuẩn hoặc vải sạch; không dán băng dính trực tiếp vào vùng bỏng.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        },
+        {
+          "id": "ac1c4ee4-dae6-575e-b480-f6da4133f451",
+          "position": 4,
+          "title": "Nhờ nhân viên y tế",
+          "instruction": "Tìm tư vấn/đánh giá y tế cho trẻ bị bỏng. Gọi 115 hoặc nhờ đưa đi cấp cứu khi bỏng rộng/sâu, bỏng ở mặt/vùng sinh dục, do điện/hóa chất hoặc trẻ có dấu hiệu nặng.",
+          "asset_key": null,
+          "image_url": null,
+          "alt_text": null
+        }
+      ],
+      "warnings": [
+        "Không bôi dầu mỡ, cồn hoặc kem kháng sinh lên vết bỏng.",
+        "Không chọc vỡ bóng nước, bóc da hoặc quần áo dính.",
+        "Không lấy quy trình này thay cho xử trí bỏng điện/hóa chất; không tự dùng thuốc hoặc dung dịch bù dịch."
+      ],
+      "seek_help": [
+        "Bỏng ở trẻ em cần tư vấn y tế; không dựa vào giảm đau để kết luận đã an toàn.",
+        "Bỏng nặng, rộng/sâu, mặt/vùng sinh dục hoặc điện/hóa chất: cần cấp cứu."
+      ],
+      "references": [
+        {
+          "source_id": "fec4959c-796a-5568-9dd2-f5cec7e945a0",
+          "page_start": 86,
+          "page_end": 88,
+          "section_key": "all",
+          "note": "Phần II Bỏng; hướng dẫn và lưu ý ở trang PDF 87. Giới hạn làm mát theo nguồn: bỏng nhẹ, chưa tróc da. Bổ sung: NHS Burns and scalds https://www.nhs.uk/conditions/burns-and-scalds/; British Red Cross Burns in babies and children https://www.redcross.org.uk/first-aid/learn-first-aid-for-babies-and-children/burns (đối chiếu 28/10/2026)."
+        }
+      ],
+      "status": "DRAFT",
+      "content_checked": false,
+      "checked_at": null,
+      "content_revision": 1,
+      "updated_at": "2026-10-28T00:00:00Z"
+    }
+  ]
+}

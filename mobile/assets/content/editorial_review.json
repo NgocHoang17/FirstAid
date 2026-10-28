@@ -1,0 +1,22 @@
+{
+  "reviewed_on": "2026-10-28",
+  "review_type": "source_comparison_not_clinical_approval",
+  "source_files": [
+    {
+      "code": "PNT2024",
+      "sha256": "ade02d6129ee7195421b95ba080182da319916b0b44053bb206ff62a77fc3513"
+    },
+    {
+      "code": "NHI2022",
+      "sha256": "272b4998f98336422ce7e65817f4514ae90826ac911fb35a8eb6a329441c2f50"
+    }
+  ],
+  "excluded": [
+    "NHI2022 trang 89 và các phần CÂU HỎI LƯỢNG GIÁ: không chuyển thành lời khuyên.",
+    "PNT2024 trang 36: không sao chép hướng dẫn uống ORESOL/nước; bỏng người lớn chưa biên soạn vì cần rà soát điều kiện dùng, cách che phủ và nguy cơ uống khi giảm ý thức.",
+    "Không chuyển phần thuốc/liều, kỹ thuật chuyên sâu và mô tả chấn thương sang thủ thuật tự động.",
+    "CPR, hóc dị vật và luồng hỏi đáp y khoa FA01–FA03 cần đánh giá riêng; giữ demo và trạng thái chưa hỗ trợ.",
+    "Không dùng hình/PDF gốc trong app; không giả lập có dữ liệu cho đủ 18 nhóm."
+  ],
+  "release_gate": "All articles stay DRAFT/content_checked=false; available only in debug editorial preview. Require human content check before public publishing."
+}
