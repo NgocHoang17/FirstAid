@@ -1,0 +1,63 @@
+{
+  "nodes": [
+    {
+      "prompt": "Chọn đối tượng cho luồng minh họa",
+      "id": "audience",
+      "type": "question",
+      "options": [
+        {
+          "label": "Người lớn",
+          "code": "adult",
+          "next_node": "q1"
+        },
+        {
+          "label": "Trẻ em",
+          "code": "child",
+          "next_node": "unsupported"
+        },
+        {
+          "label": "Không rõ / không xác định",
+          "code": "unknown",
+          "next_node": "unsupported"
+        }
+      ]
+    },
+    {
+      "prompt": "[Câu hỏi theo kịch bản đã duyệt]",
+      "id": "q1",
+      "type": "question",
+      "options": [
+        {
+          "label": "Lựa chọn A",
+          "code": "option_a",
+          "next_node": "article"
+        },
+        {
+          "label": "Lựa chọn B",
+          "code": "option_b",
+          "next_node": "unsupported"
+        },
+        {
+          "label": "Không rõ / không xác định",
+          "code": "unknown",
+          "next_node": "unsupported"
+        }
+      ]
+    },
+    {
+      "id": "unsupported",
+      "type": "unsupported",
+      "message_code": "CONTACT_HELP"
+    },
+    {
+      "variant_key": "adult_basic",
+      "age_group": "ADULT",
+      "category_code": "FA02",
+      "id": "article",
+      "type": "open_article"
+    }
+  ],
+  "category_code": "FA02",
+  "entry_node": "audience",
+  "flow_key": "fa02_demo"
+}

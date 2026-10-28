@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_colors.dart';
+import 'guided_flow_page.dart';
 
 const situations = [
   'Bất tỉnh / không đáp ứng',
@@ -341,8 +342,15 @@ class _QuickAidListState extends State<QuickAidList> {
           AidCard(
             '${(i + 1).toString().padLeft(2, '0')}   ${situations[i]}',
             'Chọn để xem hướng dẫn  ›',
-            onTap: () =>
-                openPage(context, AudiencePage(category: situations[i])),
+            onTap: () => openPage(
+              context,
+              i < 3
+                  ? GuidedFlowPage(
+                      categoryCode: 'FA${(i + 1).toString().padLeft(2, '0')}',
+                      categoryName: situations[i],
+                    )
+                  : AudiencePage(category: situations[i]),
+            ),
           ),
       ],
     );
@@ -371,7 +379,7 @@ class AudiencePage extends StatelessWidget {
         'Chỉ bài Bỏng • Người lớn có mẫu giao diện; không dùng mẫu để sơ cứu.',
         color: Color(0xFFEFF6FF),
       ),
-      for (final age in ['Người lớn', 'Trẻ em', 'Trẻ nhũ nhi'])
+      for (final age in ['Người lớn', 'Trẻ em'])
         AidButton(
           age,
           () => openPage(
