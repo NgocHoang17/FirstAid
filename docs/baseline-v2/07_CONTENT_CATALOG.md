@@ -13,8 +13,8 @@ Các bài dùng chung template, schema và renderer trong 06. Mục tiêu đủ 
 | Code | Tên nhóm | group_code | Bài con/đối tượng cần xem xét | Từ khóa tìm kiếm gợi ý |
 | --- | --- | --- | --- | --- |
 | FA01 | Người bất tỉnh hoặc không đáp ứng | CIRCULATION | Phân biệt đối tượng và tình huống theo nguồn; không tự chẩn đoán nguyên nhân | bất tỉnh, không đáp ứng, bất động |
-| FA02 | Ngừng tim và CPR/AED | CIRCULATION | Người lớn/trẻ em/nhũ nhi không dùng chung thủ thuật nếu khác; AED là section hoặc bài con | CPR, ép tim, hồi sức, AED |
-| FA03 | Hóc dị vật | CIRCULATION | Người lớn, trẻ em, nhũ nhi; các tình huống đặc biệt chỉ khi có nguồn | hóc, nghẹn, sặc, dị vật |
+| FA02 | Ngừng tim và CPR/AED | CIRCULATION | Người lớn/trẻ em không dùng chung thủ thuật nếu khác; AED là section hoặc bài con | CPR, ép tim, hồi sức, AED |
+| FA03 | Hóc dị vật | CIRCULATION | Người lớn và trẻ em; các tình huống đặc biệt chỉ khi có nguồn | hóc, nghẹn, sặc, dị vật |
 | FA04 | Đuối nước | CIRCULATION | Chỉ dẫn an toàn người trợ giúp; đối tượng khác nhau khi nội dung yêu cầu | đuối nước, ngạt nước |
 | FA05 | Chảy máu ngoài | TRAUMA | Phân biệt vết thương nhỏ với chảy máu nghiêm trọng; không tự thêm kỹ thuật nâng cao | chảy máu, cầm máu, mất máu |
 | FA06 | Vết thương nhỏ và trầy xước | TRAUMA | Bài phổ thông; dẫn sang bài khác khi không còn phù hợp | trầy xước, đứt tay, vết thương |
@@ -37,7 +37,7 @@ Keyword là hỗ trợ tìm kiếm, không chứng minh triệu chứng đó xá
 
 | Section | Nội dung cần chuẩn bị | Field trong 06 |
 | --- | --- | --- |
-| Định danh | Tên, danh mục, bài con, người lớn/trẻ/nhũ nhi/dùng chung | title, category_id, variant_key, age_group |
+| Định danh | Tên, danh mục, bài con, người lớn/trẻ em/dùng chung | title, category_id, variant_key, age_group |
 | Phạm vi | Áp dụng khi nào, giới hạn đối tượng/bối cảnh | applies_to |
 | Tóm tắt | Giải thích ngắn cho người không chuyên | summary |
 | Nhận biết | Dấu hiệu có nguồn, không diễn đạt thành chẩn đoán chắc chắn | recognition |
@@ -53,9 +53,9 @@ Không tự đặt timer, tần số, độ sâu, liều hoặc giới hạn tu�
 
 ## 4. Đối tượng và biến thể
 
-Các nhãn ADULT, CHILD, INFANT và ALL là metadata dữ liệu, không phải lời khẳng định mọi trẻ cùng một nhóm đều thực hiện giống nhau. Phạm vi diễn giải phải theo nguồn. Ở FA02/FA03 cần kiểm đặc biệt việc không dùng nhầm bài giữa các nhóm.
+Các nhãn ADULT, CHILD và ALL là metadata dữ liệu, không phải lời khẳng định mọi trẻ cùng một nhóm đều thực hiện giống nhau. Phạm vi diễn giải phải theo nguồn. Ở FA02/FA03 cần kiểm đặc biệt việc không dùng nhầm bài giữa các nhóm.
 
-Ví dụ variant_key kỹ thuật có thể là `adult_basic`, `child_basic`, `infant_basic`, `thermal_burn`, `dog_cat_bite`. Đây không phải danh sách bắt buộc; chỉ tạo khi có bài thật đủ nguồn. `variant_key` duy nhất trong category và giữ ổn định khi đổi tiêu đề. Nếu bài đã nêu rõ dùng chung thật, ALL hợp lệ; không dùng ALL để lấp thiếu nội dung nhi khoa.
+Ví dụ variant_key kỹ thuật có thể là `adult_basic`, `child_basic`, `thermal_burn`, `dog_cat_bite`. Đây không phải danh sách bắt buộc; chỉ tạo khi có bài thật đủ nguồn. `variant_key` duy nhất trong category và giữ ổn định khi đổi tiêu đề. Nếu bài đã nêu rõ dùng chung thật, ALL hợp lệ; không dùng ALL để lấp thiếu nội dung nhi khoa.
 
 Mục tiêu nghiệm thu đủ 18 nhóm có nội dung phù hợp người dùng đã chọn; không cam kết mọi nhóm đều có đủ mọi lứa tuổi trong bản đầu. UI phải cho biết nhóm nào chưa có biến thể tương ứng. Khi chưa có nội dung phù hợp, không chuyển sang adult mặc định.
 

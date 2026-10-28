@@ -73,7 +73,7 @@ Nút gọi hỗ trợ phải có ở quick flow và thẻ emergency_redirect tro
 | --- | --- | --- | --- |
 | M01 | Trang chủ | CTA Sơ cứu nhanh, gọi hỗ trợ, nhóm nổi bật, tìm kiến thức, cài đặt | Bình thường, offline có nội dung |
 | M02 | Danh sách sơ cứu nhanh | 18 nhóm, tìm theo từ khóa, nhóm phân loại | Có kết quả, không có kết quả |
-| M03 | Chọn bài hoặc đối tượng | Các biến thể theo danh mục; badge người lớn/trẻ/nhũ nhi/dùng chung | Có nhiều bài, không hỗ trợ đối tượng |
+| M03 | Chọn bài hoặc đối tượng | Các biến thể theo danh mục; badge người lớn/trẻ em/dùng chung | Có nhiều bài, không hỗ trợ đối tượng |
 | M04 | Hướng dẫn quick | Phạm vi, cần làm ngay, bước, điều tránh, gọi và xem nguồn | Đầu/giữa/cuối bài, thiếu hình online, chữ lớn |
 | M05 | Luồng lựa chọn ngắn | Một câu hỏi, đáp án đóng, không chắc, nút gọi | Câu hỏi, kết quả mở bài, không có bài phù hợp |
 | M06 | Kiến thức và tìm kiếm | Search, nhóm chủ đề, danh sách bài | Loading lần đầu seed, kết quả, rỗng |
