@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mobile/app.dart';
 import 'package:mobile/features/first_aid/domain/guided_flow.dart';
 import 'package:mobile/features/first_aid/presentation/guided_flow_page.dart';
 
@@ -46,13 +45,12 @@ void main() {
     broken['nodes'][0]['options'][0]['next_node'] = 'audience';
     expect(() => GuidedFlow.parse(jsonEncode(broken)), throwsFormatException);
   });
-  testWidgets('Journey 01 opens guided flow and preserves previous answers', (
-    tester,
-  ) async {
-    await tester.pumpWidget(const MyApp());
-    await tester.tap(find.text('Cần sơ cứu ngay?'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('01   Bất tỉnh / không đáp ứng'));
+  testWidgets('Isolated demo flow preserves previous answers', (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: GuidedFlowPage(categoryCode: 'FA01', categoryName: 'Demo'),
+      ),
+    );
     await tester.pumpAndSettle();
     expect(find.byType(GuidedFlowPage), findsOneWidget);
     await tester.scrollUntilVisible(find.text('Người lớn'), 150);

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_colors.dart';
-import 'guided_flow_page.dart';
 import '../data/reference_content_repository.dart';
 import 'reference_article_view.dart';
 
@@ -344,15 +343,8 @@ class _QuickAidListState extends State<QuickAidList> {
           AidCard(
             '${(i + 1).toString().padLeft(2, '0')}   ${situations[i]}',
             'Chọn để xem hướng dẫn  ›',
-            onTap: () => openPage(
-              context,
-              i < 3
-                  ? GuidedFlowPage(
-                      categoryCode: 'FA${(i + 1).toString().padLeft(2, '0')}',
-                      categoryName: situations[i],
-                    )
-                  : AudiencePage(category: situations[i]),
-            ),
+            onTap: () =>
+                openPage(context, AudiencePage(category: situations[i])),
           ),
       ],
     );
@@ -378,7 +370,7 @@ class _AudiencePageState extends State<AudiencePage> {
       final code = 'FA${(index + 1).toString().padLeft(2, '0')}';
       final articles = library?.forCategory(code) ?? <ReferenceArticle>[];
       return AidScaffold(
-        title: 'Chọn bài và đối tượng',
+        title: 'Chọn hướng dẫn',
         call: true,
         children: [
           Text(
@@ -386,7 +378,7 @@ class _AudiencePageState extends State<AudiencePage> {
             style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
           const Text(
-            'Chỉ mở bài đúng phạm vi và đối tượng; không tự thay bằng bài người lớn.',
+            'Bài dùng chung áp dụng cho người lớn và trẻ em. Nếu có bài riêng, hãy chọn đúng độ tuổi và phạm vi.',
           ),
           if (snapshot.connectionState != ConnectionState.done)
             const Center(child: CircularProgressIndicator())
@@ -411,7 +403,9 @@ class _AudiencePageState extends State<AudiencePage> {
                 ),
               ),
             for (final age in ['Người lớn', 'Trẻ em'])
-              if (!articles.any((a) => a.ageLabel == age))
+              if (!articles.any(
+                (a) => a.ageLabel == age || a.ageGroup == 'ALL',
+              ))
                 OutlinedButton(
                   onPressed: () => openPage(
                     context,

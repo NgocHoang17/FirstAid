@@ -11,7 +11,7 @@ void main() {
     expect(searchKey('Điện giật'), 'dien giat');
   });
   testWidgets(
-    'Quick journey reads sourced child article and preserves step after source',
+    'Quick journey reads sourced shared article and preserves step after source',
     (tester) async {
       await tester.pumpWidget(const MyApp());
       await tester.tap(find.text('Cần sơ cứu ngay?'));
@@ -21,12 +21,12 @@ void main() {
       await tester.tap(find.text('11   Bỏng'));
       await tester.pumpAndSettle();
       await tester.scrollUntilVisible(
-        find.text('Bỏng nhiệt nhẹ — trẻ em'),
+        find.text('Bỏng nhiệt nhẹ'),
         250,
         scrollable: find.byType(Scrollable).first,
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Bỏng nhiệt nhẹ — trẻ em'));
+      await tester.tap(find.text('Bỏng nhiệt nhẹ'));
       await tester.pumpAndSettle();
       expect(find.text('Bản tham khảo đang rà soát'), findsOneWidget);
       await tester.scrollUntilVisible(
@@ -85,27 +85,33 @@ void main() {
     },
   );
   testWidgets(
-    'Audience selection excludes infants and retains adult unsupported state',
+    'Shared dog bite care covers both audiences without an unsupported choice',
     (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(home: AudiencePage(category: 'Bỏng')),
+        const MaterialApp(
+          home: AudiencePage(category: 'Động vật cắn / côn trùng đốt'),
+        ),
       );
       await tester.pumpAndSettle();
-      expect(find.textContaining('Trẻ nhũ nhi'), findsNothing);
-      expect(find.text('Bỏng nhiệt nhẹ — trẻ em'), findsOneWidget);
-      await tester.scrollUntilVisible(
-        find.text('Người lớn — chưa có bài phù hợp'),
-        300,
-        scrollable: find.byType(Scrollable).first,
-      );
+      expect(find.text('Chó cắn'), findsOneWidget);
+      expect(find.textContaining('Người lớn và trẻ em'), findsWidgets);
+      expect(find.textContaining('chưa có bài phù hợp'), findsNothing);
+      expect(find.text('Luồng lựa chọn minh họa'), findsNothing);
+      await tester.tap(find.text('Chó cắn'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Người lớn — chưa có bài phù hợp'));
-      await tester.pumpAndSettle();
-      expect(
-        find.text('Không tự thay bằng hướng dẫn người lớn'),
-        findsOneWidget,
-      );
-      expect(find.text('Làm mát 20 phút'), findsNothing);
+      expect(find.text('Chó cắn'), findsWidgets);
+      expect(tester.takeException(), isNull);
     },
   );
+  testWidgets('Age-specific care has direct article choices and no demo flow', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(home: AudiencePage(category: 'Ngừng tim • CPR / AED')),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('CPR và AED ở người lớn'), findsOneWidget);
+    expect(find.text('CPR trẻ em cho người sơ cứu'), findsOneWidget);
+    expect(find.text('Luồng lựa chọn minh họa'), findsNothing);
+  });
 }
