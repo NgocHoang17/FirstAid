@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_colors.dart';
 import 'guided_flow_page.dart';
+import '../data/reference_content_repository.dart';
+import 'reference_article_view.dart';
 
 const situations = [
   'Bất tỉnh / không đáp ứng',
@@ -249,8 +251,8 @@ class QuickAidHome extends StatelessWidget {
         const CallHelp(),
         const SizedBox(height: 16),
         const AidCard(
-          'Bản thiết kế minh họa',
-          'Dữ liệu demo có sẵn ngoại tuyến. Chưa phải nội dung hướng dẫn sơ cứu đã kiểm duyệt.',
+          'Nội dung tham khảo trên thiết bị',
+          'Một số bài có nguồn đang được rà soát trên bản phát triển. Chọn bài để xem phạm vi và tài liệu tham chiếu.',
           color: Color(0xFFF0FDFA),
         ),
         const SizedBox(height: 16),
@@ -357,44 +359,70 @@ class _QuickAidListState extends State<QuickAidList> {
   }
 }
 
-class AudiencePage extends StatelessWidget {
+class AudiencePage extends StatefulWidget {
   const AudiencePage({required this.category, super.key});
   final String category;
   @override
-  Widget build(BuildContext context) => AidScaffold(
-    title: 'Chọn đối tượng',
-    call: true,
-    children: [
-      Text(
-        category,
-        style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-      ),
-      const Text(
-        'Chọn đúng đối tượng',
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-      const Text('Hướng dẫn được hiển thị theo phạm vi áp dụng của bài.'),
-      const AidCard(
-        'Bản thiết kế minh họa',
-        'Chỉ bài Bỏng • Người lớn có mẫu giao diện; không dùng mẫu để sơ cứu.',
-        color: Color(0xFFEFF6FF),
-      ),
-      for (final age in ['Người lớn', 'Trẻ em'])
-        AidButton(
-          age,
-          () => openPage(
-            context,
-            category == 'Bỏng' && age == 'Người lớn'
-                ? const QuickArticlePage()
-                : UnsupportedAudience(category: category),
+  State<AudiencePage> createState() => _AudiencePageState();
+}
+
+class _AudiencePageState extends State<AudiencePage> {
+  late final Future<ReferenceLibrary> _library =
+      ReferenceContentRepository.load();
+  @override
+  Widget build(BuildContext context) => FutureBuilder<ReferenceLibrary>(
+    future: _library,
+    builder: (context, snapshot) {
+      final library = snapshot.data;
+      final index = situations.indexOf(widget.category);
+      final code = 'FA${(index + 1).toString().padLeft(2, '0')}';
+      final articles = library?.forCategory(code) ?? <ReferenceArticle>[];
+      return AidScaffold(
+        title: 'Chọn bài và đối tượng',
+        call: true,
+        children: [
+          Text(
+            widget.category,
+            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
-        ),
-      const AidCard(
-        'Không chắc độ tuổi?',
-        'Xem phạm vi áp dụng trước khi tiếp tục.',
-        color: Color(0xFFEFF6FF),
-      ),
-    ],
+          const Text(
+            'Chỉ mở bài đúng phạm vi và đối tượng; không tự thay bằng bài người lớn.',
+          ),
+          if (snapshot.connectionState != ConnectionState.done)
+            const Center(child: CircularProgressIndicator())
+          else if (snapshot.hasError)
+            const AidCard(
+              'Không tải được nội dung',
+              'Quay lại và thử mở danh mục lần nữa. Nút gọi hỗ trợ vẫn sử dụng được.',
+            )
+          else ...[
+            if (articles.isEmpty)
+              const AidCard(
+                'Chưa có bài phù hợp',
+                'Nhóm này chưa có nội dung để hiển thị trên bản ứng dụng này.',
+              ),
+            for (final article in articles)
+              AidCard(
+                article.title,
+                '${article.ageLabel} • ${article.isPublic ? 'Nội dung có nguồn' : 'Bản tham khảo đang rà soát'}\n${article.scope}',
+                onTap: () => openPage(
+                  context,
+                  ReferenceArticleView(article: article, library: library!),
+                ),
+              ),
+            for (final age in ['Người lớn', 'Trẻ em'])
+              if (!articles.any((a) => a.ageLabel == age))
+                OutlinedButton(
+                  onPressed: () => openPage(
+                    context,
+                    UnsupportedAudience(category: '${widget.category} — $age'),
+                  ),
+                  child: Text('$age — chưa có bài phù hợp'),
+                ),
+          ],
+        ],
+      );
+    },
   );
 }
 
@@ -416,136 +444,6 @@ class UnsupportedAudience extends StatelessWidget {
         color: Color(0xFFEFF6FF),
       ),
       AidButton('Chọn lại đối tượng', () => Navigator.pop(context)),
-    ],
-  );
-}
-
-class QuickArticlePage extends StatefulWidget {
-  const QuickArticlePage({super.key});
-  @override
-  State<QuickArticlePage> createState() => _QuickArticlePageState();
-}
-
-class _QuickArticlePageState extends State<QuickArticlePage> {
-  int step = 0;
-  final scroll = ScrollController();
-  @override
-  void dispose() {
-    scroll.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text(step == 2 ? 'Đã đọc hết hướng dẫn' : 'Hướng dẫn nhanh'),
-    ),
-    bottomNavigationBar: const SafeArea(
-      top: false,
-      child: Padding(padding: EdgeInsets.all(16), child: CallHelp()),
-    ),
-    body: ListView(
-      controller: scroll,
-      padding: const EdgeInsets.all(24),
-      children: [
-        const Text(
-          'Bỏng',
-          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 16),
-        const AidCard(
-          'Đối tượng: Người lớn',
-          'Phạm vi áp dụng: nội dung demo, chưa có chỉ dẫn y khoa.',
-          color: Color(0xFFF0FDFA),
-        ),
-        const SizedBox(height: 16),
-        const AidCard(
-          'Bản thiết kế minh họa',
-          'Các bước chuyên môn sẽ lấy từ nội dung đã được kiểm duyệt.',
-          color: Color(0xFFEFF6FF),
-        ),
-        const SizedBox(height: 16),
-        const AidCard(
-          'Phạm vi • Nhận biết • Cần làm ngay',
-          '[applies_to]\n[recognition] • [quick_actions]',
-          color: Color(0xFFF0FDFA),
-        ),
-        const SizedBox(height: 24),
-        Text(
-          'BƯỚC ${step + 1} / 3',
-          style: const TextStyle(
-            color: AppColors.primary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 16),
-        AidCard(
-          'Minh họa bước ${step + 1}',
-          'Bản hướng dẫn bằng chữ vẫn luôn hiển thị.',
-          color: const Color(0xFFF0FDFA),
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          '[Nội dung bước đã kiểm duyệt]',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        const Text(
-          'Vị trí dành cho hướng dẫn rõ ràng, ngắn gọn từ bài sơ cứu đã công bố.',
-        ),
-        const SizedBox(height: 16),
-        const AidCard(
-          'Lưu ý & khi cần trợ giúp',
-          'Hiển thị cảnh báo và dấu hiệu cần trợ giúp theo nguồn đã duyệt.',
-          color: Color(0xFFFFFBEB),
-        ),
-        const SizedBox(height: 16),
-        OutlinedButton(
-          onPressed: () => openPage(context, const SourcePage()),
-          child: const Text('Nguồn tham chiếu  ↗'),
-        ),
-        const SizedBox(height: 16),
-        AidButton(step == 2 ? 'Quay về danh sách' : 'Bước tiếp theo', () {
-          if (step == 2) {
-            Navigator.popUntil(context, (route) => route.isFirst);
-            openPage(context, const QuickAidList());
-          } else {
-            setState(() => step++);
-            scroll.jumpTo(0);
-          }
-        }),
-        if (step > 0)
-          TextButton(
-            onPressed: () {
-              setState(() => step--);
-              scroll.jumpTo(0);
-            },
-            child: const Text('Bước trước'),
-          ),
-      ],
-    ),
-  );
-}
-
-class SourcePage extends StatelessWidget {
-  const SourcePage({super.key});
-  @override
-  Widget build(BuildContext context) => AidScaffold(
-    title: 'Nguồn tài liệu',
-    children: [
-      const Text(
-        'Nguồn tài liệu',
-        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-      ),
-      const AidCard(
-        'Tài liệu tham chiếu minh họa',
-        'Đơn vị phát hành: [đơn vị]\nNăm xuất bản: [năm]\nTrang: [trang trích dẫn]',
-      ),
-      const Text(
-        'Thông tin nguồn được lưu cùng bài và có thể đọc ngoại tuyến.',
-      ),
-      const Text('Đường dẫn gốc chỉ xuất hiện khi nguồn có URL hợp lệ.'),
-      AidButton('Về bài hướng dẫn', () => Navigator.pop(context)),
     ],
   );
 }
