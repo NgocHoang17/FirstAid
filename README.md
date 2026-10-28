@@ -1,4 +1,4 @@
-﻿# FirstAid
+# FirstAid
 
 FirstAid hỗ trợ tra cứu sơ cứu với khoảng 18 nhóm tình huống, hướng dẫn cố định đọc ngoại tuyến, chatbot RAG văn bản có nguồn và danh bạ cơ sở y tế. Mobile không cần tài khoản; web quản trị sử dụng một role ADMIN.
 
@@ -8,6 +8,7 @@ FirstAid hỗ trợ tra cứu sơ cứu với khoảng 18 nhóm tình huống, h
 
 Bắt đầu tại [hướng dẫn đọc](docs/baseline-v2/README.md), sau đó đọc [đặc tả hệ thống](docs/baseline-v2/01_SYSTEM_SPEC.md) và [contract chung](docs/baseline-v2/06_SHARED_CONTRACTS.md).
 
+- [Dữ liệu chuẩn tham chiếu](docs/DATA_REFERENCE.md): nội dung theo 18 nhóm, biến thể đối tượng và độ phủ nguồn.
 - [PRD](docs/PRD.md): mục tiêu và phạm vi sản phẩm.
 - [Kiến trúc](docs/ARCHITECTURE.md): thành phần, trách nhiệm và luồng dữ liệu.
 - [Quy tắc đóng góp](CONTRIBUTING.md).
