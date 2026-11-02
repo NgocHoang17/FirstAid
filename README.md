@@ -11,6 +11,7 @@ Bắt đầu tại [hướng dẫn đọc](docs/baseline-v2/README.md), sau đó
 - [Dữ liệu chuẩn tham chiếu](docs/DATA_REFERENCE.md): nội dung theo 18 nhóm, biến thể đối tượng và độ phủ nguồn.
 - [PRD](docs/PRD.md): mục tiêu và phạm vi sản phẩm.
 - [Kiến trúc](docs/ARCHITECTURE.md): thành phần, trách nhiệm và luồng dữ liệu.
+- [Thiết kế cơ sở dữ liệu](docs/DATABASE_DESIGN.md): quan hệ PostgreSQL/SQLite, ràng buộc và SQL tham chiếu.
 - [Quy tắc đóng góp](CONTRIBUTING.md).
 
 ## Công nghệ
