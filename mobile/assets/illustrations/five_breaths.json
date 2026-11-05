@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "breathing",
+  "label": "5 nhịp thổi đầu",
+  "caption": "Theo hướng dẫn hồi sức đúng đối tượng.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}

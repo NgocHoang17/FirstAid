@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "phone",
+  "label": "Gọi 115",
+  "caption": "Bật loa ngoài, làm theo hướng dẫn.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}

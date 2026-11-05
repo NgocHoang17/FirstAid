@@ -29,6 +29,8 @@ class ReferenceStep {
   int get position => json['position'] as int;
   String get title => json['title'] as String;
   String get instruction => json['instruction'] as String;
+  String? get assetKey => json['asset_key'] as String?;
+  String? get altText => json['alt_text'] as String?;
 }
 
 class ReferenceArticle {
@@ -160,7 +162,8 @@ class ReferenceLibrary {
     bool requireCategoryArticles = true,
   }) {
     final data = jsonDecode(text) as Map<String, dynamic>;
-    if (data['schema_version'] != 2 || data['kind'] != 'editorial_preview') {
+    if (data['schema_version'] != 2 ||
+        !{'editorial_preview', 'reference_library'}.contains(data['kind'])) {
       throw const FormatException('Unsupported content schema');
     }
     final sources = <String, ReferenceSource>{};

@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "stop",
+  "label": "Không làm thủ thuật tùy tiện",
+  "caption": "Đọc kỹ điều tránh của từng tình huống.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}

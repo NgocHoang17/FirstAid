@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
-  "kind": "editorial_preview",
-  "review_notice": "Nội dung tham khảo đã biên soạn và đối chiếu nguồn; chưa được chuyên gia y tế xác nhận độc lập. Không thay thế hướng dẫn trực tiếp của nhân viên y tế.",
+  "kind": "reference_library",
+  "review_notice": "Nội dung tham khảo biên soạn từ tài liệu y tế cho đồ án môn học. Ưu tiên hướng dẫn trực tiếp của nhân viên y tế.",
   "sources": [
     {
       "id": "0da603f1-f47f-5756-8179-90ff789e71f5",
@@ -40,7 +40,7 @@
       "media_type": "WEB",
       "original_url": "https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/adult-basic-life-support-guidelines",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     },
     {
@@ -54,7 +54,7 @@
       "media_type": "WEB",
       "original_url": "https://www.resus.org.uk/cy/node/36439",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     },
     {
@@ -68,7 +68,7 @@
       "media_type": "WEB",
       "original_url": "https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/first-aid-guidelines",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     },
     {
@@ -82,7 +82,7 @@
       "media_type": "WEB",
       "original_url": "https://www.nhs.uk/conditions/heat-exhaustion-heatstroke/",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     },
     {
@@ -96,7 +96,7 @@
       "media_type": "WEB",
       "original_url": "https://www.nhs.uk/symptoms/what-to-do-if-someone-has-a-seizure-fit/",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     },
     {
@@ -110,7 +110,7 @@
       "media_type": "WEB",
       "original_url": "https://www.nhs.uk/conditions/nosebleed/",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     },
     {
@@ -124,7 +124,7 @@
       "media_type": "WEB",
       "original_url": "https://www.nhs.uk/conditions/poisoning/",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     },
     {
@@ -138,7 +138,7 @@
       "media_type": "WEB",
       "original_url": "https://www.nhs.uk/conditions/anaphylaxis/",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     },
     {
@@ -152,7 +152,7 @@
       "media_type": "WEB",
       "original_url": "https://www.nhs.uk/conditions/burns-and-scalds/",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     },
     {
@@ -166,7 +166,7 @@
       "media_type": "WEB",
       "original_url": "https://www.nhs.uk/conditions/cuts-and-grazes/",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     },
     {
@@ -180,7 +180,7 @@
       "media_type": "WEB",
       "original_url": "https://www.nhs.uk/conditions/stroke/symptoms/",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     },
     {
@@ -194,7 +194,49 @@
       "media_type": "WEB",
       "original_url": "https://www.who.int/news-room/fact-sheets/detail/rabies",
       "is_active": true,
-      "accessed_at": "2026-10-28",
+      "accessed_at": "2026-11-05",
+      "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
+    },
+    {
+      "id": "799680d8-fba9-5f2b-8b38-dd57aeb46233",
+      "code": "NHS_CHILD_CHOKING",
+      "title": "How to stop a child from choking",
+      "publisher": "NHS",
+      "publication_year": null,
+      "page_count": null,
+      "revision": 1,
+      "media_type": "WEB",
+      "original_url": "https://www.nhs.uk/baby/first-aid-and-safety/first-aid/how-to-stop-a-child-from-choking/",
+      "is_active": true,
+      "accessed_at": "2026-11-05",
+      "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
+    },
+    {
+      "id": "a8d4e2b4-010c-51bc-bf44-b811f9062d74",
+      "code": "HSE_CHILD_CHOKING",
+      "title": "Choking in children aged 1 year or older",
+      "publisher": "Health Service Executive (Ireland)",
+      "publication_year": null,
+      "page_count": null,
+      "revision": 1,
+      "media_type": "WEB",
+      "original_url": "https://www.hse.ie/babies-children/first-aid/choking-in-children/",
+      "is_active": true,
+      "accessed_at": "2026-11-05",
+      "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
+    },
+    {
+      "id": "55b10573-c2b5-5b59-87e4-aff4f840858b",
+      "code": "CDC_SEIZURE",
+      "title": "First Aid for Seizures",
+      "publisher": "Centers for Disease Control and Prevention (CDC)",
+      "publication_year": 2024,
+      "page_count": null,
+      "revision": 1,
+      "media_type": "WEB",
+      "original_url": "https://www.cdc.gov/epilepsy/first-aid-for-seizures/index.html",
+      "is_active": true,
+      "accessed_at": "2026-11-05",
       "rights_note": "Diễn giải ngắn hướng dẫn công khai. Không sao chép hình hoặc toàn bộ trang. Năm xuất bản không suy từ ngày truy cập."
     }
   ],
@@ -221,36 +263,36 @@
           "position": 1,
           "title": "Bảo vệ người trợ giúp",
           "instruction": "Đeo găng nếu có; dùng gạc hoặc vải sạch làm lớp ngăn giữa tay và máu.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/safety.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Kiểm tra nguy cơ trước khi tiếp cận."
         },
         {
           "id": "a2282571-a761-5f1e-a6f9-9668f2f214f5",
           "position": 2,
           "title": "Ép trực tiếp",
           "instruction": "Nếu không có vật cắm trong vết thương, đặt gạc hoặc vải sạch lên chỗ chảy máu và ấn chắc, duy trì áp lực.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/pressure.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Giữ áp lực bằng gạc hoặc vải sạch."
         },
         {
           "id": "3dbc88b2-ec34-5d9a-a3e6-b90f22b800f9",
           "position": 3,
           "title": "Giữ gạc tại chỗ",
           "instruction": "Nếu máu thấm qua, thêm lớp gạc hoặc vải sạch lên trên và tiếp tục ép. Khi kiểm soát được máu, cố định gạc; không băng quá chặt.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/cover.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Dùng gạc hoặc vải sạch phù hợp theo bước."
         },
         {
           "id": "066e714b-b863-5cd0-a2e8-bd874a3cdd72",
           "position": 4,
           "title": "Liên hệ hỗ trợ",
           "instruction": "Gọi 115 khi chảy máu nhiều hoặc chưa cầm được; tiếp tục giữ áp lực trong lúc chờ hướng dẫn và trợ giúp.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/call.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Bật loa ngoài, làm theo hướng dẫn."
         }
       ],
       "warnings": [
@@ -286,11 +328,11 @@
           "note": "Các phần Tổng quan; Sử dụng băng, gạc; Gọi sự giúp đỡ (đặc biệt trang PDF 39–40, 41–42 và 44). Không dùng phần lượng giá. Ngoại lệ vật cắm đối chiếu NHS Cuts and grazes: https://www.nhs.uk/conditions/cuts-and-grazes/ (đọc 28/10/2026)."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "90ed2110-a47d-571f-8fc5-de491f084ce4",
@@ -314,27 +356,27 @@
           "position": 1,
           "title": "Ngồi, cúi về trước",
           "instruction": "Ngồi thẳng, đầu hơi cúi về trước, mở miệng và thở bằng miệng.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/nose.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ngồi cúi trước; giữ phần mềm của mũi."
         },
         {
           "id": "1a7bcaee-c230-508a-b071-0c3f6cfe502d",
           "position": 2,
           "title": "Bóp phần mềm của mũi",
           "instruction": "Dùng ngón cái và ngón trỏ bóp phần mềm ngay trên lỗ mũi, giữ liên tục 10–15 phút.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/nose.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ngồi cúi trước; giữ phần mềm của mũi."
         },
         {
           "id": "6a7dec68-715e-5fbf-b799-096c97365223",
           "position": 3,
           "title": "Kiểm tra và tìm trợ giúp",
           "instruction": "Sau 10–15 phút, nếu vẫn chảy máu, đến cơ sở y tế. Nếu máu chảy nhiều, khó thở, yếu/chóng mặt hoặc xảy ra sau va đập đầu: gọi 115 hoặc nhờ đưa đi cấp cứu, không chờ hết thời gian.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/medical.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không trì hoãn khi có dấu hiệu nặng."
         }
       ],
       "warnings": [
@@ -369,27 +411,13 @@
           "page_end": 53,
           "section_key": "all",
           "note": "Có mục chảy máu mũi nhưng tư thế ngửa đầu không dùng; giữ phần theo dõi/chăm sóc."
-        },
-        {
-          "source_id": "0da603f1-f47f-5756-8179-90ff789e71f5",
-          "page_start": 16,
-          "page_end": 16,
-          "section_key": "all",
-          "note": "Tư thế cúi về trước."
-        },
-        {
-          "source_id": "d20a77a6-beeb-5424-9134-be3b2b5cc685",
-          "page_start": null,
-          "page_end": null,
-          "section_key": "all",
-          "note": "Nguồn quyết định tư thế cúi, giữ 10–15 phút và tiêu chí đi khám."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "ee664152-773b-59c8-bc4c-20500943f447",
@@ -413,36 +441,36 @@
           "position": 1,
           "title": "Ngừng tác nhân nóng",
           "instruction": "Đảm bảo an toàn rồi đưa người bị bỏng khỏi vật/nước nóng. Tháo trang sức và quần áo gần vùng bỏng nếu không dính; không bóc vật dính trên da.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/safety.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Kiểm tra nguy cơ trước khi tiếp cận."
         },
         {
           "id": "bb64893c-84dc-5bf7-aec3-0e87705f0dd7",
           "position": 2,
           "title": "Làm mát 20 phút",
           "instruction": "Làm mát vùng bỏng nhỏ bằng nước sạch mát trong 20 phút. Giữ ấm những phần cơ thể không bị bỏng.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/cool_burn.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Làm mát vùng bỏng nhỏ bằng nước sạch mát."
         },
         {
           "id": "99da0ddc-4089-5bdf-a23b-d844e7548e42",
           "position": 3,
           "title": "Che bảo vệ",
           "instruction": "Sau làm mát, phủ nhẹ bằng gạc vô khuẩn hoặc vải sạch; không dán băng dính trực tiếp vào vùng bỏng.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/cover.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Dùng gạc hoặc vải sạch phù hợp theo bước."
         },
         {
           "id": "0c2e2de4-16f4-55c6-89b4-071301575838",
           "position": 4,
           "title": "Nhờ nhân viên y tế",
           "instruction": "Tìm tư vấn y tế, đặc biệt khi người bị bỏng là trẻ em. Gọi 115 hoặc nhờ đưa đi cấp cứu khi bỏng rộng/sâu, bỏng ở mặt/vùng sinh dục, do điện/hóa chất hoặc có dấu hiệu nặng.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/medical.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không trì hoãn khi có dấu hiệu nặng."
         }
       ],
       "warnings": [
@@ -475,20 +503,13 @@
           "page_end": 37,
           "section_key": "all",
           "note": "Loại phần tự bù dịch; không áp dụng quy trình chung cho mọi tác nhân."
-        },
-        {
-          "source_id": "b24ed962-8160-580d-bd5f-4c442ee85e83",
-          "page_start": null,
-          "page_end": null,
-          "section_key": "all",
-          "note": "Đối chiếu quần áo dính, che phủ và dấu hiệu cần cấp cứu."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "358c7197-a3b5-5d61-b225-cc087be9800a",
@@ -512,27 +533,27 @@
           "position": 1,
           "title": "Tiếp cận an toàn",
           "instruction": "Kiểm tra nguy cơ điện, lửa, giao thông. Gọi hỏi và chạm nhẹ vai; không gây đau để thử phản ứng. Nhờ người gọi 115 ngay khi không đáp ứng; nếu một mình có điện thoại, bật loa ngoài.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/safety.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Kiểm tra nguy cơ trước khi tiếp cận."
         },
         {
           "id": "b6ea45b3-8597-5688-afef-0bfcb2f1ffb2",
           "position": 2,
           "title": "Kiểm tra thở",
           "instruction": "Mở đường thở, kiểm tra thở không quá 10 giây. Không thở bình thường hoặc thở ngáp: gọi 115, bật loa ngoài và bắt đầu CPR phù hợp người lớn hoặc trẻ em theo hướng dẫn; không chờ tìm mạch.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         },
         {
           "id": "a8350ce7-7b3a-5133-9791-b4e4db63781a",
           "position": 3,
           "title": "Nếu vẫn thở bình thường",
           "instruction": "Nếu không nghi chấn thương, đặt nằm nghiêng an toàn. Nếu nghi chấn thương đầu/cổ, hạn chế di chuyển và làm theo tổng đài. Liên tục theo dõi thở.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         }
       ],
       "warnings": [
@@ -579,11 +600,11 @@
           "note": "Gọi cấp cứu sớm và không trì hoãn hồi sức."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "e414b8de-9284-5c4e-8369-cdab430db812",
@@ -593,7 +614,7 @@
       "variant_key": "adult_cpr",
       "title": "CPR và AED ở người lớn",
       "age_group": "ADULT",
-      "applies_to": "Người lớn không đáp ứng và không thở bình thường. Đây không phải bài CPR trẻ em.",
+      "applies_to": "Người lớn từ 18 tuổi không đáp ứng và không thở bình thường. Với người dưới 18 tuổi, xem bài CPR trẻ em theo phạm vi tuổi.",
       "summary": "Gọi 115, bật loa ngoài và bắt đầu ép tim; nhờ người tìm AED.",
       "recognition": [
         "Không đáp ứng, không thở hoặc chỉ thở ngáp."
@@ -607,45 +628,45 @@
           "position": 1,
           "title": "Chuẩn bị",
           "instruction": "Đảm bảo an toàn, gọi trợ giúp. Để người bệnh nằm ngửa; bắt đầu hồi sức ngay theo tổng đài, tránh trì hoãn vì tìm mạch.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/safety.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Kiểm tra nguy cơ trước khi tiếp cận."
         },
         {
           "id": "607d54bd-d7be-5b4f-801d-561baa7a1018",
           "position": 2,
           "title": "Ép tim",
           "instruction": "Đặt gót bàn tay ở giữa ngực, trên nửa dưới xương ức; tay kia chồng lên, đan ngón, giữ tay thẳng. Ép 5–6 cm, 100–120 lần/phút; thả ngực nảy lại hoàn toàn.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/cpr_adult.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Người lớn: ép sâu 5–6 cm."
         },
         {
           "id": "0afbce4c-04d2-5f80-b40f-615ab6d86149",
           "position": 3,
           "title": "Hỗ trợ thở",
           "instruction": "Nếu đã học và có thể thổi ngạt: 30 lần ép, 2 lần thổi đủ làm ngực nhô. Nếu không thể thổi: ép liên tục và nghe tổng đài.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/breaths.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Mỗi nhịp vừa đủ làm ngực nhô."
         },
         {
           "id": "4668d19d-1603-5ca7-a64e-74052e7436b7",
           "position": 4,
           "title": "Dùng AED",
           "instruction": "Bật máy khi có, dán điện cực lên ngực trần theo hình trên miếng dán. Không ai chạm người bệnh khi máy phân tích/phóng điện. Tiếp tục ép ngay theo máy.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/aed.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Bật máy và làm theo chỉ dẫn thiết bị."
         },
         {
           "id": "abc55702-209d-581d-b0f9-acc4d0547a1f",
           "position": 5,
           "title": "Tiếp tục",
           "instruction": "Tiếp tục tới khi nhân viên y tế tiếp nhận, người bệnh có đáp ứng và thở bình thường, hoặc bạn không thể tiếp tục vì kiệt sức/nguy hiểm.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         }
       ],
       "warnings": [
@@ -671,11 +692,11 @@
           "note": "Vị trí ép, AED, gọi sớm và CPR chỉ ép khi không thể thổi."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 1,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 2,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "1ba9dcb0-aba2-5c1d-a28d-859efa70f7c4",
@@ -685,7 +706,7 @@
       "variant_key": "child_cpr",
       "title": "CPR trẻ em cho người sơ cứu",
       "age_group": "CHILD",
-      "applies_to": "Trẻ em không đáp ứng, không thở bình thường; loại trừ nhũ nhi. Ưu tiên hướng dẫn của 115.",
+      "applies_to": "Trẻ từ 1 đến dưới 18 tuổi không đáp ứng và không thở bình thường. Không áp dụng cho trẻ dưới 1 tuổi. Ưu tiên hướng dẫn của 115.",
       "summary": "Gọi 115 bằng loa ngoài, nhờ người hỗ trợ; bắt đầu hồi sức.",
       "recognition": [
         "Trẻ không đáp ứng, không thở bình thường hoặc chỉ ngáp."
@@ -699,40 +720,40 @@
           "position": 1,
           "title": "Mở đường thở",
           "instruction": "Đảm bảo an toàn. Đặt nằm ngửa, mở đường thở và kiểm tra thở không quá 10 giây; không mất thời gian tìm mạch.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         },
         {
           "id": "6ddd79b2-3789-5e6d-bad2-5f5ba6e42bb2",
           "position": 2,
           "title": "Thổi ngạt ban đầu",
           "instruction": "Thổi 5 nhịp đầu nếu có thể: nâng cằm, ngửa đầu phù hợp, bịt mũi và áp kín miệng trẻ. Mỗi nhịp khoảng 1 giây, vừa đủ thấy ngực nhô.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/five_breaths.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Theo hướng dẫn hồi sức đúng đối tượng."
         },
         {
           "id": "110f5392-3abd-55a4-8a60-1c899c4efce6",
           "position": 3,
           "title": "Ép ngực",
-          "instruction": "Dùng một hoặc hai bàn tay theo kích thước trẻ ở nửa dưới xương ức. Ép khoảng 1/3 bề dày ngực, 100–120 lần/phút, để ngực nảy lại; không dùng độ sâu người lớn.",
-          "asset_key": null,
+          "instruction": "Dùng một hoặc hai bàn tay ở nửa dưới xương ức theo kích thước trẻ, ép 100–120 lần/phút và để ngực nảy lại. Trẻ 1–12 tuổi: sâu ít nhất 1/3 bề dày ngực. Trẻ 13–17 tuổi: sâu 5–6 cm; không vượt 6 cm.",
+          "asset_key": "assets/illustrations/cpr_child.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Độ sâu và cách đặt tay theo tuổi trong bài."
         },
         {
           "id": "f980fbd5-d16c-567f-9587-f713b09ad481",
           "position": 4,
           "title": "Tiếp tục hồi sức",
           "instruction": "Người không được đào tạo CPR nhi khoa chuyên biệt dùng 30 ép : 2 thổi; người đã học PBLS dùng 15:2 theo đào tạo. Nếu không thể thổi, vẫn ép tim và nghe 115. Dùng AED theo hướng dẫn thiết bị khi có.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/aed.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Bật máy và làm theo chỉ dẫn thiết bị."
         }
       ],
       "warnings": [
-        "Không áp dụng kỹ thuật nhũ nhi hoặc độ sâu 5–6 cm mặc định.",
+        "Không dùng kỹ thuật nhũ nhi; không mặc định độ sâu 5–6 cm cho trẻ nhỏ.",
         "Không trì hoãn ép tim khi không thể thổi ngạt."
       ],
       "seek_help": [
@@ -754,11 +775,11 @@
           "note": "Tỉ lệ theo mức đào tạo; gọi 115 sớm khi có điện thoại."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 1,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 2,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "35917c54-3ba6-513f-96ae-3b23190e30cc",
@@ -782,36 +803,36 @@
           "position": 1,
           "title": "Khuyến khích ho",
           "instruction": "Khi còn ho mạnh và thở được, động viên ho, theo dõi; không làm thủ thuật khi ho còn hiệu quả.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/cough.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Chỉ khi ho còn hiệu quả."
         },
         {
           "id": "85a1c6bf-ffe2-5aa1-98ed-5f078bcee9cb",
           "position": 2,
           "title": "Vỗ lưng",
           "instruction": "Ho không hiệu quả: đỡ ngực, cho cúi về trước; dùng gót bàn tay vỗ tối đa 5 lần giữa hai bả vai. Dừng khi dị vật bật ra.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/back_blows.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Vỗ lưng theo hướng dẫn; dừng khi đã thông."
         },
         {
           "id": "b60ebe6b-d8fc-514e-918a-ff523fb9ec9f",
           "position": 3,
           "title": "Ép bụng",
           "instruction": "Nếu chưa đỡ: đứng sau, nắm tay đặt giữa rốn và mũi xương ức, tay còn lại ôm nắm tay, giật vào trong và lên trên tối đa 5 lần. Tiếp tục xen kẽ 5 vỗ lưng và 5 ép bụng khi còn tỉnh.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/abdominal.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ép bụng đúng phạm vi; xen kẽ với vỗ lưng."
         },
         {
           "id": "5e72f9d5-bf74-58fc-849f-e7eeda428a01",
           "position": 4,
           "title": "Theo dõi",
           "instruction": "Bất tỉnh: hạ nằm an toàn, gọi 115 và bắt đầu CPR. Sau ép bụng thành công vẫn cần được khám.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/medical.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không trì hoãn khi có dấu hiệu nặng."
         }
       ],
       "warnings": [
@@ -837,11 +858,11 @@
           "note": "Bổ sung quy trình vỗ lưng trước ép bụng cho tắc nặng."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 1,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 2,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "f96a8b6b-a49a-5216-bbdf-9efd7dc65481",
@@ -849,9 +870,9 @@
       "category_code": "FA03",
       "slug": "child_choking",
       "variant_key": "child_choking",
-      "title": "Hóc dị vật ở trẻ trên 5 tuổi",
+      "title": "Hóc dị vật ở trẻ từ 1 tuổi",
       "age_group": "CHILD",
-      "applies_to": "Chỉ trẻ trên 5 tuổi, còn tỉnh; không dùng cho nhũ nhi. Không mở rộng các thao tác này cho trẻ nhỏ hơn khi chưa có bài phù hợp.",
+      "applies_to": "Trẻ từ 1 đến dưới 18 tuổi còn tỉnh. Không dùng cho trẻ dưới 1 tuổi; khi trẻ mất ý thức chuyển sang CPR theo tuổi và hướng dẫn 115.",
       "summary": "Nhờ người gọi 115 nếu trẻ không ho/thở hiệu quả; không chờ trẻ tím.",
       "recognition": [
         "Đột ngột không ho hiệu quả, không nói/khóc hoặc không thở được."
@@ -865,41 +886,42 @@
           "position": 1,
           "title": "Khi ho hiệu quả",
           "instruction": "Động viên trẻ ho và theo dõi. Không gây nôn, không cho ăn uống.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/cough.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Chỉ khi ho còn hiệu quả."
         },
         {
           "id": "369fdb8b-2894-5333-a900-8aeccabe9d85",
           "position": 2,
           "title": "Ho không hiệu quả",
-          "instruction": "Đỡ trẻ cúi về trước, vỗ tối đa 5 lần giữa hai bả vai; kiểm tra sau mỗi lần và dừng nếu đã thông.",
-          "asset_key": null,
+          "instruction": "Đỡ trẻ ở tư thế cúi về trước. Dùng gót bàn tay vỗ giữa hai bả vai tối đa 5 lần; kiểm tra sau từng lần, dừng khi đã thông.",
+          "asset_key": "assets/illustrations/back_blows.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Vỗ lưng theo hướng dẫn; dừng khi đã thông."
         },
         {
           "id": "67105f94-360d-5244-9832-fce31d586915",
           "position": 3,
           "title": "Nếu vẫn tắc",
-          "instruction": "Đứng hoặc quỳ phía sau theo chiều cao trẻ. Đặt nắm tay trên rốn, dưới mũi ức; kéo vào trong và lên trên tối đa 5 lần. Xen kẽ vỗ lưng/ép bụng khi còn tỉnh.",
-          "asset_key": null,
+          "instruction": "Chưa thông: đứng hoặc quỳ sau trẻ, đặt nắm tay trên rốn và dưới mũi ức; tay còn lại giữ nắm tay, giật vào trong và lên trên tối đa 5 lần. Xen kẽ vỗ lưng và ép bụng khi trẻ còn tỉnh.",
+          "asset_key": "assets/illustrations/abdominal.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ép bụng đúng phạm vi; xen kẽ với vỗ lưng."
         },
         {
           "id": "b7172052-df63-5f1f-80f6-45fb3d132adc",
           "position": 4,
           "title": "Nếu mất ý thức",
           "instruction": "Đặt trẻ nằm an toàn, bắt đầu CPR trẻ em với 5 nhịp thổi ban đầu nếu có thể và làm theo 115. Khám y tế sau sự cố dù đã đỡ.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/five_breaths.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Theo hướng dẫn hồi sức đúng đối tượng."
         }
       ],
       "warnings": [
-        "Không móc miệng khi không thấy rõ dị vật.",
-        "Không dùng bài cho trẻ dưới phạm vi tuổi nêu trên."
+        "Không móc mù vào miệng; chỉ lấy dị vật nhìn thấy rõ và dễ lấy.",
+        "Không ép bụng cho trẻ dưới 1 tuổi. Không ấn lên xương sườn hoặc mũi ức.",
+        "Dừng vỗ/ép ngay khi trẻ ho và thở hiệu quả; không cần làm đủ 5 lần."
       ],
       "seek_help": [
         "Khó thở tăng, không phát âm được hoặc bất tỉnh: cấp cứu ngay."
@@ -910,7 +932,7 @@
           "page_start": 59,
           "page_end": 63,
           "section_key": "all",
-          "note": "Giới hạn trên 5 tuổi theo kỹ thuật Heimlich trong tài liệu."
+          "note": "Đối chiếu bối cảnh; không dùng ranh giới trên 5 tuổi để giới hạn bài. Thao tác cho trẻ từ 1 tuổi theo HSE/NHS/RCUK."
         },
         {
           "source_id": "4a32d4d5-7ba3-59f9-84db-d949bbe43e93",
@@ -918,13 +940,27 @@
           "page_end": null,
           "section_key": "all",
           "note": "Đối chiếu vỗ lưng và ép bụng theo lứa tuổi."
+        },
+        {
+          "source_id": "799680d8-fba9-5f2b-8b38-dd57aeb46233",
+          "page_start": null,
+          "page_end": null,
+          "section_key": "all",
+          "note": "Nguồn ngoài hai PDF: mở phạm vi từ 1 tuổi; vỗ lưng/ép bụng, gọi cấp cứu và khám sau sự cố."
+        },
+        {
+          "source_id": "a8d4e2b4-010c-51bc-bf44-b811f9062d74",
+          "page_start": null,
+          "page_end": null,
+          "section_key": "all",
+          "note": "Nguồn ngoài hai PDF: mở phạm vi từ 1 tuổi; vỗ lưng/ép bụng, gọi cấp cứu và khám sau sự cố."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 1,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 2,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "8d98fcdc-56a0-5937-bcf5-5e3f531edbf0",
@@ -937,7 +973,7 @@
       "applies_to": "Người lớn sau tai nạn dưới nước; không tự xuống nước nếu chưa có kỹ năng cứu hộ.",
       "summary": "Hô gọi cứu hộ và 115; đưa phao/gậy từ vị trí an toàn.",
       "recognition": [
-        "Trẻ gặp nạn dưới nước, sau đưa lên có thể ho, khó thở hoặc không đáp ứng."
+        "Người lớn gặp nạn dưới nước; sau đưa lên có thể ho, khó thở hoặc không đáp ứng."
       ],
       "quick_actions": [
         "Hô gọi cứu hộ và 115; đưa phao/gậy từ vị trí an toàn."
@@ -948,27 +984,27 @@
           "position": 1,
           "title": "Cứu an toàn",
           "instruction": "Nhờ cứu hộ. Từ chỗ vững, đưa vật nổi hoặc gậy để hỗ trợ; không mạo hiểm xuống nước hay để người khác xuống cứu.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/rescue.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Đưa vật nổi từ vị trí vững, không mạo hiểm."
         },
         {
           "id": "a33a73b9-bb9d-52d8-8373-28c6930c0f60",
           "position": 2,
           "title": "Sau đưa lên",
           "instruction": "Ở nơi an toàn trên cạn, kiểm tra đáp ứng và thở. Không thở bình thường: gọi 115, cho 5 nhịp thổi ban đầu nếu có thể rồi CPR người lớn theo tổng đài. Không trì hoãn hồi sức.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/five_breaths.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Theo hướng dẫn hồi sức đúng đối tượng."
         },
         {
           "id": "8cf997ae-a749-5d87-bd81-44fc3aabf947",
           "position": 3,
           "title": "Theo dõi và giữ ấm",
           "instruction": "Nếu còn thở, theo dõi liên tục; thay quần áo ướt khi phù hợp và phủ chăn. Nhờ đưa đi đánh giá y tế; không kết luận an toàn chỉ vì người đó tỉnh.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         }
       ],
       "warnings": [
@@ -994,11 +1030,11 @@
           "note": "Kỹ thuật CPR người lớn sau thổi ban đầu trong đuối nước."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 1,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 2,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "1d6be1d2-a3a8-50f6-bb6e-90016a3d6d4c",
@@ -1022,27 +1058,27 @@
           "position": 1,
           "title": "Cứu an toàn",
           "instruction": "Nhờ cứu hộ. Từ chỗ vững, đưa vật nổi hoặc gậy để hỗ trợ; không mạo hiểm xuống nước hay để trẻ khác xuống cứu.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/rescue.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Đưa vật nổi từ vị trí vững, không mạo hiểm."
         },
         {
           "id": "043cb4ce-18d2-5320-9e27-a3d81489311b",
           "position": 2,
           "title": "Sau đưa lên",
           "instruction": "Ở nơi an toàn, kiểm tra đáp ứng và thở tối đa 10 giây. Không thở bình thường: bắt đầu CPR trẻ em, ưu tiên 5 nhịp thổi đầu nếu có thể; nghe 115.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/five_breaths.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Theo hướng dẫn hồi sức đúng đối tượng."
         },
         {
           "id": "0279ef9b-2938-5ced-bcd4-556d05e181fd",
           "position": 3,
           "title": "Theo dõi và giữ ấm",
           "instruction": "Nếu còn thở, theo dõi liên tục; thay quần áo ướt khi phù hợp và phủ chăn. Nhờ đưa đi đánh giá y tế; không kết luận an toàn chỉ vì trẻ tỉnh.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         }
       ],
       "warnings": [
@@ -1068,11 +1104,11 @@
           "note": "Sau đuối nước: 5 nhịp thổi đầu và CPR; không trì hoãn gọi khi có điện thoại."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 1,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 2,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "8fe4f201-ed15-5b31-9737-16ec691044da",
@@ -1096,27 +1132,27 @@
           "position": 1,
           "title": "Chuẩn bị",
           "instruction": "Rửa tay và đeo găng nếu có. Cho người bị thương ngồi, trấn an; hỗ trợ trẻ khi làm sạch và thay băng. Nếu còn chảy máu, ép bằng gạc/vải sạch.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/safety.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Kiểm tra nguy cơ trước khi tiếp cận."
         },
         {
           "id": "8c138183-dff3-5d0d-90af-4eac06ba98e3",
           "position": 2,
           "title": "Làm sạch",
           "instruction": "Khi máu đã kiểm soát, rửa nhẹ bằng nước sạch; làm sạch vùng da quanh vết thương. Bụi bẩn cắm sâu không tự moi lấy.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/rinse.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Làm sạch theo phạm vi của bài."
         },
         {
           "id": "a67ab2b4-0cf9-5911-83fe-290486cd9ef7",
           "position": 3,
           "title": "Che bảo vệ",
           "instruction": "Thấm khô bằng gạc sạch rồi che bằng băng phù hợp, giữ sạch và theo dõi. Cần tư vấn y tế khi đỏ/sưng/đau tăng hoặc có mủ.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/cover.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Dùng gạc hoặc vải sạch phù hợp theo bước."
         }
       ],
       "warnings": [
@@ -1142,11 +1178,11 @@
           "note": "Đối chiếu làm sạch, che phủ và dấu hiệu cần khám."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "5a10b0f1-6fd8-500f-b2f7-ec13ea80dbe2",
@@ -1170,27 +1206,27 @@
           "position": 1,
           "title": "Giữ yên",
           "instruction": "Dừng vận động; trấn an người bệnh. Không thử bẻ/nắn để tìm tiếng lạo xạo.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/immobilise.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không tự nắn hoặc cố kéo thẳng."
         },
         {
           "id": "4ef59331-7582-5055-a56f-5ef1b8889109",
           "position": 2,
           "title": "Đỡ vùng bị thương",
           "instruction": "Dùng quần áo/đệm đỡ và hạn chế cử động ở tư thế hiện có. Không cố kéo thẳng chi hoặc nhét xương lộ trở lại.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/immobilise.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không tự nắn hoặc cố kéo thẳng."
         },
         {
           "id": "8e2b906a-a3f4-5435-aa77-ed1782006f73",
           "position": 3,
           "title": "Chờ trợ giúp",
           "instruction": "Nếu có chảy máu, dùng vật sạch bảo vệ/cầm máu, tránh ép lên xương lộ. Giữ bất động và làm theo nhân viên y tế.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/medical.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không trì hoãn khi có dấu hiệu nặng."
         }
       ],
       "warnings": [
@@ -1216,11 +1252,11 @@
           "note": "Hướng dẫn sơ cứu chung cho người lớn và trẻ em; không suy liều thuốc từ bài."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "a4784455-390d-524b-a8fd-7a75b4ccbf1a",
@@ -1244,27 +1280,27 @@
           "position": 1,
           "title": "Nghỉ",
           "instruction": "Đỡ chi ở tư thế thoải mái, không cố chịu lực để thử khớp.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/immobilise.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không tự nắn hoặc cố kéo thẳng."
         },
         {
           "id": "965e7d0c-3d8b-5df2-9c59-b77d2b6015f5",
           "position": 2,
           "title": "Chườm lạnh",
-          "instruction": "Bọc túi lạnh bằng vải, chườm 5–10 phút theo nguồn; không áp đá trực tiếp vào da.",
-          "asset_key": null,
+          "instruction": "Bọc túi lạnh bằng vải, chườm 5–10 phút; không áp đá trực tiếp vào da.",
+          "asset_key": "assets/illustrations/cold.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không đặt đá trực tiếp lên da."
         },
         {
           "id": "8e887fad-b227-57f5-b02c-e2efc3932e2c",
           "position": 3,
           "title": "Giảm sưng",
           "instruction": "Có thể kê cao chi và băng đỡ nhẹ nếu biết cách. Đau tăng, tê hoặc chi lạnh khi băng: nới ngay và đi khám.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/immobilise.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không tự nắn hoặc cố kéo thẳng."
         }
       ],
       "warnings": [
@@ -1290,11 +1326,11 @@
           "note": "Bối cảnh chấn thương ở trẻ và chuyển đánh giá y tế; thao tác tại chỗ dùng PNT2024, không tự nắn."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "96b84301-e630-5fed-acc2-f78909831cd0",
@@ -1318,27 +1354,27 @@
           "position": 1,
           "title": "Trấn an",
           "instruction": "Dừng vận động và đỡ vùng bị thương ở tư thế ít đau.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/immobilise.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không tự nắn hoặc cố kéo thẳng."
         },
         {
           "id": "1849c2e9-c6f7-5337-a031-996f370690b1",
           "position": 2,
           "title": "Bất động",
           "instruction": "Đệm, đỡ khớp trong tư thế hiện tại. Không thử dấu lò xo hay kéo nắn để kiểm tra.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/immobilise.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không tự nắn hoặc cố kéo thẳng."
         },
         {
           "id": "543c4e24-e7fa-535c-96ad-7d72be4b6cee",
           "position": 3,
           "title": "Liên hệ y tế",
           "instruction": "Gọi 115 hoặc nhờ trợ giúp đưa đi đánh giá; giữ khớp bất động trong lúc chờ.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/medical.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không trì hoãn khi có dấu hiệu nặng."
         }
       ],
       "warnings": [
@@ -1364,11 +1400,11 @@
           "note": "Bối cảnh chấn thương ở trẻ và chuyển đánh giá y tế; thao tác tại chỗ dùng PNT2024, không tự nắn."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "80f87c2e-d9a9-5608-a792-756d8e0c281f",
@@ -1392,27 +1428,27 @@
           "position": 1,
           "title": "An toàn và gọi",
           "instruction": "Loại nguy cơ hiện trường nếu có thể, nhờ gọi 115. Không vội bế, kéo hoặc đưa người bị thương đi khi không có nguy hiểm trực tiếp.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/call.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Bật loa ngoài, làm theo hướng dẫn."
         },
         {
           "id": "ccbafd39-160c-52e2-8de8-26ccd29f3f40",
           "position": 2,
           "title": "Hạn chế di chuyển",
           "instruction": "Khuyến khích nằm yên; không vặn cổ/lưng hoặc kéo ngồi dậy. Không rút dị vật hay ấn vào vùng sọ bị hở.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/immobilise.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không tự nắn hoặc cố kéo thẳng."
         },
         {
           "id": "d5b70ee3-cc98-5dfa-95b6-9653f4130bdd",
           "position": 3,
           "title": "Theo dõi",
           "instruction": "Quan sát ý thức và thở. Nếu đường thở bị đe dọa hoặc không thở bình thường, báo tổng đài và làm theo hướng dẫn; đường thở luôn được ưu tiên.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         }
       ],
       "warnings": [
@@ -1445,11 +1481,11 @@
           "note": "Ưu tiên đường thở, hạn chế vận động cổ."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "0c04a405-4ffb-5f7c-b2b2-439495df58da",
@@ -1473,27 +1509,27 @@
           "position": 1,
           "title": "Cắt điện an toàn",
           "instruction": "Ngắt nguồn bằng cầu dao/thiết bị an toàn nếu tiếp cận được. Với điện cao thế/dây rơi, giữ xa và chờ điện lực; không dùng gậy để tự xử lý.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/electric.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Chưa an toàn thì không chạm người bị nạn."
         },
         {
           "id": "2e7aeedf-0677-5634-8d57-af0c428cd0eb",
           "position": 2,
           "title": "Chỉ tiếp cận khi an toàn",
           "instruction": "Kiểm tra đáp ứng và thở. Không thở bình thường: CPR theo hướng dẫn 115; chú ý khả năng chấn thương do ngã.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         },
         {
           "id": "23b4de57-cdd1-5c24-ac77-62d406fcf46a",
           "position": 3,
           "title": "Theo dõi và chuyển viện",
           "instruction": "Che vùng bỏng bằng vật sạch; không bóc quần áo dính. Đề nghị đánh giá y tế sau điện giật, theo dõi thở trong lúc chờ.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/medical.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không trì hoãn khi có dấu hiệu nặng."
         }
       ],
       "warnings": [
@@ -1519,11 +1555,11 @@
           "note": "Không tiếp xúc trực tiếp, đường điện lớn phải nhờ điện lực."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "c36bb404-ecec-5a1f-9179-e8b2bdbf945e",
@@ -1546,28 +1582,28 @@
           "id": "3875951a-38a1-516c-9f4d-d7b9247a3cd5",
           "position": 1,
           "title": "Nghỉ mát",
-          "instruction": "Nới quần áo, nghỉ nơi thoáng.",
-          "asset_key": null,
+          "instruction": "Đưa tới nơi mát, nới quần áo. Cho uống nước khi còn tỉnh hoàn toàn và nuốt an toàn.",
+          "asset_key": "assets/illustrations/heat.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Đưa tới chỗ mát, lau nước và quạt."
         },
         {
           "id": "0b90115a-7f00-5e1c-97ef-f677ed4384cd",
           "position": 2,
           "title": "Làm mát",
           "instruction": "Lau/phun nước mát và quạt. Túi lạnh phải bọc vải.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/heat.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Đưa tới chỗ mát, lau nước và quạt."
         },
         {
           "id": "6ef2fe5c-58fd-55bc-9fe1-3b383e4457eb",
           "position": 3,
           "title": "Gọi trợ giúp",
           "instruction": "Lú lẫn, co giật, bất tỉnh: gọi 115 ngay.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/call.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Bật loa ngoài, làm theo hướng dẫn."
         }
       ],
       "warnings": [
@@ -1585,11 +1621,11 @@
           "note": "Nguồn ngoài hai PDF; bản web không có số trang."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "f4aaec4e-0339-5d35-82e3-b3e025a0411d",
@@ -1613,27 +1649,27 @@
           "position": 1,
           "title": "Nhận biết",
           "instruction": "Yêu cầu cười, nâng hai tay và nói một câu đơn giản nếu làm được; bất thường đột ngột cần gọi 115 ngay.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         },
         {
           "id": "80bb3920-10bf-55f9-8ad7-2354d65985fe",
           "position": 2,
           "title": "Chờ hỗ trợ",
           "instruction": "Trấn an, để ở vị trí an toàn, thoải mái; không để tự lái xe hoặc đi lại.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/medical.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không trì hoãn khi có dấu hiệu nặng."
         },
         {
           "id": "de3f8adb-ae4f-5d70-b0a3-d6ae38d56488",
           "position": 3,
           "title": "Theo dõi thở",
           "instruction": "Giảm ý thức, nôn hoặc thở bất thường: báo tổng đài và làm theo hướng dẫn. Không thở bình thường: CPR.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         }
       ],
       "warnings": [
@@ -1667,11 +1703,11 @@
           "note": "Đột quỵ có thể xảy ra ở mọi tuổi; dấu hiệu đột ngột cần cấp cứu, không chỉ dựa vào FAST để loại trừ."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "0a36c34e-7c2a-5e7c-abff-81018ad31a12",
@@ -1694,35 +1730,36 @@
           "id": "aa266a52-8195-5b3d-a4e8-2119a38f1364",
           "position": 1,
           "title": "Bảo vệ",
-          "instruction": "Đệm mềm dưới đầu.",
-          "asset_key": null,
+          "instruction": "Dọn vật nguy hiểm, đệm mềm dưới đầu và ghi giờ bắt đầu. Nới vật chật quanh cổ; ở cạnh người đang co giật.",
+          "asset_key": "assets/illustrations/seizure.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Đệm mềm, không ghì giữ hoặc nhét vật vào miệng."
         },
         {
           "id": "68055c6b-d210-5859-8ea6-2b47f3ea37fb",
           "position": 2,
           "title": "Giữ an toàn",
           "instruction": "Chỉ di chuyển khỏi nguy hiểm; không nhét vật vào miệng.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/avoid.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Đọc kỹ điều tránh của từng tình huống."
         },
         {
           "id": "b45fb79f-0c09-568d-9db6-9925ea153990",
           "position": 3,
           "title": "Sau cơn",
-          "instruction": "Hết giật, kiểm tra thở; còn thở đặt nằm nghiêng. Không thở bình thường: gọi 115, CPR.",
-          "asset_key": null,
+          "instruction": "Hết giật, kiểm tra thở. Thở bình thường và không nghi chấn thương: nằm nghiêng an toàn. Thở ngáp/không bình thường: gọi 115, CPR theo tuổi và hướng dẫn tổng đài.",
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         }
       ],
       "warnings": [
-        "Không ăn uống khi chưa tỉnh hoàn toàn."
+        "Không ăn uống khi chưa tỉnh hoàn toàn.",
+        "Không ghì giữ tay chân hoặc cố ngăn cơn giật."
       ],
       "seek_help": [
-        "Gọi 115 khi lần đầu, quá 5 phút, lặp cơn không tỉnh, chấn thương nặng hoặc khó thở."
+        "Gọi 115 khi cơn đầu tiên, kéo dài hơn thường lệ hoặc hơn 5 phút nếu không biết thời gian thường lệ; lặp cơn không tỉnh, chấn thương nặng hoặc khó thở cũng cần cấp cứu."
       ],
       "references": [
         {
@@ -1731,13 +1768,20 @@
           "page_end": null,
           "section_key": "all",
           "note": "Hai PDF chỉ nhắc co giật trong bối cảnh khác, không có bài sơ cứu độc lập."
+        },
+        {
+          "source_id": "55b10573-c2b5-5b59-87e4-aff4f840858b",
+          "page_start": null,
+          "page_end": null,
+          "section_key": "all",
+          "note": "Bảo vệ đầu, dọn nguy cơ, ghi thời gian; không ghì giữ hoặc cho đồ vào miệng. Giữ hướng dẫn nằm nghiêng sau cơn theo NHS."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "8e0fe544-f4b8-5d8c-838c-d4b98260b568",
@@ -1761,27 +1805,27 @@
           "position": 1,
           "title": "Ngừng tiếp xúc",
           "instruction": "Ngừng tác nhân nghi gây dị ứng nếu làm được an toàn, không làm chậm gọi cấp cứu.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/safety.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Kiểm tra nguy cơ trước khi tiếp cận."
         },
         {
           "id": "85b0eb42-6ee7-5a6f-828e-84b2f4ab576e",
           "position": 2,
           "title": "Tư thế và thuốc đã được kê",
-          "instruction": "Cho nằm; khó thở có thể nâng vai hoặc ngồi từ từ, duỗi chân. Nếu có bút adrenaline đã được kê, hỗ trợ dùng theo chỉ dẫn thiết bị/đào tạo và 115; không tự pha tiêm.",
-          "asset_key": null,
+          "instruction": "Cho nằm; khó thở có thể nâng vai hoặc ngồi từ từ, duỗi chân. Nếu có bút adrenaline đã được kê, hỗ trợ dùng theo chỉ dẫn thiết bị/đào tạo và 115; không tự pha tiêm. Nếu chưa cải thiện sau 5 phút và có bút thứ hai đã được kê, dùng theo chỉ dẫn thiết bị và 115.",
+          "asset_key": "assets/illustrations/medical.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không trì hoãn khi có dấu hiệu nặng."
         },
         {
           "id": "69c2ee24-4a78-5e8a-b5af-cfda4485d02c",
           "position": 3,
           "title": "Theo dõi",
           "instruction": "Không cho đứng/đi lại dù đỡ. Theo dõi ý thức và thở; không thở bình thường thì CPR. Cần đánh giá tại bệnh viện ngay.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         }
       ],
       "warnings": [
@@ -1807,11 +1851,11 @@
           "note": "Tư thế và hỗ trợ dùng bút đã kê; không tư vấn liều."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "297764ce-ff2c-5e1e-9121-e431ff94d63b",
@@ -1835,27 +1879,27 @@
           "position": 1,
           "title": "Ngừng phơi nhiễm",
           "instruction": "Đưa khỏi nguy cơ nếu an toàn; không tự vào khu vực khí độc. Không cho ăn uống hoặc tự gây nôn.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/avoid.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Đọc kỹ điều tránh của từng tình huống."
         },
         {
           "id": "2dace64a-4d04-5cfe-bfbd-fe334e08742e",
           "position": 2,
           "title": "Chuẩn bị thông tin",
           "instruction": "Giữ bao bì/tên chất, thời điểm và lượng nghi tiếp xúc nếu biết, không trì hoãn cấp cứu để tìm đủ thông tin.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/information.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Bao bì hoặc thông tin phơi nhiễm nếu có."
         },
         {
           "id": "4c51a523-a9a0-5b60-83c5-bb34c5b2f1f4",
           "position": 3,
           "title": "Theo dõi",
           "instruction": "Theo dõi thở và ý thức. Giảm ý thức còn thở: tư thế an toàn nếu không chấn thương. Không thở bình thường: CPR phù hợp người lớn hoặc trẻ em và nghe 115.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         }
       ],
       "warnings": [
@@ -1881,11 +1925,11 @@
           "note": "Nguồn quyết định không gây nôn, không cho ăn uống và giữ bao bì."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "1225b40a-08f4-5973-a746-8cc98f48a39b",
@@ -1909,27 +1953,27 @@
           "position": 1,
           "title": "An toàn",
           "instruction": "Tránh bị cắn tiếp; không tự bắt con vật. Nếu máu chảy nhiều, dùng vật sạch cầm máu và gọi trợ giúp.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/safety.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Kiểm tra nguy cơ trước khi tiếp cận."
         },
         {
           "id": "b558aead-66ff-525c-9e5a-18e57d826e19",
           "position": 2,
           "title": "Rửa vết thương",
-          "instruction": "Rửa với xà phòng và nước chảy liên tục 15 phút khi tình trạng cho phép.",
-          "asset_key": null,
+          "instruction": "Rửa với xà phòng và nước chảy ít nhất 15 phút khi tình trạng cho phép.",
+          "asset_key": "assets/illustrations/rinse_bite.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Rửa vết cắn bằng xà phòng và nước chảy."
         },
         {
           "id": "4ef34e0f-2aff-5528-8467-9f8c18fc14a6",
           "position": 3,
           "title": "Đi khám ngay",
           "instruction": "Đến cơ sở y tế để đánh giá tiêm phòng dại/uốn ván và xử trí vết thương. Không chờ xuất hiện triệu chứng.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/medical.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không trì hoãn khi có dấu hiệu nặng."
         }
       ],
       "warnings": [
@@ -1962,11 +2006,11 @@
           "note": "Dự phòng sau phơi nhiễm cho mọi lứa tuổi; rửa xà phòng/nước ít nhất 15 phút và đi khám ngay."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "c6a48804-f4ab-5349-918b-d89dd420a1dd",
@@ -1990,27 +2034,27 @@
           "position": 1,
           "title": "Giữ yên",
           "instruction": "Trấn an; giữ chi bị cắn yên, tháo trang sức/quần áo chật trước khi sưng.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/immobilise.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không tự nắn hoặc cố kéo thẳng."
         },
         {
           "id": "4833b119-75bc-500a-abe6-e0ee1e812c51",
           "position": 2,
           "title": "Không làm thủ thuật",
           "instruction": "Không rạch, hút nọc, garô, nặn hoặc bôi thuốc. Không tự băng ép theo họ rắn khi chưa nhận diện và chưa được đào tạo.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/avoid.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Đọc kỹ điều tránh của từng tình huống."
         },
         {
           "id": "be5b22e5-c244-55aa-ae18-09acd2cc6fd4",
           "position": 3,
           "title": "Chuyển viện",
           "instruction": "Nhờ trợ giúp vận chuyển, hạn chế tự đi bộ. Không bắt rắn hoặc trì hoãn để chụp/nhận dạng.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/medical.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không trì hoãn khi có dấu hiệu nặng."
         }
       ],
       "warnings": [
@@ -2036,11 +2080,11 @@
           "note": "Theo dõi mọi vết cắn; không garô, rạch, hút."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     },
     {
       "id": "a52772d7-0b94-54ca-9795-8e0142138e0d",
@@ -2064,27 +2108,27 @@
           "position": 1,
           "title": "Tránh bị đốt tiếp",
           "instruction": "Đưa tới nơi an toàn; không chọc phá tổ hoặc đuổi bắt ong.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/safety.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Kiểm tra nguy cơ trước khi tiếp cận."
         },
         {
           "id": "81ca36b5-fba8-545a-9937-66c1377e86e9",
           "position": 2,
           "title": "Chăm sóc tại chỗ",
           "instruction": "Nếu ngòi còn thấy rõ, khều nhẹ để lấy ra, không bóp túi nọc. Rửa bằng nước và xà phòng, chườm lạnh qua vải.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/cold.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Không đặt đá trực tiếp lên da."
         },
         {
           "id": "c72c2ca3-4a1a-540e-a838-99fca5c8d2e1",
           "position": 3,
           "title": "Theo dõi",
           "instruction": "Khó thở, mệt/lạnh tay chân, mề đay lan rộng hoặc nhiều vết đốt: tìm trợ giúp ngay. Tiểu ít/đỏ cũng cần khám.",
-          "asset_key": null,
+          "asset_key": "assets/illustrations/observe.json",
           "image_url": null,
-          "alt_text": null
+          "alt_text": "Ở cạnh người cần hỗ trợ."
         }
       ],
       "warnings": [
@@ -2110,11 +2154,11 @@
           "note": "Theo dõi nhiều vết đốt/dấu toàn thân; loại phần tự dùng thuốc."
         }
       ],
-      "status": "DRAFT",
-      "content_checked": false,
-      "checked_at": null,
-      "content_revision": 2,
-      "updated_at": "2026-10-28T00:00:00Z"
+      "status": "PUBLISHED",
+      "content_checked": true,
+      "checked_at": "2026-11-05T00:00:00Z",
+      "content_revision": 3,
+      "updated_at": "2026-11-05T00:00:00Z"
     }
   ],
   "categories": [
@@ -2190,7 +2234,7 @@
       "code": "FA03",
       "name": "Hóc dị vật",
       "group_code": "CIRCULATION",
-      "description": "Đọc hình PDF để tránh đảo thứ tự text. Trẻ chỉ biên soạn biến thể trên 5 tuổi. Không dùng chung thủ thuật trẻ nhỏ.",
+      "description": "Đọc hình PDF để tránh đảo thứ tự text. Phạm vi trẻ từ 1 đến dưới 18 tuổi được đối chiếu thêm HSE/NHS/RCUK; không áp dụng nhũ nhi.",
       "keywords": [
         "Hóc dị vật"
       ],
@@ -2212,12 +2256,12 @@
           ]
         }
       },
-      "coverage_note": "Đọc hình PDF để tránh đảo thứ tự text. Trẻ chỉ biên soạn biến thể trên 5 tuổi. Không dùng chung thủ thuật trẻ nhỏ.",
+      "coverage_note": "Đọc hình PDF để tránh đảo thứ tự text. Phạm vi trẻ từ 1 đến dưới 18 tuổi được đối chiếu thêm HSE/NHS/RCUK; không áp dụng nhũ nhi.",
       "article_ids": [
         "35917c54-3ba6-513f-96ae-3b23190e30cc",
         "f96a8b6b-a49a-5216-bbdf-9efd7dc65481"
       ],
-      "audience_policy": "Tách người lớn/trẻ em: tư thế và lực thao tác theo kích thước; bài trẻ em giới hạn trên 5 tuổi theo nguồn đã chọn."
+      "audience_policy": "Tách người lớn/trẻ em; bài trẻ em từ 1 đến dưới 18 tuổi theo HSE/NHS/RCUK. Không áp dụng cho nhũ nhi."
     },
     {
       "id": "a441bbef-e3f3-5a6b-ba8a-2afbd9583954",
@@ -2711,5 +2755,7 @@
       "audience_policy": "Dùng chung cho hai nhóm tuổi; tách chó cắn/rắn cắn/ong đốt vì cách xử trí khác nhau."
     }
   ],
-  "data_version": "reference-catalog-2026-10-28-v3"
+  "data_version": "course-reference-2026-11-05-v1",
+  "generated_at": "2026-11-05T00:00:00Z",
+  "reviewed_on": "2026-11-05"
 }

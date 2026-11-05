@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "sequence",
+  "label": "Tối đa 5 lần",
+  "caption": "Vỗ lưng theo hướng dẫn; dừng khi đã thông.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}

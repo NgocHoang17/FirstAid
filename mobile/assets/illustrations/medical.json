@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "medical",
+  "label": "Tìm trợ giúp y tế",
+  "caption": "Không trì hoãn khi có dấu hiệu nặng.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}

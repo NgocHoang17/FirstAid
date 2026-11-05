@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "water",
+  "label": "Rửa sạch",
+  "caption": "Làm sạch theo phạm vi của bài.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}

@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "breathing",
+  "label": "Khuyến khích ho",
+  "caption": "Chỉ khi ho còn hiệu quả.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}
