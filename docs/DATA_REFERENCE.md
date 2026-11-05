@@ -1,9 +1,9 @@
 # Dữ liệu chuẩn tham chiếu sơ cứu FirstAid
 
-**Mã tài liệu:** DATA-001  
-**Phiên bản:** 2.0  
-**Ngày đối chiếu nguồn:** 28/10/2026  
-**Tính chất:** Bản biên soạn tham khảo, chưa có xác nhận chuyên môn độc lập.  
+**Mã tài liệu:** DATA-001<br>
+**Phiên bản:** 3.0<br>
+**Ngày đối chiếu nguồn:** 2026-11-05<br>
+**Tính chất:** Nội dung tham khảo cho đồ án môn học, đối chiếu tài liệu, không phải thẩm định y khoa độc lập.<br>
 **Phạm vi:** Người lớn và trẻ em. Không bao gồm nhũ nhi.
 
 Tài liệu quy định nội dung và nguồn cho đủ 18 nhóm. Đây không phải báo cáo tiến độ hoặc chứng nhận an toàn y khoa.
@@ -24,8 +24,8 @@ Chỉ dùng hướng dẫn trong phạm vi và đối tượng của từng bài
 - Giữ mã nhóm FA01–FA18. Mỗi bài có variant_key và age_group riêng, không nhân bản tùy ý sang nhóm tuổi khác.
 - Hướng dẫn được diễn giải lại bằng tiếng Việt, không sao chép PDF hoặc hình gốc vào app.
 - Quick và learn dùng cùng bài, bước và nguồn. Quick đổi cách trình bày, không cắt điều kiện áp dụng.
-- Nội dung là bản thảo DRAFT, content_checked=false. Chỉ xem trong bản phát triển, không tự phát hành trên release.
-- Không gắn nhãn đã được chuyên gia xác nhận khi chưa có người kiểm duyệt chuyên môn.
+- Nội dung PUBLISHED, content_checked=true và checked_at hợp lệ được hiển thị trong bản đồ án, kể cả release. DRAFT vẫn bị loại khỏi release.
+- Kiểm biên soạn là đối chiếu tài liệu theo phạm vi đồ án, không phải thẩm định y khoa độc lập. Không yêu cầu chuyên gia tham gia hoặc gán xác nhận chuyên môn không có thật.
 - Số liên hệ khẩn được địa phương hóa thành 115 cho Việt Nam. Không đưa số NHS/Anh vào nút gọi của app.
 - Không chờ đủ thời gian theo dõi nếu có dấu hiệu đe dọa tính mạng.
 
@@ -47,6 +47,9 @@ Chỉ dùng hướng dẫn trong phạm vi và đối tượng của từng bài
 | NHS_CUTS | [Cuts and grazes](https://www.nhs.uk/conditions/cuts-and-grazes/) | NHS | Không nêu | WEB |
 | NHS_STROKE | [Symptoms of a stroke](https://www.nhs.uk/conditions/stroke/symptoms/) | NHS | Không nêu | WEB |
 | WHO_RABIES | [Rabies](https://www.who.int/news-room/fact-sheets/detail/rabies) | World Health Organization | 2026 | WEB |
+| NHS_CHILD_CHOKING | [How to stop a child from choking](https://www.nhs.uk/baby/first-aid-and-safety/first-aid/how-to-stop-a-child-from-choking/) | NHS | Không nêu | WEB |
+| HSE_CHILD_CHOKING | [Choking in children aged 1 year or older](https://www.hse.ie/babies-children/first-aid/choking-in-children/) | Health Service Executive (Ireland) | Không nêu | WEB |
+| CDC_SEIZURE | [First Aid for Seizures](https://www.cdc.gov/epilepsy/first-aid-for-seizures/index.html) | Centers for Disease Control and Prevention (CDC) | 2024 | WEB |
 
 Hai nguồn gốc người dùng cung cấp: PNT2024, 47 trang PDF; NHI2022, 112 trang PDF. NHI là tài liệu tập huấn, có cả bài học và lượng giá.
 Nguồn WEB là nguồn bổ sung chính thức, không phải nội dung trong hai PDF. Ngày truy cập không được thay cho năm xuất bản.
@@ -80,7 +83,7 @@ Số trang dưới đây là thứ tự trang PDF, không suy từ số in. Kho�
 | FA18 | Động vật cắn và côn trùng đốt | Có hướng dẫn · 25–30 | Có hướng dẫn · 92–97 | Người lớn và trẻ em | 3 |
 
 **FA13:** Không tìm thấy mục hướng dẫn say nóng/sốc nhiệt trong hai PDF. Bài dùng NHS_HEAT, nguồn ngoài.
-**FA15:** Có nhắc co giật ở PNT2024 trang 10 và NHI2022 trang 76, 79–81, nhưng không có bài sơ cứu cơn độc lập. Bài dùng NHS_SEIZURE.
+**FA15:** Có nhắc co giật ở PNT2024 trang 10 và NHI2022 trang 76, 79–81, nhưng không có bài sơ cứu cơn độc lập. Bài dùng NHS_SEIZURE và CDC_SEIZURE.
 **FA10:** Có nội dung rải trong nguyên tắc và chấn thương. Không coi đây là một phác đồ nẹp/vận chuyển đầy đủ.
 Không tìm thấy có nghĩa chưa xác định được hướng dẫn độc lập sau kiểm mục lục, text và trang liên quan; không đồng nghĩa từ đó tuyệt đối không có trong ảnh.
 
@@ -88,7 +91,7 @@ Không tìm thấy có nghĩa chưa xác định được hướng dẫn độc 
 
 | Trường | Quy tắc |
 | --- | --- |
-| schema_version | 2, thư viện editorial_preview local. Không giả làm OfflineSnapshot public đã phát hành. |
+| schema_version | 2, thư viện reference_library đi kèm ứng dụng. Không giả làm OfflineSnapshot public đã phát hành. |
 | category_code | FA01–FA18, liên kết category_id ổn định. |
 | age_group | ADULT, CHILD, ALL. CHILD không bao gồm nhũ nhi. ALL chỉ dùng sau xác nhận dùng chung. |
 | applies_to | Giới hạn tuổi, nguyên nhân, độ nặng và ngoại lệ phải đọc trước thao tác. |
@@ -98,7 +101,7 @@ Không tìm thấy có nghĩa chưa xác định được hướng dẫn độc 
 | publication_year | Năm xuất bản đã xác minh hoặc null. Không dùng ngày truy cập thay năm. |
 | content_checked | Xác nhận kiểm nội dung riêng; đọc nguồn và chạy test không phải thẩm định chuyên môn. |
 
-Bài CHILD phải giữ giới hạn cụ thể. Ví dụ bài hóc dị vật ở trẻ trên 5 tuổi không được dùng cho toàn bộ trẻ em.
+Bài CHILD phải giữ giới hạn cụ thể. Bài hóc dị vật áp dụng từ 1 đến dưới 18 tuổi theo HSE/NHS/RCUK; không áp dụng cho trẻ dưới 1 tuổi.
 Không có biến thể đúng đối tượng thì báo chưa có bài; không tự mở ADULT hoặc ALL làm fallback.
 Nguồn/trang và ghi chú không hiển thị trong hướng dẫn chính. Các điều kiện an toàn vẫn phải xuất hiện trong bài.
 
@@ -108,7 +111,7 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 | --- | --- |
 | FA01 | Dùng chung kiểm tra đáp ứng, gọi hỗ trợ và theo dõi thở; khi cần CPR phải dùng bài đúng độ tuổi. |
 | FA02 | Tách người lớn/trẻ em: độ sâu ép, cách đặt tay, thổi ban đầu và tỉ lệ ép/thổi khác nhau. |
-| FA03 | Tách người lớn/trẻ em: tư thế và lực thao tác theo kích thước; bài trẻ em giới hạn trên 5 tuổi theo nguồn đã chọn. |
+| FA03 | Tách người lớn/trẻ em; bài trẻ em từ 1 đến dưới 18 tuổi theo HSE/NHS/RCUK. Không áp dụng cho nhũ nhi. |
 | FA04 | Tách người lớn/trẻ em vì hồi sức sau đuối nước dùng kỹ thuật CPR theo độ tuổi. |
 | FA05 | Dùng chung ép trực tiếp và bảo vệ vết thương; giữ lưu ý giám sát và gọi hỗ trợ sớm cho trẻ. |
 | FA06 | Dùng chung rửa sạch và che vết nông; trẻ cần người lớn hỗ trợ. |
@@ -179,7 +182,7 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 - Mã bài: `e414b8de-9284-5c4e-8369-cdab430db812`.
 - Biến thể: `adult_cpr`.
 - Đối tượng: Người lớn.
-- Phạm vi: Người lớn không đáp ứng và không thở bình thường. Đây không phải bài CPR trẻ em.
+- Phạm vi: Người lớn từ 18 tuổi không đáp ứng và không thở bình thường. Với người dưới 18 tuổi, xem bài CPR trẻ em theo phạm vi tuổi.
 - Tóm tắt: Gọi 115, bật loa ngoài và bắt đầu ép tim; nhờ người tìm AED.
 
 **Nhận biết**
@@ -217,7 +220,7 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 - Mã bài: `1ba9dcb0-aba2-5c1d-a28d-859efa70f7c4`.
 - Biến thể: `child_cpr`.
 - Đối tượng: Trẻ em.
-- Phạm vi: Trẻ em không đáp ứng, không thở bình thường; loại trừ nhũ nhi. Ưu tiên hướng dẫn của 115.
+- Phạm vi: Trẻ từ 1 đến dưới 18 tuổi không đáp ứng và không thở bình thường. Không áp dụng cho trẻ dưới 1 tuổi. Ưu tiên hướng dẫn của 115.
 - Tóm tắt: Gọi 115 bằng loa ngoài, nhờ người hỗ trợ; bắt đầu hồi sức.
 
 **Nhận biết**
@@ -232,12 +235,12 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 
 1. **Mở đường thở.** Đảm bảo an toàn. Đặt nằm ngửa, mở đường thở và kiểm tra thở không quá 10 giây; không mất thời gian tìm mạch.
 2. **Thổi ngạt ban đầu.** Thổi 5 nhịp đầu nếu có thể: nâng cằm, ngửa đầu phù hợp, bịt mũi và áp kín miệng trẻ. Mỗi nhịp khoảng 1 giây, vừa đủ thấy ngực nhô.
-3. **Ép ngực.** Dùng một hoặc hai bàn tay theo kích thước trẻ ở nửa dưới xương ức. Ép khoảng 1/3 bề dày ngực, 100–120 lần/phút, để ngực nảy lại; không dùng độ sâu người lớn.
+3. **Ép ngực.** Dùng một hoặc hai bàn tay ở nửa dưới xương ức theo kích thước trẻ, ép 100–120 lần/phút và để ngực nảy lại. Trẻ 1–12 tuổi: sâu ít nhất 1/3 bề dày ngực. Trẻ 13–17 tuổi: sâu 5–6 cm; không vượt 6 cm.
 4. **Tiếp tục hồi sức.** Người không được đào tạo CPR nhi khoa chuyên biệt dùng 30 ép : 2 thổi; người đã học PBLS dùng 15:2 theo đào tạo. Nếu không thể thổi, vẫn ép tim và nghe 115. Dùng AED theo hướng dẫn thiết bị khi có.
 
 **Điều tránh**
 
-- Không áp dụng kỹ thuật nhũ nhi hoặc độ sâu 5–6 cm mặc định.
+- Không dùng kỹ thuật nhũ nhi; không mặc định độ sâu 5–6 cm cho trẻ nhỏ.
 - Không trì hoãn ép tim khi không thể thổi ngạt.
 
 **Khi cần trợ giúp**
@@ -251,7 +254,7 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 
 ### FA03. Hóc dị vật
 
-**Nhận xét nguồn:** Đọc hình PDF để tránh đảo thứ tự text. Trẻ chỉ biên soạn biến thể trên 5 tuổi. Không dùng chung thủ thuật trẻ nhỏ.
+**Nhận xét nguồn:** Đọc hình PDF để tránh đảo thứ tự text. Phạm vi trẻ từ 1 đến dưới 18 tuổi được đối chiếu thêm HSE/NHS/RCUK; không áp dụng nhũ nhi.
 
 #### Hóc dị vật ở người lớn còn tỉnh
 
@@ -290,12 +293,12 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 - PNT2024, trang PDF 14–15. Dấu hiệu và ép bụng. Văn bản trích xuất bị đảo thứ tự, đã kiểm hình trang.
 - RCUK_FIRSTAID2025, bản WEB, không có trang PDF. Bổ sung quy trình vỗ lưng trước ép bụng cho tắc nặng.
 
-#### Hóc dị vật ở trẻ trên 5 tuổi
+#### Hóc dị vật ở trẻ từ 1 tuổi
 
 - Mã bài: `f96a8b6b-a49a-5216-bbdf-9efd7dc65481`.
 - Biến thể: `child_choking`.
 - Đối tượng: Trẻ em.
-- Phạm vi: Chỉ trẻ trên 5 tuổi, còn tỉnh; không dùng cho nhũ nhi. Không mở rộng các thao tác này cho trẻ nhỏ hơn khi chưa có bài phù hợp.
+- Phạm vi: Trẻ từ 1 đến dưới 18 tuổi còn tỉnh. Không dùng cho trẻ dưới 1 tuổi; khi trẻ mất ý thức chuyển sang CPR theo tuổi và hướng dẫn 115.
 - Tóm tắt: Nhờ người gọi 115 nếu trẻ không ho/thở hiệu quả; không chờ trẻ tím.
 
 **Nhận biết**
@@ -309,14 +312,15 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 **Các bước**
 
 1. **Khi ho hiệu quả.** Động viên trẻ ho và theo dõi. Không gây nôn, không cho ăn uống.
-2. **Ho không hiệu quả.** Đỡ trẻ cúi về trước, vỗ tối đa 5 lần giữa hai bả vai; kiểm tra sau mỗi lần và dừng nếu đã thông.
-3. **Nếu vẫn tắc.** Đứng hoặc quỳ phía sau theo chiều cao trẻ. Đặt nắm tay trên rốn, dưới mũi ức; kéo vào trong và lên trên tối đa 5 lần. Xen kẽ vỗ lưng/ép bụng khi còn tỉnh.
+2. **Ho không hiệu quả.** Đỡ trẻ ở tư thế cúi về trước. Dùng gót bàn tay vỗ giữa hai bả vai tối đa 5 lần; kiểm tra sau từng lần, dừng khi đã thông.
+3. **Nếu vẫn tắc.** Chưa thông: đứng hoặc quỳ sau trẻ, đặt nắm tay trên rốn và dưới mũi ức; tay còn lại giữ nắm tay, giật vào trong và lên trên tối đa 5 lần. Xen kẽ vỗ lưng và ép bụng khi trẻ còn tỉnh.
 4. **Nếu mất ý thức.** Đặt trẻ nằm an toàn, bắt đầu CPR trẻ em với 5 nhịp thổi ban đầu nếu có thể và làm theo 115. Khám y tế sau sự cố dù đã đỡ.
 
 **Điều tránh**
 
-- Không móc miệng khi không thấy rõ dị vật.
-- Không dùng bài cho trẻ dưới phạm vi tuổi nêu trên.
+- Không móc mù vào miệng; chỉ lấy dị vật nhìn thấy rõ và dễ lấy.
+- Không ép bụng cho trẻ dưới 1 tuổi. Không ấn lên xương sườn hoặc mũi ức.
+- Dừng vỗ/ép ngay khi trẻ ho và thở hiệu quả; không cần làm đủ 5 lần.
 
 **Khi cần trợ giúp**
 
@@ -324,8 +328,10 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 
 **Nguồn nội bộ**
 
-- NHI2022, trang PDF 59–63. Giới hạn trên 5 tuổi theo kỹ thuật Heimlich trong tài liệu.
+- NHI2022, trang PDF 59–63. Đối chiếu bối cảnh; không dùng ranh giới trên 5 tuổi để giới hạn bài. Thao tác cho trẻ từ 1 tuổi theo HSE/NHS/RCUK.
 - RCUK_PLS2025, bản WEB, không có trang PDF. Đối chiếu vỗ lưng và ép bụng theo lứa tuổi.
+- NHS_CHILD_CHOKING, bản WEB, không có trang PDF. Nguồn ngoài hai PDF: mở phạm vi từ 1 tuổi; vỗ lưng/ép bụng, gọi cấp cứu và khám sau sự cố.
+- HSE_CHILD_CHOKING, bản WEB, không có trang PDF. Nguồn ngoài hai PDF: mở phạm vi từ 1 tuổi; vỗ lưng/ép bụng, gọi cấp cứu và khám sau sự cố.
 
 ### FA04. Đuối nước
 
@@ -341,7 +347,7 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 
 **Nhận biết**
 
-- Trẻ gặp nạn dưới nước, sau đưa lên có thể ho, khó thở hoặc không đáp ứng.
+- Người lớn gặp nạn dưới nước; sau đưa lên có thể ho, khó thở hoặc không đáp ứng.
 
 **Cần làm ngay**
 
@@ -532,8 +538,6 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 - PNT2024, trang PDF 16–16. Trang in 7, mục Xử lý chảy máu mũi đúng cách. Thời gian bóp liên tục và tiêu chí tìm trợ giúp bổ sung từ NHS Nosebleed: https://www.nhs.uk/conditions/nosebleed/ (đọc 28/10/2026); số gọi được địa phương hóa thành 115.
 - NHS_NOSE, bản WEB, không có trang PDF. Nguồn bổ sung đối chiếu; không phải trang PDF.
 - NHI2022, trang PDF 52–53. Có mục chảy máu mũi nhưng tư thế ngửa đầu không dùng; giữ phần theo dõi/chăm sóc.
-- PNT2024, trang PDF 16–16. Tư thế cúi về trước.
-- NHS_NOSE, bản WEB, không có trang PDF. Nguồn quyết định tư thế cúi, giữ 10–15 phút và tiêu chí đi khám.
 
 ### FA08. Nghi gãy xương
 
@@ -598,7 +602,7 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 **Các bước**
 
 1. **Nghỉ.** Đỡ chi ở tư thế thoải mái, không cố chịu lực để thử khớp.
-2. **Chườm lạnh.** Bọc túi lạnh bằng vải, chườm 5–10 phút theo nguồn; không áp đá trực tiếp vào da.
+2. **Chườm lạnh.** Bọc túi lạnh bằng vải, chườm 5–10 phút; không áp đá trực tiếp vào da.
 3. **Giảm sưng.** Có thể kê cao chi và băng đỡ nhẹ nếu biết cách. Đau tăng, tê hoặc chi lạnh khi băng: nới ngay và đi khám.
 
 **Điều tránh**
@@ -735,7 +739,6 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 - NHI2022, trang PDF 86–88. Phần II Bỏng; hướng dẫn và lưu ý ở trang PDF 87. Giới hạn làm mát theo nguồn: bỏng nhẹ, chưa tróc da. Bổ sung: NHS Burns and scalds https://www.nhs.uk/conditions/burns-and-scalds/; British Red Cross Burns in babies and children https://www.redcross.org.uk/first-aid/learn-first-aid-for-babies-and-children/burns (đối chiếu 28/10/2026).
 - NHS_BURNS, bản WEB, không có trang PDF. Nguồn bổ sung đối chiếu; không phải trang PDF.
 - PNT2024, trang PDF 35–37. Loại phần tự bù dịch; không áp dụng quy trình chung cho mọi tác nhân.
-- NHS_BURNS, bản WEB, không có trang PDF. Đối chiếu quần áo dính, che phủ và dấu hiệu cần cấp cứu.
 
 ### FA12. Điện giật
 
@@ -799,7 +802,7 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 
 **Các bước**
 
-1. **Nghỉ mát.** Nới quần áo, nghỉ nơi thoáng.
+1. **Nghỉ mát.** Đưa tới nơi mát, nới quần áo. Cho uống nước khi còn tỉnh hoàn toàn và nuốt an toàn.
 2. **Làm mát.** Lau/phun nước mát và quạt. Túi lạnh phải bọc vải.
 3. **Gọi trợ giúp.** Lú lẫn, co giật, bất tỉnh: gọi 115 ngay.
 
@@ -879,21 +882,23 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 
 **Các bước**
 
-1. **Bảo vệ.** Đệm mềm dưới đầu.
+1. **Bảo vệ.** Dọn vật nguy hiểm, đệm mềm dưới đầu và ghi giờ bắt đầu. Nới vật chật quanh cổ; ở cạnh người đang co giật.
 2. **Giữ an toàn.** Chỉ di chuyển khỏi nguy hiểm; không nhét vật vào miệng.
-3. **Sau cơn.** Hết giật, kiểm tra thở; còn thở đặt nằm nghiêng. Không thở bình thường: gọi 115, CPR.
+3. **Sau cơn.** Hết giật, kiểm tra thở. Thở bình thường và không nghi chấn thương: nằm nghiêng an toàn. Thở ngáp/không bình thường: gọi 115, CPR theo tuổi và hướng dẫn tổng đài.
 
 **Điều tránh**
 
 - Không ăn uống khi chưa tỉnh hoàn toàn.
+- Không ghì giữ tay chân hoặc cố ngăn cơn giật.
 
 **Khi cần trợ giúp**
 
-- Gọi 115 khi lần đầu, quá 5 phút, lặp cơn không tỉnh, chấn thương nặng hoặc khó thở.
+- Gọi 115 khi cơn đầu tiên, kéo dài hơn thường lệ hoặc hơn 5 phút nếu không biết thời gian thường lệ; lặp cơn không tỉnh, chấn thương nặng hoặc khó thở cũng cần cấp cứu.
 
 **Nguồn nội bộ**
 
 - NHS_SEIZURE, bản WEB, không có trang PDF. Hai PDF chỉ nhắc co giật trong bối cảnh khác, không có bài sơ cứu độc lập.
+- CDC_SEIZURE, bản WEB, không có trang PDF. Bảo vệ đầu, dọn nguy cơ, ghi thời gian; không ghì giữ hoặc cho đồ vào miệng. Giữ hướng dẫn nằm nghiêng sau cơn theo NHS.
 
 ### FA16. Dị ứng nặng và phản vệ
 
@@ -918,7 +923,7 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 **Các bước**
 
 1. **Ngừng tiếp xúc.** Ngừng tác nhân nghi gây dị ứng nếu làm được an toàn, không làm chậm gọi cấp cứu.
-2. **Tư thế và thuốc đã được kê.** Cho nằm; khó thở có thể nâng vai hoặc ngồi từ từ, duỗi chân. Nếu có bút adrenaline đã được kê, hỗ trợ dùng theo chỉ dẫn thiết bị/đào tạo và 115; không tự pha tiêm.
+2. **Tư thế và thuốc đã được kê.** Cho nằm; khó thở có thể nâng vai hoặc ngồi từ từ, duỗi chân. Nếu có bút adrenaline đã được kê, hỗ trợ dùng theo chỉ dẫn thiết bị/đào tạo và 115; không tự pha tiêm. Nếu chưa cải thiện sau 5 phút và có bút thứ hai đã được kê, dùng theo chỉ dẫn thiết bị và 115.
 3. **Theo dõi.** Không cho đứng/đi lại dù đỡ. Theo dõi ý thức và thở; không thở bình thường thì CPR. Cần đánh giá tại bệnh viện ngay.
 
 **Điều tránh**
@@ -998,7 +1003,7 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 **Các bước**
 
 1. **An toàn.** Tránh bị cắn tiếp; không tự bắt con vật. Nếu máu chảy nhiều, dùng vật sạch cầm máu và gọi trợ giúp.
-2. **Rửa vết thương.** Rửa với xà phòng và nước chảy liên tục 15 phút khi tình trạng cho phép.
+2. **Rửa vết thương.** Rửa với xà phòng và nước chảy ít nhất 15 phút khi tình trạng cho phép.
 3. **Đi khám ngay.** Đến cơ sở y tế để đánh giá tiêm phòng dại/uốn ván và xử trí vết thương. Không chờ xuất hiện triệu chứng.
 
 **Điều tránh**
@@ -1102,7 +1107,7 @@ Dùng bài chung khi thao tác sơ cứu giống nhau và nguồn hỗ trợ c�
 
 Chạy `python tools/generate_data_reference.py --check` để kiểm tra tài liệu khớp bộ dữ liệu.
 Khi nội dung thay đổi, sinh lại bằng `python tools/generate_data_reference.py`. Không chỉnh bản sinh độc lập với JSON.
-Dấu kiểm dữ liệu SHA-256: `082fd9cdeff61889f406c91aa70f1e2ce65bfbea9a95f742e08d492678ffdb01`.
+Dấu kiểm dữ liệu SHA-256: `640d924456ce312e992ee30ea2a051574742eae2b479fdf1c7ddae9e9006d1da`.
 
 ### Thuật ngữ
 

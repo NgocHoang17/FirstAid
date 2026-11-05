@@ -53,6 +53,10 @@ Keyword là hỗ trợ tìm kiếm, không chứng minh triệu chứng đó xá
 
 Không tự đặt timer, tần số, độ sâu, liều hoặc giới hạn tuổi nếu nguồn chưa xác minh. Nếu một section không áp dụng, phải có diễn giải phù hợp thay vì lời khuyên bịa. Không giữ placeholder trong bài PUBLISHED.
 
+Trong phạm vi đồ án môn học, kiểm nội dung là đối chiếu tài liệu và ghi lại nguồn, phương pháp, chủ thể kiểm tra và ngày kiểm. Không yêu cầu có chuyên gia y tế trực tiếp tham gia. `content_checked` và `PUBLISHED` thể hiện kết quả kiểm biên soạn và việc cho phép hiển thị trong ứng dụng đồ án, không phải chứng nhận chuyên môn. Không gán danh tính người kiểm hay xác nhận y khoa không có thật. Giữ thông báo nội dung tham khảo và ưu tiên hướng dẫn của nhân viên y tế.
+
+Minh họa có thể là sơ đồ nhắc việc tự biên soạn, đi kèm chữ hướng dẫn đầy đủ. Không dùng sơ đồ biểu tượng để suy ra vị trí giải phẫu, lực tác động hay kỹ thuật tiêm. Không sao chép hình tài liệu nếu chưa có quyền sử dụng.
+
 ## 4. Đối tượng và biến thể
 
 Các nhãn ADULT, CHILD và ALL là metadata dữ liệu, không phải lời khẳng định mọi trẻ cùng một nhóm đều thực hiện giống nhau. Phạm vi diễn giải phải theo nguồn. Ở FA02/FA03 cần kiểm đặc biệt việc không dùng nhầm bài giữa các nhóm.
