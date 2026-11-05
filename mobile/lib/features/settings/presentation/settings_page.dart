@@ -90,7 +90,7 @@ class SettingsPage extends StatelessWidget {
             ],
             const AidCard(
               'Thông tin ứng dụng',
-              'FirstAid • Phiên bản 1.0.0\nĐồ án chuyên ngành\nKiến thức sơ cứu cho người lớn và trẻ em.',
+              'FirstAid • Phiên bản 1.0.0\nĐồ án môn học: kiến thức sơ cứu cho người lớn và trẻ em.\nNội dung được biên soạn, đối chiếu tài liệu; không có thẩm định y khoa độc lập.',
             ),
           ],
         );

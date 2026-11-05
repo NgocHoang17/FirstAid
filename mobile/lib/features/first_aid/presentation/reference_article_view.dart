@@ -2,6 +2,7 @@ import '../../../core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../data/reference_content_repository.dart';
 import 'quick_aid_pages.dart';
+import 'step_illustration.dart';
 
 class ReferenceArticleView extends StatefulWidget {
   const ReferenceArticleView({
@@ -104,6 +105,10 @@ class _ReferenceArticleViewState extends State<ReferenceArticleView> {
           const SizedBox(height: 24),
           if (learn)
             for (final item in article.steps) ...[
+              StepIllustration(
+                step: item,
+                key: ValueKey('learn-${item.json['id']}'),
+              ),
               Text(
                 'Bước ${item.position}. ${item.title}',
                 style: const TextStyle(
@@ -124,6 +129,7 @@ class _ReferenceArticleViewState extends State<ReferenceArticleView> {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
+            StepIllustration(step: current, key: ValueKey(current.json['id'])),
             Text(
               current.title,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -154,6 +160,16 @@ class _ReferenceArticleViewState extends State<ReferenceArticleView> {
             ),
             child: const Text('Nguồn tham chiếu  ↗'),
           ),
+          if (article.isPublic && widget.library.reviewNotice.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            Text(
+              widget.library.reviewNotice,
+              style: const TextStyle(
+                fontSize: 14,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ],
           const SizedBox(height: 16),
           if (!learn) ...[
             if (step < article.steps.length - 1)
