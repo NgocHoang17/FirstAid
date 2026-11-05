@@ -7,12 +7,12 @@ void main() {
   String fixture() =>
       File('assets/content/reference_library.json').readAsStringSync();
   test(
-    'All 18 categories have sourced, audience-appropriate editorial articles',
+    'All 18 categories have sourced, audience-appropriate published reference articles',
     () {
       final lib = ReferenceLibrary.parse(fixture(), includeDrafts: true);
       expect(lib.categories.length, 18);
       expect(lib.articles.length, 24);
-      expect(lib.sources.length, 14);
+      expect(lib.sources.length, 17);
       for (var i = 1; i <= 18; i++) {
         final code = 'FA${i.toString().padLeft(2, '0')}';
         expect(lib.forCategory(code), isNotEmpty, reason: code);
@@ -29,7 +29,7 @@ void main() {
       }
       expect(lib.forCategory('FA09').length, 2);
       expect(lib.forCategory('FA18').length, 3);
-      expect(lib.articles.every((a) => !a.isPublic), true);
+      expect(lib.articles.every((a) => a.isPublic), true);
       for (final article in lib.articles) {
         expect(article.steps.length, greaterThanOrEqualTo(3));
         expect(article.references, isNotEmpty);
@@ -67,12 +67,22 @@ void main() {
     }
     expect(
       lib.forCategory('FA03').firstWhere((a) => a.ageGroup == 'CHILD').scope,
-      contains('trên 5 tuổi'),
+      contains('từ 1 đến dưới 18 tuổi'),
     );
   });
-  test('Release/public reads never publish editorial drafts', () {
-    expect(ReferenceLibrary.parse(fixture()).articles, isEmpty);
-  });
+  test(
+    'Release/public reads have bundled content and still exclude drafts',
+    () {
+      expect(ReferenceLibrary.parse(fixture()).articles.length, 24);
+      final data = jsonDecode(fixture()) as Map<String, dynamic>;
+      data['articles'][0]['status'] = 'DRAFT';
+      data['articles'][0]['content_checked'] = false;
+      data['articles'][0]['checked_at'] = null;
+      final library = ReferenceLibrary.parse(jsonEncode(data));
+      expect(library.articles.length, 23);
+      expect(library.articles.every((a) => a.isPublic), true);
+    },
+  );
   test(
     'Broken evidence, identity, audience, source types and category links are rejected',
     () {

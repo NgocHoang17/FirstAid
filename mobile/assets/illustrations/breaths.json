@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "breathing",
+  "label": "Hỗ trợ thở",
+  "caption": "Mỗi nhịp vừa đủ làm ngực nhô.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}

@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "cooling",
+  "label": "Làm mát",
+  "caption": "Đưa tới chỗ mát, lau nước và quạt.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}

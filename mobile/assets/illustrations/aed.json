@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "aed",
+  "label": "AED",
+  "caption": "Bật máy và làm theo chỉ dẫn thiết bị.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}

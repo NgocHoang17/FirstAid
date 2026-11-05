@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "pulse",
+  "label": "100–120 lần/phút",
+  "caption": "Độ sâu và cách đặt tay theo tuổi trong bài.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}

@@ -28,6 +28,7 @@ flutter:
   assets:
     - assets/flows/
     - assets/content/reference_library.json
+    - assets/illustrations/
   fonts:
     - family: Be Vietnam Pro
       fonts:

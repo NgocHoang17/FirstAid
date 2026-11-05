@@ -1,6 +1,6 @@
 {
-  "reviewed_on": "2026-10-28",
-  "review_type": "source_comparison_not_clinical_approval",
+  "reviewed_on": "2026-11-05",
+  "review_type": "source_comparison_for_course_project",
   "source_files": [
     {
       "code": "PNT2024",
@@ -21,12 +21,533 @@
     "PNT2024 trang 14 cần đọc hình; thứ tự text extraction không bảo toàn vị trí nhãn.",
     "FA13 và FA15 dùng nguồn ngoài hai PDF theo lựa chọn người dùng."
   ],
-  "release_gate": "All articles stay DRAFT/content_checked=false; available only in debug editorial preview. Require human content check before public publishing.",
-  "catalogue_version": "reference-catalog-2026-10-28-v3",
+  "release_gate": "PUBLISHED means available in the course-project app after documented source comparison. It does not mean independent clinical approval. DRAFT content is excluded from release.",
+  "catalogue_version": "course-reference-2026-11-05-v1",
   "article_count": 24,
   "categories_without_standalone_pdf_guide": [
     "FA13",
     "FA15"
   ],
-  "audience_policy": "Shared initial care uses ALL with evidence for adults and children; CPR, choking and drowning keep separate age-specific instructions. No infant guidance."
+  "audience_policy": "Shared initial care uses ALL with evidence for adults and children; CPR, choking and drowning keep separate age-specific instructions. No infant guidance.",
+  "clinical_expert_review": false,
+  "checker": "Codex, automated editorial comparison requested by the project author",
+  "articles": [
+    {
+      "article_id": "89f60168-45f5-555a-a646-d1a013f5a0d7",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "NHS_CUTS",
+        "NHI2022"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "90ed2110-a47d-571f-8fc5-de491f084ce4",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "NHS_NOSE",
+        "NHI2022"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "ee664152-773b-59c8-bc4c-20500943f447",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "NHI2022",
+        "NHS_BURNS",
+        "PNT2024"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "358c7197-a3b5-5d61-b225-cc087be9800a",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "RCUK_BLS2025",
+        "RCUK_FIRSTAID2025",
+        "NHI2022",
+        "RCUK_PLS2025"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "e414b8de-9284-5c4e-8369-cdab430db812",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "RCUK_BLS2025"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "1ba9dcb0-aba2-5c1d-a28d-859efa70f7c4",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "NHI2022",
+        "RCUK_PLS2025"
+      ],
+      "notes": [
+        "Nêu rõ 1–17 tuổi; phân biệt độ sâu ép ở nhóm 13–17 theo RCUK 2025, không để thiếu nhóm thiếu niên."
+      ]
+    },
+    {
+      "article_id": "35917c54-3ba6-513f-96ae-3b23190e30cc",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "RCUK_FIRSTAID2025"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "f96a8b6b-a49a-5216-bbdf-9efd7dc65481",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "NHI2022",
+        "RCUK_PLS2025",
+        "NHS_CHILD_CHOKING",
+        "HSE_CHILD_CHOKING"
+      ],
+      "notes": [
+        "Phạm vi từ 1 tuổi theo HSE/NHS/RCUK, thay giới hạn trên 5 tuổi của PDF. Giữ cảnh báo không áp dụng nhũ nhi."
+      ]
+    },
+    {
+      "article_id": "8d98fcdc-56a0-5937-bcf5-5e3f531edbf0",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "RCUK_FIRSTAID2025",
+        "RCUK_BLS2025"
+      ],
+      "notes": [
+        "Loại bỏ câu mô tả nhầm đối tượng trẻ em."
+      ]
+    },
+    {
+      "article_id": "1d6be1d2-a3a8-50f6-bb6e-90016a3d6d4c",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "NHI2022",
+        "RCUK_PLS2025"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "8fe4f201-ed15-5b31-9737-16ec691044da",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "NHI2022",
+        "NHS_CUTS"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "5a10b0f1-6fd8-500f-b2f7-ec13ea80dbe2",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "NHI2022"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "a4784455-390d-524b-a8fd-7a75b4ccbf1a",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "NHI2022"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "96b84301-e630-5fed-acc2-f78909831cd0",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "NHI2022"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "80f87c2e-d9a9-5608-a792-756d8e0c281f",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "NHI2022",
+        "NHI2022",
+        "RCUK_FIRSTAID2025"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "0c04a405-4ffb-5f7c-b2b2-439495df58da",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "NHI2022"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "c36bb404-ecec-5a1f-9179-e8b2bdbf945e",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "NHS_HEAT"
+      ],
+      "notes": [
+        "Bổ sung uống nước có điều kiện; giữ làm mát và gọi sớm nếu có dấu nặng."
+      ]
+    },
+    {
+      "article_id": "f4aaec4e-0339-5d35-82e3-b3e025a0411d",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "RCUK_FIRSTAID2025",
+        "NHS_STROKE"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "0a36c34e-7c2a-5e7c-abff-81018ad31a12",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "NHS_SEIZURE",
+        "CDC_SEIZURE"
+      ],
+      "notes": [
+        "Bổ sung không ghì giữ; ngưỡng gọi trợ giúp theo NHS, không chờ 5 phút khi có dấu nặng.",
+        "Đối chiếu CDC: không ghì giữ, dọn nguy cơ và đệm đầu; phân biệt thở bình thường với thở ngáp sau cơn."
+      ]
+    },
+    {
+      "article_id": "8e0fe544-f4b8-5d8c-838c-d4b98260b568",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "NHS_ANAPHYLAXIS"
+      ],
+      "notes": [
+        "Bổ sung bút thứ hai sau 5 phút theo NHS; chỉ bút đã kê, không pha tiêm hoặc tự kê liều."
+      ]
+    },
+    {
+      "article_id": "297764ce-ff2c-5e1e-9121-e431ff94d63b",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "NHI2022",
+        "NHS_POISON"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "1225b40a-08f4-5973-a746-8cc98f48a39b",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "NHI2022",
+        "WHO_RABIES"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "c6a48804-f4ab-5349-918b-d89dd420a1dd",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "PNT2024",
+        "NHI2022"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    },
+    {
+      "article_id": "a52772d7-0b94-54ca-9795-8e0142138e0d",
+      "checked_at": "2026-11-05T00:00:00Z",
+      "method": "source_comparison_for_course_project",
+      "checker": "Codex, automated editorial comparison requested by the project author",
+      "clinical_expert_review": false,
+      "checks": [
+        "scope_and_audience",
+        "recognition_and_steps",
+        "warnings_and_escalation",
+        "reference_mapping",
+        "offline_diagram_consistency"
+      ],
+      "sources": [
+        "NHI2022",
+        "PNT2024"
+      ],
+      "notes": [
+        "Đối chiếu nội dung sơ cứu cơ bản với các nguồn đã gắn; giữ phạm vi và ngoại lệ, không bổ sung thuốc/liều hoặc thủ thuật chuyên sâu."
+      ]
+    }
+  ],
+  "illustrations": "Original code-rendered reminder diagrams with full text. No copied PDF photographs, clinical poses or online assets.",
+  "source_count": 17
 }

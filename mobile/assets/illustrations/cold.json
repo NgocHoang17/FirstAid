@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "kind": "cold",
+  "label": "Lạnh qua lớp vải",
+  "caption": "Không đặt đá trực tiếp lên da.",
+  "authorship": "Original FirstAid vector reminder, 2026",
+  "clinical_pose": false
+}
