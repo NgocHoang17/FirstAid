@@ -33,25 +33,60 @@ class AidCard extends StatelessWidget {
     this.title,
     this.subtitle, {
     this.onTap,
-    this.color = Colors.white,
+    this.color = AppColors.surface,
+    this.icon,
     super.key,
   });
   final String title, subtitle;
   final VoidCallback? onTap;
   final Color color;
+  final IconData? icon;
   @override
   Widget build(BuildContext context) => Material(
     color: color,
-    borderRadius: BorderRadius.circular(16),
+    borderRadius: BorderRadius.circular(20),
+    clipBehavior: Clip.antiAlias,
     child: InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(20),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (icon != null) ...[
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppColors.tint,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(icon, size: 22, color: AppColors.primary),
+                  ),
+                  const SizedBox(width: 12),
+                ],
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+                if (onTap != null) ...[
+                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 16,
+                    color: AppColors.primary,
+                  ),
+                ],
+              ],
+            ),
             if (subtitle.isNotEmpty) ...[
               const SizedBox(height: 8),
               Text(
@@ -156,53 +191,36 @@ class AidScaffold extends StatelessWidget {
 }
 
 class QuickAidHome extends StatelessWidget {
-  const QuickAidHome({super.key});
+  const QuickAidHome({
+    this.onKnowledge,
+    this.onSettings,
+    this.libraryLoader,
+    super.key,
+  });
+  final VoidCallback? onKnowledge, onSettings;
+  final Future<ReferenceLibrary> Function()? libraryLoader;
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
+      actions: [
+        if (onSettings != null)
+          IconButton(
+            tooltip: "Cài đặt và dữ liệu",
+            onPressed: onSettings,
+            icon: const Icon(Icons.settings_outlined),
+          ),
+      ],
       title: const Row(
         children: [
-          Text('✚', style: TextStyle(color: AppColors.primary)),
+          Icon(Icons.health_and_safety_rounded, color: AppColors.primary),
           SizedBox(width: 12),
-          Text('FirstAid', style: TextStyle(fontWeight: FontWeight.bold)),
-        ],
-      ),
-    ),
-    bottomNavigationBar: SafeArea(
-      top: false,
-      child: NavigationBar(
-        backgroundColor: AppColors.surface,
-        indicatorColor: const Color(0xFFF0FDFA),
-        selectedIndex: 0,
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        onDestinationSelected: (index) {
-          if (index == 0) return;
-          const labels = ['Trang chủ', 'Kiến thức', 'Hỏi đáp', 'Cơ sở y tế'];
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Text('${labels[index]} chưa có trong bản demo này.'),
-              ),
-            );
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
-            label: 'Trang chủ',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.menu_book_outlined),
-            label: 'Kiến thức',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.chat_bubble_outline_rounded),
-            label: 'Hỏi đáp',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.local_hospital_outlined),
-            label: 'Cơ sở y tế',
+          Expanded(
+            child: Text(
+              'FirstAid',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),
@@ -212,26 +230,48 @@ class QuickAidHome extends StatelessWidget {
       children: [
         const Text(
           'Bình tĩnh.\nTừng bước, đúng cách.',
-          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 30,
+            height: 1.25,
+            letterSpacing: -.6,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 16),
         const Text('Tra cứu kiến thức và hướng dẫn sơ cứu cơ bản.'),
         const SizedBox(height: 16),
         Material(
-          color: AppColors.emergency,
-          borderRadius: BorderRadius.circular(16),
+          color: AppColors.primaryDark,
+          borderRadius: BorderRadius.circular(24),
           child: InkWell(
-            borderRadius: BorderRadius.circular(16),
-            onTap: () => openPage(context, const QuickAidList()),
+            borderRadius: BorderRadius.circular(24),
+            onTap: () =>
+                openPage(context, QuickAidList(libraryLoader: libraryLoader)),
             child: const Padding(
               padding: EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.health_and_safety_outlined,
+                        color: AppColors.onPrimaryMuted,
+                        size: 30,
+                      ),
+                      Spacer(),
+                      Icon(
+                        Icons.arrow_outward_rounded,
+                        color: AppColors.onPrimaryMuted,
+                        size: 24,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 18),
                   Text(
                     'Cần sơ cứu ngay?',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.onPrimary,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -239,7 +279,7 @@ class QuickAidHome extends StatelessWidget {
                   SizedBox(height: 12),
                   Text(
                     'Mở hướng dẫn nhanh\nCó thể dùng ngoại tuyến',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: AppColors.onPrimaryMuted),
                   ),
                 ],
               ),
@@ -251,13 +291,18 @@ class QuickAidHome extends StatelessWidget {
         const SizedBox(height: 16),
         const AidCard(
           'Nội dung tham khảo trên thiết bị',
-          'Một số bài có nguồn đang được rà soát trên bản phát triển. Chọn bài để xem phạm vi và tài liệu tham chiếu.',
-          color: Color(0xFFF0FDFA),
+          'Xem phạm vi áp dụng và nguồn của từng bài trước khi thực hiện hướng dẫn.',
+          color: AppColors.tint,
+          icon: Icons.offline_pin_outlined,
         ),
         const SizedBox(height: 16),
-        OutlinedButton(
-          onPressed: () => openPage(context, const QuickAidList()),
-          child: const Text('Tìm tình huống sơ cứu…'),
+        OutlinedButton.icon(
+          onPressed:
+              onKnowledge ??
+              () =>
+                  openPage(context, QuickAidList(libraryLoader: libraryLoader)),
+          icon: const Icon(Icons.search),
+          label: const Text("Tìm bài sơ cứu…"),
         ),
         const SizedBox(height: 16),
         const Text(
@@ -272,9 +317,20 @@ class QuickAidHome extends StatelessWidget {
         ]) ...[
           AidCard(
             group.$3,
-            'FA${(group.$1 + 1).toString().padLeft(2, '0')} – FA${group.$2.toString().padLeft(2, '0')}',
-            onTap: () =>
-                openPage(context, QuickAidList(start: group.$1, end: group.$2)),
+            '${group.$2 - group.$1} nhóm tình huống • Xem hướng dẫn',
+            icon: group.$1 == 0
+                ? Icons.favorite_outline_rounded
+                : group.$1 == 4
+                ? Icons.healing_rounded
+                : Icons.eco_outlined,
+            onTap: () => openPage(
+              context,
+              QuickAidList(
+                start: group.$1,
+                end: group.$2,
+                libraryLoader: libraryLoader,
+              ),
+            ),
           ),
           const SizedBox(height: 16),
         ],
@@ -303,8 +359,14 @@ String searchKey(String value) {
 }
 
 class QuickAidList extends StatefulWidget {
-  const QuickAidList({this.start = 0, this.end = 18, super.key});
+  const QuickAidList({
+    this.start = 0,
+    this.end = 18,
+    this.libraryLoader,
+    super.key,
+  });
   final int start, end;
+  final Future<ReferenceLibrary> Function()? libraryLoader;
   @override
   State<QuickAidList> createState() => _QuickAidListState();
 }
@@ -337,14 +399,19 @@ class _QuickAidListState extends State<QuickAidList> {
           const AidCard(
             'Không tìm thấy kết quả',
             'Thử từ khóa khác hoặc kiểm tra chính tả.',
-            color: Color(0xFFEFF6FF),
+            color: AppColors.info,
           ),
         for (final i in matches)
           AidCard(
             '${(i + 1).toString().padLeft(2, '0')}   ${situations[i]}',
             'Chọn để xem hướng dẫn  ›',
-            onTap: () =>
-                openPage(context, AudiencePage(category: situations[i])),
+            onTap: () => openPage(
+              context,
+              AudiencePage(
+                category: situations[i],
+                libraryLoader: widget.libraryLoader,
+              ),
+            ),
           ),
       ],
     );
@@ -352,15 +419,16 @@ class _QuickAidListState extends State<QuickAidList> {
 }
 
 class AudiencePage extends StatefulWidget {
-  const AudiencePage({required this.category, super.key});
+  const AudiencePage({required this.category, this.libraryLoader, super.key});
   final String category;
+  final Future<ReferenceLibrary> Function()? libraryLoader;
   @override
   State<AudiencePage> createState() => _AudiencePageState();
 }
 
 class _AudiencePageState extends State<AudiencePage> {
   late final Future<ReferenceLibrary> _library =
-      ReferenceContentRepository.load();
+      (widget.libraryLoader ?? ReferenceContentRepository.load)();
   @override
   Widget build(BuildContext context) => FutureBuilder<ReferenceLibrary>(
     future: _library,
@@ -435,7 +503,7 @@ class UnsupportedAudience extends StatelessWidget {
       const AidCard(
         'Không tự thay bằng hướng dẫn người lớn',
         'Chọn lại đối tượng hoặc tìm tình huống liên quan.',
-        color: Color(0xFFEFF6FF),
+        color: AppColors.info,
       ),
       AidButton('Chọn lại đối tượng', () => Navigator.pop(context)),
     ],

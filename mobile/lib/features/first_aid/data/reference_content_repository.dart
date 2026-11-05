@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import '../../../core/storage/snapshot_store.dart';
 
 class ReferenceSource {
   ReferenceSource(this.json);
@@ -77,10 +78,87 @@ class ReferenceLibrary {
   final Map<String, ReferenceSource> sources;
   final Map<String, ReferenceCategory> categories;
   final String reviewNotice;
+  factory ReferenceLibrary.fromSnapshot(Map<String, dynamic> data) {
+    if (data['schema_version'] != 1) {
+      throw const FormatException('Unsupported snapshot');
+    }
+    final categories = (data['categories'] as List)
+        .map((r) => Map<String, dynamic>.from(r as Map))
+        .toList();
+    final sources = (data['sources'] as List)
+        .map((r) => Map<String, dynamic>.from(r as Map))
+        .toList();
+    final articles = (data['articles'] as List)
+        .map((r) => Map<String, dynamic>.from(r as Map))
+        .toList();
+    if (categories.length > 30 ||
+        sources.length > 100 ||
+        articles.length > 500) {
+      throw const FormatException('Snapshot exceeds supported limits');
+    }
+    final uuid = RegExp(
+      r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+    );
+    for (final row in [...categories, ...sources, ...articles]) {
+      if (!uuid.hasMatch(row['id'] as String? ?? '')) {
+        throw const FormatException('Invalid snapshot ID');
+      }
+    }
+    for (final c in categories) {
+      if (c['is_active'] != true ||
+          !{
+            'CIRCULATION',
+            'TRAUMA',
+            'ENVIRONMENT',
+            'OTHER',
+          }.contains(c['group_code'])) {
+        throw const FormatException('Inactive public category');
+      }
+      c['article_ids'] = articles
+          .where((a) => a['category_id'] == c['id'])
+          .map((a) => a['id'])
+          .toList();
+    }
+    for (final s in sources) {
+      s['media_type'] ??= 'PDF';
+    }
+    for (final a in articles) {
+      if (a['status'] != 'PUBLISHED' ||
+          a['content_checked'] != true ||
+          DateTime.tryParse(a['checked_at'] as String? ?? '') == null ||
+          a['content_revision'] is! int ||
+          (a['content_revision'] as int) < 1) {
+        throw const FormatException('Unverified public article');
+      }
+      final matches = categories.where((c) => c['id'] == a['category_id']);
+      if (matches.length != 1) throw const FormatException('Unknown category');
+      a['category_code'] = matches.single['code'];
+      for (final step in a['steps'] as List) {
+        if (!uuid.hasMatch(step['id'] as String? ?? '')) {
+          throw const FormatException('Invalid step ID');
+        }
+      }
+    }
+    return ReferenceLibrary.parse(
+      jsonEncode({
+        'schema_version': 2,
+        'kind': 'editorial_preview',
+        'categories': categories,
+        'sources': sources,
+        'articles': articles,
+        'review_notice': '',
+      }),
+      requireCategoryArticles: false,
+    );
+  }
   List<ReferenceArticle> forCategory(String code) =>
       articles.where((a) => a.categoryCode == code).toList(growable: false);
 
-  factory ReferenceLibrary.parse(String text, {bool includeDrafts = false}) {
+  factory ReferenceLibrary.parse(
+    String text, {
+    bool includeDrafts = false,
+    bool requireCategoryArticles = true,
+  }) {
     final data = jsonDecode(text) as Map<String, dynamic>;
     if (data['schema_version'] != 2 || data['kind'] != 'editorial_preview') {
       throw const FormatException('Unsupported content schema');
@@ -88,6 +166,13 @@ class ReferenceLibrary {
     final sources = <String, ReferenceSource>{};
     for (final row in data['sources'] as List) {
       final source = ReferenceSource(Map<String, dynamic>.from(row as Map));
+      final year = source.json['publication_year'];
+      final revision = source.json['revision'];
+      if ((year != null && (year is! int || year < 1)) ||
+          revision is! int ||
+          revision < 1) {
+        throw const FormatException('Invalid source metadata');
+      }
       if (sources.containsKey(source.id) ||
           source.title.trim().isEmpty ||
           source.publisher.trim().isEmpty ||
@@ -195,7 +280,7 @@ class ReferenceLibrary {
       if (declared.length != declared.toSet().length ||
           declared.toSet().difference(actual).isNotEmpty ||
           actual.difference(declared.toSet()).isNotEmpty ||
-          actual.isEmpty) {
+          (requireCategoryArticles && actual.isEmpty)) {
         throw const FormatException('Invalid category article links');
       }
     }
@@ -210,13 +295,30 @@ class ReferenceLibrary {
 
 class ReferenceContentRepository {
   // Editorial drafts are visible in debug builds only until human content review.
-  static Future<ReferenceLibrary> load() async {
+  static Future<String> bundledText() async {
     final bytes = await rootBundle.load(
       'assets/content/reference_library.json',
     );
     final text = utf8.decode(
       bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
     );
-    return ReferenceLibrary.parse(text, includeDrafts: kDebugMode);
+    return text;
+  }
+
+  static Future<ReferenceLibrary> load({SnapshotStore? store}) async {
+    try {
+      final saved = await store?.read();
+      if (saved != null) {
+        return ReferenceLibrary.fromSnapshot(
+          jsonDecode(saved) as Map<String, dynamic>,
+        );
+      }
+    } catch (_) {
+      /* Keep the bundled copy accessible if storage is unreadable. */
+    }
+    return ReferenceLibrary.parse(
+      await bundledText(),
+      includeDrafts: kDebugMode,
+    );
   }
 }
