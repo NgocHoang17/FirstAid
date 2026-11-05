@@ -1,3 +1,4 @@
+import '../../../core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../data/reference_content_repository.dart';
 import 'quick_aid_pages.dart';
@@ -6,17 +7,19 @@ class ReferenceArticleView extends StatefulWidget {
   const ReferenceArticleView({
     required this.article,
     required this.library,
+    this.initialLearn = false,
     super.key,
   });
   final ReferenceArticle article;
   final ReferenceLibrary library;
+  final bool initialLearn;
   @override
   State<ReferenceArticleView> createState() => _ReferenceArticleViewState();
 }
 
 class _ReferenceArticleViewState extends State<ReferenceArticleView> {
   int step = 0;
-  bool learn = false;
+  late bool learn = widget.initialLearn;
   final scroll = ScrollController();
   @override
   void dispose() {
@@ -29,11 +32,15 @@ class _ReferenceArticleViewState extends State<ReferenceArticleView> {
     final article = widget.article;
     final current = article.steps[step];
     return Scaffold(
-      appBar: AppBar(title: const Text('Hướng dẫn tham khảo')),
-      bottomNavigationBar: const SafeArea(
-        top: false,
-        child: Padding(padding: EdgeInsets.all(16), child: CallHelp()),
+      appBar: AppBar(
+        title: Text(learn ? 'Bài kiến thức' : 'Hướng dẫn tham khảo'),
       ),
+      bottomNavigationBar: learn
+          ? null
+          : const SafeArea(
+              top: false,
+              child: Padding(padding: EdgeInsets.all(16), child: CallHelp()),
+            ),
       body: ListView(
         controller: scroll,
         padding: const EdgeInsets.all(24),
@@ -43,17 +50,24 @@ class _ReferenceArticleViewState extends State<ReferenceArticleView> {
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
+          if (learn) ...[
+            AidButton(
+              'Mở hướng dẫn nhanh',
+              () => setState(() => learn = false),
+            ),
+            const SizedBox(height: 16),
+          ],
           AidCard(
             'Đối tượng: ${article.ageLabel}',
             article.scope,
-            color: const Color(0xFFF0FDFA),
+            color: AppColors.tint,
           ),
           const SizedBox(height: 16),
           if (!article.isPublic) ...[
             AidCard(
               'Bản tham khảo đang rà soát',
               widget.library.reviewNotice,
-              color: const Color(0xFFFFFBEB),
+              color: AppColors.warning,
             ),
             const SizedBox(height: 16),
           ],
@@ -85,7 +99,7 @@ class _ReferenceArticleViewState extends State<ReferenceArticleView> {
           AidCard(
             'Cần làm ngay',
             article.texts('quick_actions').map((s) => '• $s').join('\n\n'),
-            color: const Color(0xFFF0FDFA),
+            color: AppColors.tint,
           ),
           const SizedBox(height: 24),
           if (learn)
@@ -124,13 +138,13 @@ class _ReferenceArticleViewState extends State<ReferenceArticleView> {
           AidCard(
             'Không nên làm',
             article.texts('warnings').map((s) => '• $s').join('\n\n'),
-            color: const Color(0xFFFFFBEB),
+            color: AppColors.warning,
           ),
           const SizedBox(height: 16),
           AidCard(
             'Khi cần hỗ trợ',
             article.texts('seek_help').map((s) => '• $s').join('\n\n'),
-            color: const Color(0xFFEFF6FF),
+            color: AppColors.info,
           ),
           const SizedBox(height: 16),
           OutlinedButton(

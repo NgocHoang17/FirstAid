@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
-import 'features/first_aid/presentation/quick_aid_pages.dart';
+import 'features/home/presentation/mobile_shell.dart';
+import 'core/network/app_services.dart';
+import 'core/storage/snapshot_store.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({this.api, this.store, super.key});
+  final PublicApi? api;
+  final SnapshotStore? store;
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'FirstAid',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const QuickAidHome(),
+      home: MobileShell(api: api, store: store),
     );
   }
 }

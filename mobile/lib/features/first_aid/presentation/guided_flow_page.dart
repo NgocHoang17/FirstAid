@@ -93,7 +93,7 @@ class _GuidedFlowPageState extends State<GuidedFlowPage> {
                     const AidCard(
                       'Luồng minh họa — không dùng để sơ cứu',
                       'Câu hỏi và nhánh chuyên môn cần được chuẩn bị từ nguồn. Luồng không dùng AI để quyết định xử trí.',
-                      color: Color(0xFFEFF6FF),
+                      color: AppColors.info,
                     ),
                     const SizedBox(height: 16),
                     if (snapshot.hasError || node == null) ...[
@@ -115,11 +115,7 @@ class _GuidedFlowPageState extends State<GuidedFlowPage> {
                       const SizedBox(height: 16),
                       Semantics(
                         liveRegion: true,
-                        child: AidCard(
-                          node.prompt!,
-                          '',
-                          color: const Color(0xFFEFF6FF),
-                        ),
+                        child: AidCard(node.prompt!, '', color: AppColors.info),
                       ),
                       const SizedBox(height: 16),
                       for (final (index, option) in node.options.indexed) ...[
@@ -160,7 +156,7 @@ class _GuidedFlowPageState extends State<GuidedFlowPage> {
                           node.type == GuidedNodeType.openArticle
                               ? 'Chưa có bài local đã công bố khớp nhóm và đối tượng đã chọn. Không mở thay bằng bài khác.'
                               : 'Không đủ thông tin hoặc chưa có nội dung phù hợp. Không suy ra tình huống an toàn và không tự chọn hướng dẫn người lớn.',
-                          color: const Color(0xFFEFF6FF),
+                          color: AppColors.info,
                         ),
                       ),
                       const SizedBox(height: 16),

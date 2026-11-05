@@ -39,6 +39,11 @@ void main() {
         300,
         scrollable: find.byType(Scrollable).first,
       );
+      await Scrollable.ensureVisible(
+        tester.element(find.text('Bước tiếp theo')),
+        alignment: .3,
+      );
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Bước tiếp theo'));
       await tester.pumpAndSettle();
       await tester.scrollUntilVisible(
