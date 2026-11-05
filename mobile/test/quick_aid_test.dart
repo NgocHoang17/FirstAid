@@ -28,7 +28,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('Bỏng nhiệt nhẹ'));
       await tester.pumpAndSettle();
-      expect(find.text('Bản tham khảo đang rà soát'), findsOneWidget);
+      expect(find.text('Bản tham khảo đang rà soát'), findsNothing);
       await tester.scrollUntilVisible(
         find.text('BƯỚC 1 / 4'),
         250,
@@ -51,6 +51,12 @@ void main() {
         250,
         scrollable: find.byType(Scrollable).first,
       );
+      await tester.scrollUntilVisible(
+        find.text('Làm mát 20 phút'),
+        150,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.pumpAndSettle();
       expect(find.text('Làm mát 20 phút'), findsOneWidget);
       await tester.scrollUntilVisible(
         find.text('Nguồn tham chiếu  ↗'),
