@@ -39,7 +39,7 @@ flutter pub get
 flutter run
 ```
 
-Spring Boot trên Windows:
+Spring Boot trên Windows (cần PostgreSQL và biến môi trường theo [backend README](backend/README.md)):
 
 ```powershell
 cd backend
