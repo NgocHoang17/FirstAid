@@ -170,6 +170,7 @@ CREATE INDEX facilities_region_active_name_idx ON facilities (region_code, is_ac
 CREATE TABLE public_data_state (
     id smallint PRIMARY KEY DEFAULT 1,
     data_version uuid NOT NULL,
+    config_fingerprint text NOT NULL DEFAULT '',
     updated_at timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT public_data_state_singleton CHECK (id = 1)
 );
