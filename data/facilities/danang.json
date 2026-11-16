@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "region_code": "VN-DN",
+  "region_label": "Đà Nẵng",
+  "reviewed_on": "2026-11-16",
+  "review_method": "Đối chiếu website chính thức và liên kết bản đồ công khai; chưa gọi điện hoặc khảo sát thực địa.",
+  "records": [
+    {
+      "key": "danang-c-hospital",
+      "facility": {
+        "name": "Bệnh viện C Đà Nẵng",
+        "region_code": "VN-DN",
+        "address": "122 Hải Phòng, phường Hải Châu, thành phố Đà Nẵng",
+        "phone": "02363821480",
+        "latitude": 16.0725819,
+        "longitude": 108.2165749,
+        "emergency_24h": "UNKNOWN",
+        "verification_note": "Thông tin từ website Bệnh viện C và danh bạ 1022 Đà Nẵng. Đây là số liên hệ văn phòng; chưa xác minh cấp cứu 24/7. Điểm bản đồ chỉ vị trí cơ sở, không xác nhận cổng tiếp nhận cấp cứu.",
+        "verified_at": "2026-11-16T00:00:00Z",
+        "is_active": true
+      },
+      "evidence": {
+        "contact_urls": ["https://bvcdn.org.vn/", "https://1022.vn/benh-vien-trung-tam-y-te/"],
+        "map_url": "https://www.google.com/maps/place/Bệnh+viện+C+Đà+Nẵng/@16.0745626,108.2140297,580m/data=!3m1!1e3!4m10!1m2!2m1!1zYuG7h25oIHZp4buHbiBj!3m6!1s0x31421837006dcfe5:0xbf2eb697d63ead8c!8m2!3d16.0725819!4d108.2165749!15sCg9i4buHbmggdmnhu4duIGOSAQhob3NwaXRhbOABAA!16s/m/0jt2qcs",
+        "coordinate_basis": "Tọa độ place !3d/!4d trong liên kết cơ sở do 1022 cung cấp; không dùng tâm viewport @.",
+        "phone_kind": "OFFICE",
+        "emergency_24h_basis": null,
+        "pending": []
+      }
+    },
+    {
+      "key": "danang-military-hospital-17",
+      "facility": {
+        "name": "Bệnh viện Quân y 17",
+        "region_code": "VN-DN",
+        "address": "02 Nguyễn Hữu Thọ, phường Hòa Cường, thành phố Đà Nẵng",
+        "phone": "069775170",
+        "latitude": 16.0541335,
+        "longitude": 108.2084847,
+        "emergency_24h": "UNKNOWN",
+        "verification_note": "Đối chiếu website Bệnh viện Quân y 17 và danh bạ 1022. Số công khai hỗ trợ khách hàng; chưa xác minh đường dây cấp cứu 24/7. Tọa độ là vị trí cơ sở, không phải xác nhận cổng cấp cứu.",
+        "verified_at": "2026-11-16T00:00:00Z",
+        "is_active": true
+      },
+      "evidence": {
+        "contact_urls": ["https://benhvienquany17.com/", "https://1022.vn/benh-vien-trung-tam-y-te/"],
+        "map_url": "https://www.google.com/maps/place/Bệnh+Viện+Quân+Y+C17/@16.0541335,108.2059098,1098m/data=!3m2!1e3!4b1!4m6!3m5!1s0x31421969e90ce1c1:0xc2e894f451244e2b!8m2!3d16.0541335!4d108.2084847!16s/g/11s65bn7xg",
+        "coordinate_basis": "Tọa độ place !3d/!4d từ bản đồ 1022 liên kết; đối chiếu tên và địa chỉ website bệnh viện.",
+        "phone_kind": "CONTACT",
+        "emergency_24h_basis": null,
+        "pending": []
+      }
+    },
+    {
+      "key": "danang-family-hospital",
+      "facility": {
+        "name": "Bệnh viện Đa khoa Gia Đình",
+        "region_code": "VN-DN",
+        "address": "73 Nguyễn Hữu Thọ, thành phố Đà Nẵng",
+        "phone": "02363632333",
+        "latitude": 16.051289,
+        "longitude": 108.210203,
+        "emergency_24h": "YES",
+        "verification_note": "Trang liên hệ FAMILY công bố số cấp cứu 0236.3632.333 hoạt động 24/7. Vị trí lấy từ bản đồ Family Hospital trên chính trang liên hệ. Chưa xác minh thực địa cổng tiếp nhận.",
+        "verified_at": "2026-11-16T00:00:00Z",
+        "is_active": true
+      },
+      "evidence": {
+        "contact_urls": ["https://familyhospital.vn/lien-he/"],
+        "map_url": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15337.094162299145!2d108.210203!3d16.051289!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x314219beb8af586d:0xc2732f3d09cd14bb!2sFamily+Hospital!5e0!3m2!1sen!2s!4v1544174739272",
+        "coordinate_basis": "Điểm hiển thị của iframe thứ hai, nhãn Family Hospital, trên website cơ sở. Iframe thứ nhất là Trung tâm Bác sĩ Gia đình và không dùng ở đây.",
+        "phone_kind": "EMERGENCY",
+        "emergency_24h_basis": "Trang liên hệ ghi Cấp cứu 0236.3632.333 (24/7).",
+        "pending": []
+      }
+    },
+    {
+      "key": "danang-hospital-199",
+      "facility": {
+        "name": "Bệnh viện 199",
+        "region_code": "VN-DN",
+        "address": "126 Nguyễn Công Trứ, phường An Hải, thành phố Đà Nẵng",
+        "phone": "02363985276",
+        "latitude": null,
+        "longitude": null,
+        "emergency_24h": "UNKNOWN",
+        "verification_note": "Chỉ đối chiếu được thông tin liên hệ trên 1022. Liên kết bản đồ tại mục này trỏ sang Bệnh viện Phục hồi chức năng; giữ inactive để kiểm lại vị trí.",
+        "verified_at": null,
+        "is_active": false
+      },
+      "evidence": {
+        "contact_urls": ["https://1022.vn/benh-vien-trung-tam-y-te/"],
+        "map_url": null,
+        "coordinate_basis": null,
+        "phone_kind": "CONTACT",
+        "emergency_24h_basis": null,
+        "pending": ["Lấy và xác minh bản đồ đúng cơ sở từ website Bệnh viện 199.", "Đối chiếu lại số liên hệ trực tiếp trước khi kích hoạt."]
+      }
+    },
+    {
+      "key": "danang-general-hospital",
+      "facility": {
+        "name": "Bệnh viện Đà Nẵng",
+        "region_code": "VN-DN",
+        "address": "103 Quang Trung, phường Hải Châu, thành phố Đà Nẵng",
+        "phone": "02363821118",
+        "latitude": 16.0735901,
+        "longitude": 108.2152494,
+        "emergency_24h": "UNKNOWN",
+        "verification_note": "Danh bạ 1022 ghi địa chỉ 103 Quang Trung nhưng nhãn bản đồ là 124 Hải Phòng. Chưa xác minh địa chỉ/cổng tiếp nhận phù hợp, giữ inactive.",
+        "verified_at": null,
+        "is_active": false
+      },
+      "evidence": {
+        "contact_urls": ["https://1022.vn/benh-vien-trung-tam-y-te/"],
+        "map_url": "https://www.google.com/maps/place/Bệnh+viện+Đà+Nẵng/@16.0732061,108.215286,201m/data=!3m1!1e3!4m15!1m8!3m7!1s0x31421837a5cd560b:0xdf7a2dd9e7a83893!2zMTAzIFF1YW5nIFRydW5nLCBI4bqjaSBDaMOidSwgxJDDoCBO4bq1bmcgNTUwMDAwLCBWaeG7h3QgTmFt!3b1!8m2!3d16.0737664!4d108.2165764!16s/g/11g2wmmxxm!3m5!1s0x3142183647beb45b:0x2b7c055c22c6c77b!8m2!3d16.0735901!4d108.2152494!16s/m/0jkz8zw",
+        "coordinate_basis": "Place bệnh viện trong liên kết 1022; không lấy tọa độ riêng của địa chỉ 103 Quang Trung trong cùng URL.",
+        "phone_kind": "CONTACT",
+        "emergency_24h_basis": null,
+        "pending": ["Xác minh địa chỉ/cổng tiếp nhận trên website cơ sở hoặc trực tiếp trước khi kích hoạt."]
+      }
+    }
+  ]
+}
