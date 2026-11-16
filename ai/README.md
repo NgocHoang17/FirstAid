@@ -60,6 +60,9 @@ Dịch vụ chỉ lắng nghe localhost hoặc mạng riêng. Không mở trực
 ```powershell
 .venv/Scripts/python.exe -m pytest -q
 .venv/Scripts/python.exe evaluation/run.py
+.venv/Scripts/python.exe tools/smoke.py
 ```
+
+Smoke test tự mở FastAPI trên cổng localhost tạm, kiểm request HTTP rồi tắt tiến trình. Không kết nối Spring hoặc database.
 
 Đọc [phương pháp đánh giá](evaluation/README.md). Kiểm tích hợp cuối cần backend/database thật, cùng bộ bài public, ID và revision. Bộ tham khảo trong mobile không tự thay seed DRAFT của backend. Không nới điều kiện kiểm citation để làm demo chạy.
