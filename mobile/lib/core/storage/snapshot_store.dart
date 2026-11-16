@@ -10,30 +10,49 @@ abstract interface class SnapshotStore {
 }
 
 class SqliteSnapshotStore implements SnapshotStore {
+  SqliteSnapshotStore({
+    DatabaseFactory? factory,
+    this.path = 'firstaid_content.db',
+  }) : _factory = factory;
+  final DatabaseFactory? _factory;
+  final String path;
   static final instance = SqliteSnapshotStore();
   Future<Database>? _opening;
-  Future<Database> get _database => _opening ??= _open();
+  Future<Database> get _database =>
+      _opening ??= _open().catchError((Object error) {
+        _opening = null;
+        throw error;
+      });
+
+  Future<void> close() async {
+    final pending = _opening;
+    if (pending != null) await (await pending).close();
+    _opening = null;
+  }
 
   Future<Database> _open() async {
-    if (kIsWeb ||
-        !{
-          TargetPlatform.android,
-          TargetPlatform.iOS,
-          TargetPlatform.macOS,
-        }.contains(defaultTargetPlatform)) {
+    if (_factory == null &&
+        (kIsWeb ||
+            !{
+              TargetPlatform.android,
+              TargetPlatform.iOS,
+              TargetPlatform.macOS,
+            }.contains(defaultTargetPlatform))) {
       throw UnsupportedError('Persistent storage requires a mobile device.');
     }
-    return openDatabase(
-      'firstaid_content.db',
-      version: 1,
-      onCreate: (db, _) async {
-        await db.execute(
-          'CREATE TABLE snapshot (id INTEGER PRIMARY KEY CHECK(id = 1), payload TEXT NOT NULL)',
-        );
-        await db.execute(
-          'CREATE TABLE facilities (region TEXT PRIMARY KEY, payload TEXT NOT NULL)',
-        );
-      },
+    return (_factory ?? databaseFactory).openDatabase(
+      path,
+      options: OpenDatabaseOptions(
+        version: 1,
+        onCreate: (db, _) async {
+          await db.execute(
+            'CREATE TABLE snapshot (id INTEGER PRIMARY KEY CHECK(id = 1), payload TEXT NOT NULL)',
+          );
+          await db.execute(
+            'CREATE TABLE facilities (region TEXT PRIMARY KEY, payload TEXT NOT NULL)',
+          );
+        },
+      ),
     );
   }
 
