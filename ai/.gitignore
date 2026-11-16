@@ -1,0 +1,5 @@
+data/index/
+data/raw/
+data/extracted/
+.pytest_cache/
+evaluation/results*.json
