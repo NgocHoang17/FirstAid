@@ -64,9 +64,15 @@ class MemoryStore implements SnapshotStore {
   @override
   Future<String?> readFacilities(String region) async => directories[region];
   @override
-  Future<void> replaceFacilities(String region, String data) async {
+  Future<bool> replaceFacilities(
+    String region,
+    String data, {
+    required String? snapshotAtRequest,
+  }) async {
     if (failWrite) throw StateError('write failed');
+    if (snapshot != snapshotAtRequest) return false;
     directories[region] = data;
+    return true;
   }
 }
 

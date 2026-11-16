@@ -24,7 +24,11 @@ void main() {
       });
       final old = jsonEncode(testSnapshot());
       await store.replace(old);
-      await store.replaceFacilities('VN-PILOT', jsonEncode([testFacility()]));
+      await store.replaceFacilities(
+        'VN-PILOT',
+        jsonEncode([testFacility()]),
+        snapshotAtRequest: old,
+      );
       await store.close();
       expect(await store.read(), old);
       expect(await store.readFacilities('VN-PILOT'), isNotNull);
@@ -43,6 +47,24 @@ void main() {
       await store.close();
       expect(jsonDecode((await store.read())!)['data_version'], 'new');
       expect(await store.readFacilities('VN-PILOT'), isNull);
+      expect(
+        await store.replaceFacilities(
+          'VN-PILOT',
+          jsonEncode([testFacility()]),
+          snapshotAtRequest: old,
+        ),
+        false,
+      );
+      expect(await store.readFacilities('VN-PILOT'), isNull);
+      expect(
+        await store.replaceFacilities(
+          'VN-PILOT',
+          '[]',
+          snapshotAtRequest: await store.read(),
+        ),
+        true,
+      );
+      expect(await store.readFacilities('VN-PILOT'), '[]');
     },
   );
   test(

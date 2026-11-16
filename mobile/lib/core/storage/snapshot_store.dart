@@ -6,7 +6,11 @@ abstract interface class SnapshotStore {
   Future<String?> read();
   Future<void> replace(String snapshot);
   Future<String?> readFacilities(String region);
-  Future<void> replaceFacilities(String region, String facilities);
+  Future<bool> replaceFacilities(
+    String region,
+    String facilities, {
+    required String? snapshotAtRequest,
+  });
 }
 
 class SqliteSnapshotStore implements SnapshotStore {
@@ -95,13 +99,28 @@ class SqliteSnapshotStore implements SnapshotStore {
   }
 
   @override
-  Future<void> replaceFacilities(String region, String facilities) async {
+  Future<bool> replaceFacilities(
+    String region,
+    String facilities, {
+    required String? snapshotAtRequest,
+  }) async {
     final db = await _database;
-    await db.transaction(
-      (txn) => txn.insert('facilities', {
+    return db.transaction((txn) async {
+      final rows = await txn.query(
+        'snapshot',
+        where: 'id = ?',
+        whereArgs: [1],
+        limit: 1,
+      );
+      final current = rows.isEmpty ? null : rows.first['payload'] as String;
+      // A delayed directory response must not resurrect a facility removed by
+      // a newer full snapshot. Compare and write in the same transaction.
+      if (current != snapshotAtRequest) return false;
+      await txn.insert('facilities', {
         'region': region,
         'payload': facilities,
-      }, conflictAlgorithm: ConflictAlgorithm.replace),
-    );
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
+      return true;
+    });
   }
 }
