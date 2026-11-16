@@ -9,6 +9,7 @@ import 'package:mobile/features/assistant/presentation/assistant_page.dart';
 import 'package:mobile/features/facilities/data/facility.dart';
 import 'package:mobile/features/facilities/presentation/facilities_page.dart';
 import 'package:mobile/features/first_aid/presentation/reference_article_view.dart';
+import 'package:mobile/features/first_aid/presentation/quick_aid_pages.dart';
 import 'package:mobile/features/home/presentation/mobile_shell.dart';
 import 'package:mobile/features/settings/data/content_update_cubit.dart';
 import 'support/mobile_fakes.dart';
@@ -95,6 +96,56 @@ void main() {
       expect(jsonDecode(store.snapshot!)['data_version'], 'test-v1');
     },
   );
+  for (final age in [null, 'CHILD', 'ADULT']) {
+    testWidgets(
+      'Chat does not open an age-specific article for an unknown or different audience: $age',
+      (tester) async {
+        final cubit = ContentUpdateCubit(
+          api: FakeApi(),
+          store: MemoryStore()..snapshot = jsonEncode(testSnapshot()),
+        );
+        await cubit.load();
+        addTearDown(cubit.close);
+        final article = cubit.state.library!.articles.firstWhere(
+          (a) => a.ageGroup == 'ADULT',
+        );
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: AppTheme.lightTheme,
+            home: BlocProvider.value(
+              value: cubit,
+              child: Scaffold(
+                body: ChatReplyView(
+                  turn: ChatTurn(
+                    'Kiến thức CPR',
+                    age,
+                    reply: ChatReply(
+                      status: ChatStatus.answered,
+                      blocks: ['Nội dung kiểm thử'],
+                      articleId: article.id,
+                      categoryCode: 'FA02',
+                    ),
+                  ),
+                  api: FakeApi(),
+                  onKnowledge: () {},
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.tap(find.text('Xem bài liên quan'));
+        await tester.pumpAndSettle();
+        expect(
+          find.byType(ReferenceArticleView),
+          age == 'ADULT' ? findsOneWidget : findsNothing,
+        );
+        expect(
+          find.byType(AudiencePage),
+          age == 'ADULT' ? findsNothing : findsOneWidget,
+        );
+      },
+    );
+  }
   for (final status in ChatStatus.values) {
     testWidgets(
       'Chat ${status.name} is readable at large text and only emergency displays a call',

@@ -182,6 +182,35 @@ void main() {
     },
   );
   test(
+    'A delayed directory request cannot restore facilities removed by a snapshot',
+    () async {
+      final store = MemoryStore()..snapshot = jsonEncode(testSnapshot());
+      final pending = Completer<void>();
+      final started = Completer<void>();
+      final api = FakeApi()
+        ..onGet = (_, _, _) async {
+          started.complete();
+          await pending.future;
+          return response({
+            'items': [testFacility()],
+          });
+        };
+      final cubit = FacilitiesCubit(api: api, store: store);
+      addTearDown(cubit.close);
+      await cubit.loadLocal();
+      final refreshing = cubit.refresh();
+      await started.future;
+      await store.replace(
+        jsonEncode(testSnapshot(version: 'removed-facilities')),
+      );
+      pending.complete();
+      await refreshing;
+      expect(cubit.state.items, isEmpty);
+      expect(cubit.state.refreshing, false);
+      expect(store.directories, isEmpty);
+    },
+  );
+  test(
     'Directory requests location only after a user action, and keeps cached data on failure',
     () async {
       final store = MemoryStore()

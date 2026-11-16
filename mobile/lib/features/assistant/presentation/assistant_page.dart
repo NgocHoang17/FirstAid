@@ -190,7 +190,7 @@ class ChatReplyView extends StatelessWidget {
         (a) =>
             a.id == reply.articleId &&
             a.isPublic &&
-            (turn.age == null || a.ageGroup == turn.age || a.ageGroup == 'ALL'),
+            (a.ageGroup == turn.age || a.ageGroup == 'ALL'),
       );
       if (matches.length == 1) {
         openPage(

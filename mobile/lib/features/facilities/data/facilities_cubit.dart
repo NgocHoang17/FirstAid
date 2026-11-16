@@ -88,7 +88,9 @@ class FacilitiesCubit extends Cubit<FacilityState> {
   final PublicApi api;
   final SnapshotStore store;
   final LocationService locationService;
+  int _loadGeneration = 0;
   Future<void> loadLocal() async {
+    final generation = ++_loadGeneration;
     try {
       final cached = await store.readFacilities(AppEnvironment.regionCode);
       final snapshot = cached == null ? await store.read() : null;
@@ -100,13 +102,13 @@ class FacilitiesCubit extends Cubit<FacilityState> {
       final items = Facility.parseList(
         rows,
       ).where((f) => f.region == AppEnvironment.regionCode).toList();
-      if (!isClosed) {
+      if (!isClosed && generation == _loadGeneration) {
         emit(
           FacilityState(items: items, loading: false, location: state.location),
         );
       }
     } catch (_) {
-      if (!isClosed) {
+      if (!isClosed && generation == _loadGeneration) {
         emit(
           FacilityState(
             items: state.items,
@@ -122,6 +124,7 @@ class FacilitiesCubit extends Cubit<FacilityState> {
 
   Future<void> refresh() async {
     if (state.refreshing || state.locating) return;
+    final generation = ++_loadGeneration;
     final before = state;
     emit(
       FacilityState(
@@ -133,26 +136,41 @@ class FacilitiesCubit extends Cubit<FacilityState> {
       ),
     );
     try {
+      String? snapshotAtRequest;
+      var canSave = true;
+      try {
+        snapshotAtRequest = await store.read();
+      } catch (_) {
+        canSave = false;
+      }
       final response = await api.get(
         '/facilities',
         query: {'region_code': AppEnvironment.regionCode},
       );
+      if (isClosed || generation != _loadGeneration) return;
       final rows = (response.data as Map)['data']['items'] as List;
       final items = Facility.parseList(rows);
       if (items.length > 100 ||
           items.any((f) => f.region != AppEnvironment.regionCode)) {
         throw const FormatException('Invalid directory scope');
       }
-      var saved = true;
+      var saved = false;
       try {
-        await store.replaceFacilities(
-          AppEnvironment.regionCode,
-          jsonEncode(rows),
-        );
+        if (canSave) {
+          saved = await store.replaceFacilities(
+            AppEnvironment.regionCode,
+            jsonEncode(rows),
+            snapshotAtRequest: snapshotAtRequest,
+          );
+          if (!saved) {
+            if (!isClosed && generation == _loadGeneration) await loadLocal();
+            return;
+          }
+        }
       } catch (_) {
         saved = false;
       }
-      if (!isClosed) {
+      if (!isClosed && generation == _loadGeneration) {
         emit(
           FacilityState(
             items: items,
@@ -167,7 +185,7 @@ class FacilitiesCubit extends Cubit<FacilityState> {
         );
       }
     } catch (error) {
-      if (!isClosed) {
+      if (!isClosed && generation == _loadGeneration) {
         emit(
           FacilityState(
             items: before.items,

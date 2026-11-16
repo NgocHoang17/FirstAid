@@ -151,6 +151,7 @@ class ReferenceLibrary {
         'review_notice': '',
       }),
       requireCategoryArticles: false,
+      requireAllCategories: false,
     );
   }
   List<ReferenceArticle> forCategory(String code) =>
@@ -160,6 +161,7 @@ class ReferenceLibrary {
     String text, {
     bool includeDrafts = false,
     bool requireCategoryArticles = true,
+    bool requireAllCategories = true,
   }) {
     final data = jsonDecode(text) as Map<String, dynamic>;
     if (data['schema_version'] != 2 ||
@@ -210,7 +212,7 @@ class ReferenceLibrary {
       }
       categories[category.code] = category;
     }
-    if (categories.length != 18) {
+    if (requireAllCategories && categories.length != 18) {
       throw const FormatException('Expected 18 categories');
     }
     final articles = <ReferenceArticle>[];

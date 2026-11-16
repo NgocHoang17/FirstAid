@@ -115,6 +115,7 @@ class ContentUpdateCubit extends Cubit<ContentState> {
         if (before.downloadedAt == null) {
           throw const FormatException('No downloaded snapshot');
         }
+        if (isClosed) return;
         emit(
           ContentState(
             library: before.library,
@@ -130,6 +131,10 @@ class ContentUpdateCubit extends Cubit<ContentState> {
         (response.data as Map)['data'] as Map,
       );
       final library = validateSnapshot(data);
+      final etag = response.headers.value('etag');
+      if (etag != null && etag != '"${data['data_version']}"') {
+        throw const FormatException('Snapshot version does not match ETag');
+      }
       final downloaded = DateTime.now().toUtc().toIso8601String();
       data['_downloaded_at'] = downloaded;
       await store.replace(jsonEncode(data));

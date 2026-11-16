@@ -6,34 +6,57 @@ abstract interface class SnapshotStore {
   Future<String?> read();
   Future<void> replace(String snapshot);
   Future<String?> readFacilities(String region);
-  Future<void> replaceFacilities(String region, String facilities);
+  Future<bool> replaceFacilities(
+    String region,
+    String facilities, {
+    required String? snapshotAtRequest,
+  });
 }
 
 class SqliteSnapshotStore implements SnapshotStore {
+  SqliteSnapshotStore({
+    DatabaseFactory? factory,
+    this.path = 'firstaid_content.db',
+  }) : _factory = factory;
+  final DatabaseFactory? _factory;
+  final String path;
   static final instance = SqliteSnapshotStore();
   Future<Database>? _opening;
-  Future<Database> get _database => _opening ??= _open();
+  Future<Database> get _database =>
+      _opening ??= _open().catchError((Object error) {
+        _opening = null;
+        throw error;
+      });
+
+  Future<void> close() async {
+    final pending = _opening;
+    if (pending != null) await (await pending).close();
+    _opening = null;
+  }
 
   Future<Database> _open() async {
-    if (kIsWeb ||
-        !{
-          TargetPlatform.android,
-          TargetPlatform.iOS,
-          TargetPlatform.macOS,
-        }.contains(defaultTargetPlatform)) {
+    if (_factory == null &&
+        (kIsWeb ||
+            !{
+              TargetPlatform.android,
+              TargetPlatform.iOS,
+              TargetPlatform.macOS,
+            }.contains(defaultTargetPlatform))) {
       throw UnsupportedError('Persistent storage requires a mobile device.');
     }
-    return openDatabase(
-      'firstaid_content.db',
-      version: 1,
-      onCreate: (db, _) async {
-        await db.execute(
-          'CREATE TABLE snapshot (id INTEGER PRIMARY KEY CHECK(id = 1), payload TEXT NOT NULL)',
-        );
-        await db.execute(
-          'CREATE TABLE facilities (region TEXT PRIMARY KEY, payload TEXT NOT NULL)',
-        );
-      },
+    return (_factory ?? databaseFactory).openDatabase(
+      path,
+      options: OpenDatabaseOptions(
+        version: 1,
+        onCreate: (db, _) async {
+          await db.execute(
+            'CREATE TABLE snapshot (id INTEGER PRIMARY KEY CHECK(id = 1), payload TEXT NOT NULL)',
+          );
+          await db.execute(
+            'CREATE TABLE facilities (region TEXT PRIMARY KEY, payload TEXT NOT NULL)',
+          );
+        },
+      ),
     );
   }
 
@@ -76,13 +99,28 @@ class SqliteSnapshotStore implements SnapshotStore {
   }
 
   @override
-  Future<void> replaceFacilities(String region, String facilities) async {
+  Future<bool> replaceFacilities(
+    String region,
+    String facilities, {
+    required String? snapshotAtRequest,
+  }) async {
     final db = await _database;
-    await db.transaction(
-      (txn) => txn.insert('facilities', {
+    return db.transaction((txn) async {
+      final rows = await txn.query(
+        'snapshot',
+        where: 'id = ?',
+        whereArgs: [1],
+        limit: 1,
+      );
+      final current = rows.isEmpty ? null : rows.first['payload'] as String;
+      // A delayed directory response must not resurrect a facility removed by
+      // a newer full snapshot. Compare and write in the same transaction.
+      if (current != snapshotAtRequest) return false;
+      await txn.insert('facilities', {
         'region': region,
         'payload': facilities,
-      }, conflictAlgorithm: ConflictAlgorithm.replace),
-    );
+      }, conflictAlgorithm: ConflictAlgorithm.replace);
+      return true;
+    });
   }
 }
