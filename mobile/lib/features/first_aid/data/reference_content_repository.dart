@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import '../../../core/storage/snapshot_store.dart';
+import '../../../core/storage/bundled_snapshot.dart';
 
 class ReferenceSource {
   ReferenceSource(this.json);
@@ -299,7 +299,7 @@ class ReferenceLibrary {
 }
 
 class ReferenceContentRepository {
-  // Editorial drafts are visible in debug builds only until human content review.
+  // Editorial source data used by content tooling and source validation.
   static Future<String> bundledText() async {
     final bytes = await rootBundle.load(
       'assets/content/reference_library.json',
@@ -321,9 +321,6 @@ class ReferenceContentRepository {
     } catch (_) {
       /* Keep the bundled copy accessible if storage is unreadable. */
     }
-    return ReferenceLibrary.parse(
-      await bundledText(),
-      includeDrafts: kDebugMode,
-    );
+    return ReferenceLibrary.fromSnapshot(await BundledSnapshot.load());
   }
 }

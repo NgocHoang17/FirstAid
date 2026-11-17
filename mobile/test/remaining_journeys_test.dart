@@ -6,8 +6,6 @@ import 'package:mobile/app.dart';
 import 'package:mobile/core/theme/app_theme.dart';
 import 'package:mobile/features/assistant/data/assistant_cubit.dart';
 import 'package:mobile/features/assistant/presentation/assistant_page.dart';
-import 'package:mobile/features/facilities/data/facility.dart';
-import 'package:mobile/features/facilities/presentation/facilities_page.dart';
 import 'package:mobile/features/first_aid/presentation/reference_article_view.dart';
 import 'package:mobile/features/first_aid/presentation/quick_aid_pages.dart';
 import 'package:mobile/features/home/presentation/mobile_shell.dart';
@@ -73,7 +71,8 @@ void main() {
       await tester.pumpWidget(MyApp(api: FakeApi(), store: store));
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
-      for (final label in ['Kiến thức', 'Hỏi đáp', 'Cơ sở y tế']) {
+      expect(find.text('Cơ sở y tế'), findsNothing);
+      for (final label in ['Kiến thức', 'Hỏi đáp']) {
         await tab(tester, label);
         expect(tester.takeException(), isNull, reason: label);
       }
@@ -192,42 +191,4 @@ void main() {
       },
     );
   }
-  testWidgets(
-    'Failed facility dialer and map show usable phone and address fallbacks',
-    (tester) async {
-      narrow(tester);
-      final actions = FailedActions();
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: AppTheme.lightTheme,
-          home: FacilityDetailPage(
-            facility: Facility.parseList([testFacility()]).single,
-            actions: actions,
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(
-        find.text('Gọi cơ sở'),
-        300,
-        scrollable: find.byType(Scrollable).first,
-      );
-      await tester.tap(find.text('Gọi cơ sở'));
-      await tester.pumpAndSettle();
-      expect(
-        find.textContaining('Không mở được ứng dụng gọi.'),
-        findsOneWidget,
-      );
-      await tester.scrollUntilVisible(
-        find.text('Mở bản đồ'),
-        300,
-        scrollable: find.byType(Scrollable).first,
-      );
-      await tester.tap(find.text('Mở bản đồ'));
-      await tester.pumpAndSettle();
-      expect(find.textContaining('Không mở được bản đồ.'), findsOneWidget);
-      expect(actions.opened.last.host, 'www.google.com');
-      expect(tester.takeException(), isNull);
-    },
-  );
 }

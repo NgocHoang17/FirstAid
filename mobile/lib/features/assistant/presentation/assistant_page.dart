@@ -52,6 +52,7 @@ class _AssistantPageState extends State<AssistantPage> {
         children: [
           const FeatureHeader(
             'Hỏi đáp từ tài liệu',
+            icon: Icons.forum_outlined,
             subtitle:
                 'Mỗi câu hỏi được xử lý độc lập. Không dùng để chẩn đoán. Không nhập thông tin cá nhân.',
           ),
@@ -72,6 +73,7 @@ class _AssistantPageState extends State<AssistantPage> {
               'Bạn muốn tìm hiểu điều gì?',
               'Nhập câu hỏi về kiến thức sơ cứu cơ bản.',
               color: AppColors.tint,
+              icon: Icons.chat_bubble_outline_rounded,
             ),
             sectionGap,
             for (final suggestion in [

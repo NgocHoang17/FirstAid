@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../first_aid/data/reference_content_repository.dart';
-import '../../facilities/data/facility.dart';
 import '../../../core/network/app_services.dart';
 import '../../../core/storage/snapshot_store.dart';
+import '../../../core/storage/bundled_snapshot.dart';
 
 enum UpdateStatus { idle, loading, updating, unchanged, success, failed }
 
@@ -39,13 +38,18 @@ class ContentUpdateCubit extends Cubit<ContentState> {
       } catch (_) {
         saved = null;
       }
-      final data =
-          saved ??
-          jsonDecode(await ReferenceContentRepository.bundledText())
-              as Map<String, dynamic>;
-      final library = saved == null
-          ? ReferenceLibrary.parse(jsonEncode(data), includeDrafts: kDebugMode)
-          : ReferenceLibrary.fromSnapshot(data);
+      final data = saved ?? await BundledSnapshot.load();
+      final library =
+          saved == null && data['region_code'] != AppEnvironment.regionCode
+          ? ReferenceLibrary.fromSnapshot({...data, 'facilities': <dynamic>[]})
+          : validateSnapshot(data);
+      if (saved == null && data['region_code'] == AppEnvironment.regionCode) {
+        try {
+          await store.replace(jsonEncode(data));
+        } catch (_) {
+          // The validated shipped data remains readable if storage is unavailable.
+        }
+      }
       if (!isClosed) {
         emit(
           ContentState(
@@ -82,11 +86,8 @@ class ContentUpdateCubit extends Cubit<ContentState> {
     if (config['locale'] != 'vi-VN' || config['emergency_number'] != '115') {
       throw const FormatException('Unsupported local configuration');
     }
-    final facilities = Facility.parseList(data['facilities'] as List);
-    if (facilities.length > 100 ||
-        facilities.any((f) => f.region != data['region_code'])) {
-      throw const FormatException('Invalid facility region');
-    }
+    // V1 directory fields are ignored; they are outside the education scope.
+    data['facilities'] = <dynamic>[];
     return ReferenceLibrary.fromSnapshot(data);
   }
 

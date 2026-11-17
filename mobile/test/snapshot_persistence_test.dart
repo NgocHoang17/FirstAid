@@ -10,7 +10,48 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   sqfliteFfiInit();
   test(
-    'SQLite replacement survives reopening and rolls back both caches on failure',
+    'Upgrading the old directory database preserves saved learning content',
+    () async {
+      final dir = await Directory.systemTemp.createTemp('firstaid-upgrade-');
+      final path = '${dir.path}/content.db';
+      final payload = jsonEncode(testSnapshot());
+      final old = await databaseFactoryFfi.openDatabase(
+        path,
+        options: OpenDatabaseOptions(
+          version: 1,
+          onCreate: (db, _) async {
+            await db.execute(
+              'CREATE TABLE snapshot (id INTEGER PRIMARY KEY, payload TEXT NOT NULL)',
+            );
+            await db.execute(
+              'CREATE TABLE facilities (region TEXT PRIMARY KEY, payload TEXT NOT NULL)',
+            );
+            await db.insert('snapshot', {'id': 1, 'payload': payload});
+            await db.insert('facilities', {'region': 'old', 'payload': '[]'});
+          },
+        ),
+      );
+      await old.close();
+      final store = SqliteSnapshotStore(
+        factory: databaseFactoryFfi,
+        path: path,
+      );
+      addTearDown(() async {
+        await store.close();
+        await dir.delete(recursive: true);
+      });
+      expect(await store.read(), payload);
+      final db = await databaseFactoryFfi.openDatabase(path);
+      expect(
+        await db.rawQuery(
+          "SELECT name FROM sqlite_master WHERE type='table' AND name='facilities'",
+        ),
+        isEmpty,
+      );
+    },
+  );
+  test(
+    'SQLite replacement survives reopening and rolls back content on failure',
     () async {
       final dir = await Directory.systemTemp.createTemp('firstaid-sqlite-');
       final path = '${dir.path}/content.db';
@@ -24,47 +65,21 @@ void main() {
       });
       final old = jsonEncode(testSnapshot());
       await store.replace(old);
-      await store.replaceFacilities(
-        'VN-PILOT',
-        jsonEncode([testFacility()]),
-        snapshotAtRequest: old,
-      );
       await store.close();
       expect(await store.read(), old);
-      expect(await store.readFacilities('VN-PILOT'), isNotNull);
       final db = await databaseFactoryFfi.openDatabase(path);
       await db.execute(
-        "CREATE TRIGGER fail_cache_clear BEFORE DELETE ON facilities BEGIN SELECT RAISE(ABORT, 'test disk failure'); END",
+        "CREATE TRIGGER fail_snapshot_write BEFORE INSERT ON snapshot BEGIN SELECT RAISE(ABORT, 'test disk failure'); END",
       );
       await expectLater(
         store.replace(jsonEncode(testSnapshot(version: 'new'))),
         throwsA(anything),
       );
       expect(await store.read(), old);
-      expect(await store.readFacilities('VN-PILOT'), isNotNull);
-      await db.execute('DROP TRIGGER fail_cache_clear');
+      await db.execute('DROP TRIGGER fail_snapshot_write');
       await store.replace(jsonEncode(testSnapshot(version: 'new')));
       await store.close();
       expect(jsonDecode((await store.read())!)['data_version'], 'new');
-      expect(await store.readFacilities('VN-PILOT'), isNull);
-      expect(
-        await store.replaceFacilities(
-          'VN-PILOT',
-          jsonEncode([testFacility()]),
-          snapshotAtRequest: old,
-        ),
-        false,
-      );
-      expect(await store.readFacilities('VN-PILOT'), isNull);
-      expect(
-        await store.replaceFacilities(
-          'VN-PILOT',
-          '[]',
-          snapshotAtRequest: await store.read(),
-        ),
-        true,
-      );
-      expect(await store.readFacilities('VN-PILOT'), '[]');
     },
   );
   test(

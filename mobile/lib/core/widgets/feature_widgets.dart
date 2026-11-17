@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
-const pagePadding = EdgeInsets.all(24);
+const pagePadding = EdgeInsets.all(20);
 const sectionGap = SizedBox(height: 16);
 
 class FeatureHeader extends StatelessWidget {
@@ -19,8 +19,13 @@ class FeatureHeader extends StatelessWidget {
     width: double.infinity,
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
-      color: AppColors.primaryDark,
-      borderRadius: BorderRadius.circular(24),
+      gradient: const LinearGradient(
+        colors: [AppColors.primaryDark, AppColors.primaryRaised],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(color: AppColors.primaryRaised),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,10 +48,10 @@ class FeatureHeader extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: AppColors.primaryRaised,
+                color: AppColors.accent,
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: Icon(icon, size: 24, color: AppColors.onPrimaryMuted),
+              child: Icon(icon, size: 24, color: AppColors.primaryDark),
             ),
           ],
         ),
@@ -88,7 +93,9 @@ class StatusCard extends StatelessWidget {
       color: warning ? AppColors.warning : AppColors.info,
       borderRadius: BorderRadius.circular(20),
       border: Border.all(
-        color: warning ? const Color(0xFFDDCBA3) : AppColors.border,
+        color: warning
+            ? AppColors.warningInk.withValues(alpha: .25)
+            : AppColors.border,
       ),
     ),
     child: Column(

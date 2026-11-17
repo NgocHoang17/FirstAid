@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile/features/assistant/data/assistant_cubit.dart';
-import 'package:mobile/features/facilities/data/facilities_cubit.dart';
-import 'package:mobile/features/facilities/data/facility.dart';
 import 'package:mobile/features/settings/data/content_update_cubit.dart';
 import 'package:mobile/features/first_aid/data/reference_content_repository.dart';
 import 'package:mobile/features/knowledge/presentation/knowledge_page.dart';
@@ -179,79 +177,6 @@ void main() {
       await cubit.send('Câu hỏi đầy đủ', 'CHILD', retry: true);
       expect(cubit.state.turns.length, 1);
       expect(cubit.state.turns.single.reply!.status, ChatStatus.outOfScope);
-    },
-  );
-  test(
-    'A delayed directory request cannot restore facilities removed by a snapshot',
-    () async {
-      final store = MemoryStore()..snapshot = jsonEncode(testSnapshot());
-      final pending = Completer<void>();
-      final started = Completer<void>();
-      final api = FakeApi()
-        ..onGet = (_, _, _) async {
-          started.complete();
-          await pending.future;
-          return response({
-            'items': [testFacility()],
-          });
-        };
-      final cubit = FacilitiesCubit(api: api, store: store);
-      addTearDown(cubit.close);
-      await cubit.loadLocal();
-      final refreshing = cubit.refresh();
-      await started.future;
-      await store.replace(
-        jsonEncode(testSnapshot(version: 'removed-facilities')),
-      );
-      pending.complete();
-      await refreshing;
-      expect(cubit.state.items, isEmpty);
-      expect(cubit.state.refreshing, false);
-      expect(store.directories, isEmpty);
-    },
-  );
-  test(
-    'Directory requests location only after a user action, and keeps cached data on failure',
-    () async {
-      final store = MemoryStore()
-        ..snapshot = jsonEncode({
-          ...testSnapshot(),
-          'facilities': [
-            testFacility(),
-            testFacility(
-              id: '00000000-0000-4000-8000-000000000402',
-              latitude: 17,
-            ),
-          ],
-        });
-      final location = FakeLocation();
-      final api = FakeApi();
-      final cubit = FacilitiesCubit(api: api, store: store, location: location);
-      addTearDown(cubit.close);
-      await cubit.loadLocal();
-      expect(location.requests, 0);
-      expect(cubit.state.items.length, 2);
-      location.issue = LocationIssue.permanentlyDenied;
-      await cubit.locate();
-      expect(cubit.state.issue, LocationIssue.permanentlyDenied);
-      expect(cubit.state.items.length, 2);
-      location.issue = null;
-      await cubit.locate();
-      expect(
-        cubit.state.ordered.first.distanceFrom(16.05, 108.2),
-        closeTo(0, .001),
-      );
-      await cubit.refresh();
-      expect(cubit.state.items.length, 2);
-      expect(cubit.state.message, isNotNull);
-      expect(
-        Facility.parseList([testFacility()..['is_active'] = false]),
-        isEmpty,
-      );
-      expect(
-        () => Facility.parseList([testFacility()..['verified_at'] = null]),
-        throwsA(anything),
-      );
     },
   );
 }

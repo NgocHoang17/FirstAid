@@ -105,39 +105,37 @@ class _ReferenceArticleViewState extends State<ReferenceArticleView> {
           const SizedBox(height: 24),
           if (learn)
             for (final item in article.steps) ...[
-              StepIllustration(
+              _ReferenceStepBlock(
                 step: item,
+                title: 'Bước ${item.position}. ${item.title}',
                 key: ValueKey('learn-${item.json['id']}'),
-              ),
-              Text(
-                'Bước ${item.position}. ${item.title}',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                item.instruction,
-                style: const TextStyle(fontSize: 18, height: 1.5),
               ),
               const SizedBox(height: 24),
             ]
           else ...[
             Text(
               'BƯỚC ${step + 1} / ${article.steps.length}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColors.primary,
+              ),
+            ),
+            const SizedBox(height: 10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: (step + 1) / article.steps.length,
+                minHeight: 5,
+                color: AppColors.accentInk,
+                backgroundColor: AppColors.tint,
+                semanticsLabel: 'Tiến trình hướng dẫn',
+              ),
             ),
             const SizedBox(height: 16),
-            StepIllustration(step: current, key: ValueKey(current.json['id'])),
-            Text(
-              current.title,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              current.instruction,
-              style: const TextStyle(fontSize: 18, height: 1.5),
+            _ReferenceStepBlock(
+              step: current,
+              title: current.title,
+              key: ValueKey(current.json['id']),
             ),
             const SizedBox(height: 24),
           ],
@@ -192,6 +190,45 @@ class _ReferenceArticleViewState extends State<ReferenceArticleView> {
       ),
     );
   }
+}
+
+class _ReferenceStepBlock extends StatelessWidget {
+  const _ReferenceStepBlock({
+    required this.step,
+    required this.title,
+    super.key,
+  });
+  final ReferenceStep step;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    container: true,
+    child: Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border.all(color: AppColors.border),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            step.instruction,
+            style: const TextStyle(fontSize: 18, height: 1.5),
+          ),
+          const SizedBox(height: 16),
+          StepIllustration(step: step),
+        ],
+      ),
+    ),
+  );
 }
 
 class ReferenceSourcesView extends StatelessWidget {

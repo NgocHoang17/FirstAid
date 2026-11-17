@@ -44,7 +44,10 @@ class SettingsPage extends StatelessWidget {
         return ListView(
           padding: pagePadding,
           children: [
-            const FeatureHeader('Dữ liệu ngoại tuyến'),
+            const FeatureHeader(
+              'Dữ liệu ngoại tuyến',
+              icon: Icons.cloud_done_outlined,
+            ),
             sectionGap,
             AidCard(
               'Bộ nội dung trên thiết bị',

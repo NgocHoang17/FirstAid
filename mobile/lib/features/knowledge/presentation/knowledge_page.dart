@@ -77,6 +77,7 @@ class _KnowledgePageState extends State<KnowledgePage> {
           children: [
             const FeatureHeader(
               'Kiến thức sơ cứu',
+              subtitle: 'Tìm hiểu để sẵn sàng giúp đỡ.',
               icon: Icons.menu_book_outlined,
             ),
             sectionGap,
@@ -174,6 +175,7 @@ class _KnowledgePageState extends State<KnowledgePage> {
                 AidCard(
                   article.title,
                   '${article.ageLabel}\n${article.summary}',
+                  icon: situationIcon(article.categoryCode),
                   onTap: () => openPage(
                     context,
                     ReferenceArticleView(

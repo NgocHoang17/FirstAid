@@ -105,7 +105,8 @@ void main() {
       expect(find.byType(StepIllustration), findsWidgets);
       expect(find.text('Bản tham khảo đang rà soát'), findsNothing);
       expect(api.requests, isEmpty);
-      expect(store.snapshot, isNull);
+      expect(jsonDecode(store.snapshot!)['articles'].length, 24);
+      expect(jsonDecode(store.snapshot!)['facilities'].length, 0);
       expect(tester.takeException(), isNull);
     },
   );

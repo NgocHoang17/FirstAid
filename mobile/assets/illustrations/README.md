@@ -15,5 +15,12 @@ injection technique or patient positioning. The complete written instructions,
 age limits and exceptions must remain visible. Captions and screen-reader labels
 are supplied offline with the drawings.
 
+The Admin illustration selector and preview read this same JSON catalogue.
+`admin/src/StepIllustration.tsx` renders SVG equivalents of `ReminderPainter`
+using the same coordinates and colors. When introducing a new `kind`, update
+both renderers; adding an asset with an existing kind requires only its JSON.
+Each reading view groups the step heading, instructions and its illustration
+together, so a following step's image cannot be mistaken for the preceding one.
+
 A missing or unsupported drawing must leave the written step available. Never
 infer a medical procedure from a diagram or generate a caption from a keyword.

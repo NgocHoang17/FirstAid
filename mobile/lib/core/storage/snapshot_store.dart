@@ -5,12 +5,6 @@ import 'package:sqflite/sqflite.dart';
 abstract interface class SnapshotStore {
   Future<String?> read();
   Future<void> replace(String snapshot);
-  Future<String?> readFacilities(String region);
-  Future<bool> replaceFacilities(
-    String region,
-    String facilities, {
-    required String? snapshotAtRequest,
-  });
 }
 
 class SqliteSnapshotStore implements SnapshotStore {
@@ -47,13 +41,15 @@ class SqliteSnapshotStore implements SnapshotStore {
     return (_factory ?? databaseFactory).openDatabase(
       path,
       options: OpenDatabaseOptions(
-        version: 1,
+        version: 2,
+        onUpgrade: (db, oldVersion, _) async {
+          if (oldVersion < 2) {
+            await db.execute('DROP TABLE IF EXISTS facilities');
+          }
+        },
         onCreate: (db, _) async {
           await db.execute(
             'CREATE TABLE snapshot (id INTEGER PRIMARY KEY CHECK(id = 1), payload TEXT NOT NULL)',
-          );
-          await db.execute(
-            'CREATE TABLE facilities (region TEXT PRIMARY KEY, payload TEXT NOT NULL)',
           );
         },
       ),
@@ -82,10 +78,6 @@ class SqliteSnapshotStore implements SnapshotStore {
   @override
   Future<String?> read() => _read('snapshot', 'id = ?', [1]);
   @override
-  Future<String?> readFacilities(String region) =>
-      _read('facilities', 'region = ?', [region]);
-
-  @override
   Future<void> replace(String snapshot) async {
     final db = await _database;
     await db.transaction((txn) async {
@@ -93,34 +85,6 @@ class SqliteSnapshotStore implements SnapshotStore {
         'id': 1,
         'payload': snapshot,
       }, conflictAlgorithm: ConflictAlgorithm.replace);
-      // A full snapshot also replaces any previously refreshed directory cache.
-      await txn.delete('facilities');
-    });
-  }
-
-  @override
-  Future<bool> replaceFacilities(
-    String region,
-    String facilities, {
-    required String? snapshotAtRequest,
-  }) async {
-    final db = await _database;
-    return db.transaction((txn) async {
-      final rows = await txn.query(
-        'snapshot',
-        where: 'id = ?',
-        whereArgs: [1],
-        limit: 1,
-      );
-      final current = rows.isEmpty ? null : rows.first['payload'] as String;
-      // A delayed directory response must not resurrect a facility removed by
-      // a newer full snapshot. Compare and write in the same transaction.
-      if (current != snapshotAtRequest) return false;
-      await txn.insert('facilities', {
-        'region': region,
-        'payload': facilities,
-      }, conflictAlgorithm: ConflictAlgorithm.replace);
-      return true;
     });
   }
 }
