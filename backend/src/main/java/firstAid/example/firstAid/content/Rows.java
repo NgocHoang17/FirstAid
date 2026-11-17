@@ -68,6 +68,8 @@ public class Rows {
         m.put("title", r.getString("title")); m.put("instruction", r.getString("instruction"));
         m.put("asset_key", r.getString("asset_key")); m.put("image_url", r.getString("image_url"));
         m.put("alt_text", r.getString("alt_text"));
+        m.put("image_layout", r.getString("image_layout"));
+        m.put("images", json.readValue(r.getString("images_json"), new TypeReference<List<Map<String,Object>>>() {}));
         return m;
     }
 

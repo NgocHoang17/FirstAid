@@ -146,6 +146,18 @@ public class ArticleService {
             if ((asset != null || image != null) && alt == null) throw ApiFailure.invalid("alt_text", "Ảnh cần mô tả");
             db.update("INSERT INTO article_steps(id,article_id,position,title,instruction,asset_key,image_url,alt_text) VALUES(?,?,?,?,?,?,?,?)",
                     id, articleId, position, title, instruction, asset, image, alt);
+            String layout = s.get("image_layout") == null ? "stacked" : Checks.value(s, "image_layout", Set.of("stacked","grid","carousel"));
+            List<Map<String,Object>> gallery = new ArrayList<>();
+            Set<UUID> mediaIds = new HashSet<>();
+            for (Map<String,Object> picture : Checks.objects(s, "images", 6)) {
+                UUID mediaId = Checks.uuid(picture, "media_id");
+                if (!mediaIds.add(mediaId) || db.queryForObject("SELECT count(*) FROM media_assets WHERE id=?", Long.class,mediaId)==0)
+                    throw ApiFailure.invalid("images", "Ảnh không tồn tại hoặc bị trùng");
+                gallery.add(Map.of("media_id",mediaId.toString(),"url","/api/v1/media/"+mediaId,
+                    "alt_text",Checks.text(picture,"alt_text",1000,true),
+                    "caption",empty(Checks.text(picture,"caption",1000,false))));
+            }
+            db.update("UPDATE article_steps SET image_layout=?,images_json=CAST(? AS jsonb) WHERE id=?",layout,rows.encode(gallery),id);
         }
     }
 
