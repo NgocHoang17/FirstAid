@@ -227,7 +227,7 @@ class FacilitiesCubit extends Cubit<FacilityState> {
         FacilityState(
           items: state.items,
           loading: false,
-          location: point ?? before.location,
+          location: point,
           issue: issue,
           cached: before.cached,
         ),
