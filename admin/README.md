@@ -74,6 +74,10 @@ Nguồn PDF cần trang trích trong giới hạn tài liệu. Nguồn WEB dùng
 
 ## Kiểm tra và build
 
+Mỗi bước có phần **Ảnh hướng dẫn**. Chọn tối đa 6 ảnh JPEG/PNG, 5 MB mỗi ảnh; điền mô tả, thêm chú thích nếu cần. Dùng **Lên/Xuống** để đổi thứ tự. Chọn **Xếp dọc**, **Lưới hai cột** hoặc **Vuốt ngang**, rồi lưu bản nháp. Bản xem trước sử dụng cùng dữ liệu bố cục với mobile. Xuất bản bài sau khi kiểm nội dung và quyền sử dụng ảnh.
+
+Ảnh tải qua API thật, lưu trong PostgreSQL. Người chưa đăng nhập chỉ xem được ảnh của bài đã xuất bản hợp lệ. Ảnh chưa gắn bài được giữ trong kho; bỏ ảnh khỏi bước không xóa media dùng ở nơi khác.
+
 ```powershell
 npm.cmd test
 npx.cmd playwright install chromium
