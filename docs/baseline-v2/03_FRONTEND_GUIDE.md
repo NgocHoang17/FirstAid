@@ -121,6 +121,10 @@ Mobile có thể phát hiện vài cụm từ để hiện nút sơ cứu sớm 
 
 ## 9. Danh bạ và quyền vị trí
 
+Danh sách và bản đồ dùng chung FacilityRepository và bộ lọc tên/địa chỉ. Bản đồ chỉ ghim cơ sở active có tọa độ hợp lệ và thông tin xác minh. Chạm ghim mở bảng thông tin cuộn được, gồm tên, địa chỉ, số điện thoại, ngày xác minh và nút Chỉ đường. Dùng tọa độ cơ sở làm điểm đến; không tự gửi vị trí người dùng như tham số API danh bạ.
+
+Nền bản đồ cần mạng, có attribution hiển thị trong vùng bản đồ. Lỗi tile hoặc mất kết nối có nút thử lại và trở về danh sách đã lưu. Không tải hàng loạt tile để tạo bản đồ offline. Mất quyền hoặc không lấy được vị trí ở lần yêu cầu mới phải bỏ dấu vị trí cũ; không ngăn xem các ghim cơ sở.
+
 Hiện danh sách local ngay. Khi user chọn Dùng vị trí, xin quyền foreground; denied/permanentlyDenied/unavailable đều có giải thích và tiếp tục xem vùng. Không permission trên launch. Không background location.
 
 Tính Haversine để sắp danh sách nhỏ; label rõ “khoảng cách đường thẳng”. Không có vị trí thì không hiển thị 0 km. Nguồn local/online đều có cùng DTO Facility. UNKNOWN 24/7 không dùng badge “Có cấp cứu 24/7”. Gọi truyền số đã validate sang dialer, map dùng latitude/longitude; không mở URL do LLM cung cấp.

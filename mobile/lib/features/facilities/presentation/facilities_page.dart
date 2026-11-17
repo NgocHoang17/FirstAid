@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'facilities_map_view.dart';
+import 'facility_actions.dart';
+export 'facility_actions.dart';
 import '../data/facilities_cubit.dart';
 import '../data/facility.dart';
 import '../../../core/network/app_services.dart';
@@ -10,16 +13,6 @@ import '../../../core/widgets/feature_widgets.dart';
 import '../../first_aid/presentation/quick_aid_pages.dart';
 import '../../settings/data/content_update_cubit.dart';
 
-class ExternalActions {
-  Future<bool> open(Uri uri) async {
-    try {
-      return await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } catch (_) {
-      return false;
-    }
-  }
-}
-
 class FacilitiesPage extends StatefulWidget {
   const FacilitiesPage({
     required this.api,
@@ -27,6 +20,7 @@ class FacilitiesPage extends StatefulWidget {
     this.onSettings,
     this.locationService,
     this.actions,
+    this.mapTileProvider,
     super.key,
   });
   final PublicApi api;
@@ -34,6 +28,7 @@ class FacilitiesPage extends StatefulWidget {
   final VoidCallback? onSettings;
   final LocationService? locationService;
   final ExternalActions? actions;
+  final TileProvider? mapTileProvider;
   @override
   State<FacilitiesPage> createState() => _FacilitiesPageState();
 }
@@ -45,8 +40,11 @@ class _FacilitiesPageState extends State<FacilitiesPage> {
     location: widget.locationService,
   )..loadLocal();
   String query = '';
+  final searchController = TextEditingController();
+  bool showMap = false;
   @override
   void dispose() {
+    searchController.dispose();
     cubit.close();
     super.dispose();
   }
@@ -156,6 +154,7 @@ class _FacilitiesPageState extends State<FacilitiesPage> {
                 child: Text(AppEnvironment.regionLabel),
               ),
               TextField(
+                controller: searchController,
                 onChanged: (text) => setState(() => query = text),
                 decoration: InputDecoration(
                   hintText: 'Tìm tên cơ sở hoặc địa chỉ…',
@@ -176,6 +175,25 @@ class _FacilitiesPageState extends State<FacilitiesPage> {
                 ),
                 sectionGap,
               ],
+              SegmentedButton<bool>(
+                segments: const [
+                  ButtonSegment(
+                    value: false,
+                    icon: Icon(Icons.view_list_outlined),
+                    label: Text('Danh sách'),
+                  ),
+                  ButtonSegment(
+                    value: true,
+                    icon: Icon(Icons.map_outlined),
+                    label: Text('Bản đồ'),
+                  ),
+                ],
+                selected: {showMap},
+                showSelectedIcon: false,
+                onSelectionChanged: (selection) =>
+                    setState(() => showMap = selection.single),
+              ),
+              sectionGap,
               if (state.loading)
                 const StatusCard(
                   'Đang đọc danh bạ…',
@@ -191,17 +209,32 @@ class _FacilitiesPageState extends State<FacilitiesPage> {
                       ? 'Chưa có danh bạ đã xác minh trên thiết bị. Tải danh bạ khi có mạng hoặc gọi 115 nếu cần cấp cứu.'
                       : 'Thử tìm bằng tên hoặc địa chỉ khác.',
                 ),
-              for (final item in items) ...[
-                AidCard(
-                  item.name,
-                  '${item.address}\n24/7: ${item.hoursLabel} • Xác minh: ${displayDate(item.verifiedAt)}${state.location == null ? '' : '\nKhoảng cách đường thẳng: ${item.distanceFrom(state.location!.latitude, state.location!.longitude).toStringAsFixed(1)} km'}',
-                  onTap: () => openPage(
-                    context,
-                    FacilityDetailPage(facility: item, actions: widget.actions),
-                  ),
+              if (showMap && !state.loading) ...[
+                FacilitiesMapView(
+                  facilities: items,
+                  location: state.location,
+                  network: widget.api.network,
+                  tileProvider: widget.mapTileProvider,
+                  actions: widget.actions,
+                  onShowList: () => setState(() => showMap = false),
                 ),
                 sectionGap,
               ],
+              if (!showMap)
+                for (final item in items) ...[
+                  AidCard(
+                    item.name,
+                    '${item.address}\n24/7: ${item.hoursLabel} • Xác minh: ${displayDate(item.verifiedAt)}${state.location == null ? '' : '\nKhoảng cách đường thẳng: ${item.distanceFrom(state.location!.latitude, state.location!.longitude).toStringAsFixed(1)} km'}',
+                    onTap: () => openPage(
+                      context,
+                      FacilityDetailPage(
+                        facility: item,
+                        actions: widget.actions,
+                      ),
+                    ),
+                  ),
+                  sectionGap,
+                ],
               sectionGap,
               FilledButton(
                 onPressed: state.refreshing || state.locating || state.loading
@@ -241,10 +274,7 @@ class _FacilityDetailPageState extends State<FacilityDetailPage> {
     });
     final f = widget.facility;
     final uri = map
-        ? Uri.https('www.google.com', '/maps/search/', {
-            'api': '1',
-            'query': '${f.latitude},${f.longitude}',
-          })
+        ? facilityDirectionsUri(f)
         : Uri(scheme: 'tel', path: f.phone.replaceAll(RegExp(r'[^+0-9]'), ''));
     final success = await (widget.actions ?? ExternalActions()).open(uri);
     if (mounted) {

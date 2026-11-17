@@ -3,6 +3,19 @@ import 'dart:math' as math;
 class Facility {
   Facility(this.json);
   final Map<String, dynamic> json;
+  bool get hasVerifiedLocation {
+    final lat = json['latitude'], lon = json['longitude'];
+    return json['is_active'] == true &&
+        DateTime.tryParse(json['verified_at'] as String? ?? '') != null &&
+        (json['verification_note'] as String? ?? '').trim().isNotEmpty &&
+        lat is num &&
+        lat.isFinite &&
+        lat.abs() <= 90 &&
+        lon is num &&
+        lon.isFinite &&
+        lon.abs() <= 180;
+  }
+
   String get id => json['id'] as String;
   String get name => json['name'] as String;
   String get address => json['address'] as String;

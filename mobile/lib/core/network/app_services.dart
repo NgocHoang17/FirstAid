@@ -20,6 +20,10 @@ class OfflineException implements Exception {}
 class ServiceUnavailable implements Exception {}
 
 class NetworkStatus {
+  Stream<bool> get changes => Connectivity().onConnectivityChanged
+      .map((result) => !result.contains(ConnectivityResult.none))
+      .distinct();
+
   Future<bool> isOnline() async {
     try {
       final result = await Connectivity().checkConnectivity();
