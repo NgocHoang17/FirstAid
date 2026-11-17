@@ -284,7 +284,7 @@ class QuickAidHome extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         children: [
           Text(
-            'Bình tĩnh.\nTừng bước, đúng cách.',
+            'Kiến thức nhỏ.\nGiá trị lớn.',
             style: TextStyle(
               fontSize: largeText ? 20 : 28,
               height: 1.25,
@@ -301,16 +301,25 @@ class QuickAidHome extends StatelessWidget {
           ],
           const SizedBox(height: 16),
           QuickAidHero(
-            onTap: () =>
-                openPage(context, QuickAidList(libraryLoader: libraryLoader)),
+            onTap:
+                onKnowledge ??
+                () => openPage(
+                  context,
+                  QuickAidList(libraryLoader: libraryLoader),
+                ),
           ),
           const SizedBox(height: 16),
-          const CallHelp(),
+          OutlinedButton.icon(
+            onPressed: () =>
+                openPage(context, QuickAidList(libraryLoader: libraryLoader)),
+            icon: const Icon(Icons.health_and_safety_outlined),
+            label: const Text('Cần sơ cứu ngay?'),
+          ),
           const SizedBox(height: 16),
           const AidCard(
-            'Nội dung tham khảo trên thiết bị',
-            'Xem phạm vi áp dụng và nguồn của từng bài trước khi thực hiện hướng dẫn.',
-            color: AppColors.tint,
+            'Học mọi lúc, kể cả khi ngoại tuyến',
+            'Bài học và nguồn tham khảo luôn sẵn trên thiết bị.',
+            color: AppColors.accentSoft,
             icon: Icons.offline_pin_outlined,
           ),
           const SizedBox(height: 16),
@@ -429,7 +438,7 @@ class QuickAidHero extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Text(
-                            'SƠ CỨU NHANH',
+                            'CÙNG HỌC SƠ CỨU',
                             style: TextStyle(
                               color: AppColors.onPrimaryMuted,
                               fontSize: 11,
@@ -440,7 +449,7 @@ class QuickAidHero extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Cần sơ cứu ngay?',
+                          'Sẵn sàng\ngiúp đỡ.',
                           style: TextStyle(
                             color: AppColors.onPrimary,
                             fontSize: largeText ? 20 : 25,
@@ -452,7 +461,7 @@ class QuickAidHero extends StatelessWidget {
                         Text(
                           largeText
                               ? 'Có thể đọc ngoại tuyến.'
-                              : 'Hướng dẫn từng bước.\nLuôn sẵn có khi ngoại tuyến.',
+                              : 'Tìm hiểu hôm nay.\nVững vàng hơn khi cần.',
                           style: const TextStyle(
                             color: AppColors.onPrimaryMuted,
                             fontSize: 14,
@@ -464,7 +473,7 @@ class QuickAidHero extends StatelessWidget {
                           children: [
                             Flexible(
                               child: Text(
-                                'Mở hướng dẫn',
+                                'Khám phá bài học',
                                 style: TextStyle(
                                   color: AppColors.onPrimary,
                                   fontWeight: FontWeight.bold,
