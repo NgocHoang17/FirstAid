@@ -7,7 +7,6 @@ import '../../first_aid/presentation/quick_aid_pages.dart';
 import '../../first_aid/data/reference_content_repository.dart';
 import '../../knowledge/presentation/knowledge_page.dart';
 import '../../assistant/presentation/assistant_page.dart';
-import '../../facilities/presentation/facilities_page.dart';
 import '../../settings/data/content_update_cubit.dart';
 import '../../settings/presentation/settings_page.dart';
 
@@ -65,7 +64,7 @@ class _MobileShellState extends State<MobileShell> {
         onKnowledge: () => select(1),
         onSettings: settings,
       ),
-      _ => FacilitiesPage(api: api, store: store, onSettings: settings),
+      _ => throw RangeError.index(value, [0, 1, 2]),
     },
   );
   @override
@@ -82,7 +81,7 @@ class _MobileShellState extends State<MobileShell> {
           body: IndexedStack(
             index: index,
             children: [
-              for (var i = 0; i < 4; i++)
+              for (var i = 0; i < 3; i++)
                 TickerMode(
                   enabled: index == i,
                   child: ExcludeFocus(
@@ -116,73 +115,109 @@ class AppBottomNavigation extends StatelessWidget {
     ('Trang chủ', Icons.home_outlined, Icons.home_rounded),
     ('Kiến thức', Icons.menu_book_outlined, Icons.menu_book_rounded),
     ('Hỏi đáp', Icons.chat_bubble_outline_rounded, Icons.chat_bubble_rounded),
-    ('Cơ sở y tế', Icons.local_hospital_outlined, Icons.local_hospital_rounded),
   ];
   @override
-  Widget build(BuildContext context) => Material(
-    color: AppColors.primaryDark,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-    ),
-    clipBehavior: Clip.antiAlias,
-    child: SafeArea(
-      top: false,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (final (i, item) in destinations.indexed)
-            Expanded(
-              child: Semantics(
-                selected: index == i,
-                button: true,
-                child: InkWell(
-                  onTap: () => onSelect(i),
-                  child: Container(
-                    constraints: const BoxConstraints(minHeight: 76),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 12,
-                    ),
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: index == i ? AppColors.primaryRaised : null,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          index == i ? item.$3 : item.$2,
-                          color: index == i
-                              ? AppColors.onPrimary
-                              : AppColors.onPrimaryMuted,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          item.$1,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            height: 1.3,
-                            fontWeight: index == i
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: index == i
-                                ? AppColors.onPrimary
-                                : AppColors.onPrimaryMuted,
-                          ),
-                        ),
-                      ],
-                    ),
+  Widget build(BuildContext context) {
+    final largeText = MediaQuery.textScalerOf(context).scale(12) > 18;
+    return Material(
+      color: AppColors.primaryDark,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: SafeArea(
+        top: false,
+        child: LayoutBuilder(
+          builder: (context, constraints) => Wrap(
+            children: [
+              for (final (i, item) in destinations.indexed)
+                SizedBox(
+                  width: constraints.maxWidth / (largeText ? 2 : 3),
+                  child: _NavigationItem(
+                    label: item.$1,
+                    icon: index == i ? item.$3 : item.$2,
+                    selected: index == i,
+                    largeText: largeText,
+                    onTap: () => onSelect(i),
                   ),
                 ),
-              ),
-            ),
-        ],
+            ],
+          ),
+        ),
       ),
-    ),
-  );
+    );
+  }
+}
+
+class _NavigationItem extends StatelessWidget {
+  const _NavigationItem({
+    required this.label,
+    required this.icon,
+    required this.selected,
+    required this.largeText,
+    required this.onTap,
+  });
+  final String label;
+  final IconData icon;
+  final bool selected, largeText;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final symbol = AnimatedContainer(
+      duration: MediaQuery.disableAnimationsOf(context)
+          ? Duration.zero
+          : const Duration(milliseconds: 180),
+      padding: const EdgeInsets.all(7),
+      decoration: BoxDecoration(
+        color: selected ? AppColors.accent : Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Icon(
+        icon,
+        size: 22,
+        color: selected ? AppColors.primaryDark : AppColors.onPrimaryMuted,
+      ),
+    );
+    final text = Text(
+      label,
+      textAlign: largeText ? TextAlign.start : TextAlign.center,
+      style: TextStyle(
+        fontSize: 12,
+        height: 1.3,
+        fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+        color: selected ? AppColors.onPrimary : AppColors.onPrimaryMuted,
+      ),
+    );
+    return Semantics(
+      selected: selected,
+      button: true,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 68),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          decoration: BoxDecoration(
+            color: selected
+                ? AppColors.primaryRaised.withValues(alpha: .6)
+                : null,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: largeText
+              ? Row(
+                  children: [
+                    symbol,
+                    const SizedBox(width: 8),
+                    Expanded(child: text),
+                  ],
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [symbol, const SizedBox(height: 4), text],
+                ),
+        ),
+      ),
+    );
+  }
 }

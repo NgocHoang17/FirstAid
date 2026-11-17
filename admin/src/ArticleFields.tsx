@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react';
 import { Field, Notice } from './components';
+import { illustrationCatalogue, StepIllustration } from './StepIllustration';
 import { ageLabels, nullable, type Article, type Category, type Source, type Step } from './models';
 
 export function ArticleFields({ article: a, categories, sources, change }: { article: Article; categories: Category[]; sources: Source[]; change: (article: Article) => void }) {
@@ -24,7 +25,18 @@ export function ArticleFields({ article: a, categories, sources, change }: { art
       {a.steps.map((s, i) => <div className="step-editor" key={s.id || `new-${i}`}><div className="step-toolbar"><strong><span className="step-number">{i + 1}</span>Bước {i + 1}</strong><div className="actions"><button type="button" className="icon-button" disabled={i === 0} aria-label={`Đưa bước ${i + 1} lên`} onClick={() => reorder(i, -1)}><ArrowUp size={17}/></button><button type="button" className="icon-button" disabled={i === a.steps.length - 1} aria-label={`Đưa bước ${i + 1} xuống`} onClick={() => reorder(i, 1)}><ArrowDown size={17}/></button><button type="button" className="icon-button destructive-text" aria-label={`Xóa bước ${i + 1}`} onClick={() => set('steps', a.steps.filter((_, n) => n !== i).map((step, n) => ({ ...step, position: n + 1 })))}><Trash2 size={17}/></button></div></div>
         <Field label={`Tên bước ${i + 1}`} required><input id={`field-steps.${i}.title`} value={s.title} onChange={e => updateStep(i, 'title', e.target.value)}/></Field>
         <Field label={`Hướng dẫn bước ${i + 1}`} required><textarea id={`field-steps.${i}.instruction`} rows={4} value={s.instruction} onChange={e => updateStep(i, 'instruction', e.target.value)}/></Field>
-        <details><summary>Minh họa và khả năng tiếp cận</summary><div className="form-grid"><Field label="Asset key bundled"><input value={s.asset_key || ''} onChange={e => updateStep(i, 'asset_key', nullable(e.target.value))}/></Field><Field label="URL ảnh bổ sung (HTTPS)"><input id={`field-steps.${i}.image_url`} value={s.image_url || ''} onChange={e => updateStep(i, 'image_url', nullable(e.target.value))}/></Field><div className="full"><Field label="Mô tả hình"><input id={`field-steps.${i}.alt_text`} value={s.alt_text || ''} onChange={e => updateStep(i, 'alt_text', nullable(e.target.value))}/></Field></div></div></details>
+        <Field label={`Minh họa bước ${i + 1}`} hint="Biểu tượng nhắc nhớ hành động, không mô tả tư thế thực hiện.">
+          <select value={s.asset_key || ''} onChange={e => {
+            const selected = illustrationCatalogue.find(d => d.assetKey === e.target.value);
+            set('steps', a.steps.map((item, n) => n === i ? { ...item, asset_key: selected?.assetKey || null, alt_text: selected?.caption || null } : item));
+          }}>
+            <option value="">Không dùng minh họa</option>
+            {s.asset_key && !illustrationCatalogue.some(d => d.assetKey === s.asset_key) && <option value={s.asset_key}>Hình không có trong thư viện</option>}
+            {illustrationCatalogue.map(d => <option key={d.assetKey} value={d.assetKey}>{d.label} — {d.caption}</option>)}
+          </select>
+        </Field>
+        <StepIllustration step={s}/>
+        <details><summary>Minh họa và khả năng tiếp cận</summary><div className="form-grid"><Field label="URL ảnh bổ sung (HTTPS)"><input id={`field-steps.${i}.image_url`} value={s.image_url || ''} onChange={e => updateStep(i, 'image_url', nullable(e.target.value))}/></Field><div className="full"><Field label="Mô tả hình"><input id={`field-steps.${i}.alt_text`} value={s.alt_text || ''} onChange={e => updateStep(i, 'alt_text', nullable(e.target.value))}/></Field></div></div></details>
       </div>)}
       <button type="button" className="add-button" onClick={() => set('steps', [...a.steps, { position: a.steps.length + 1, title: '', instruction: '', asset_key: null, image_url: null, alt_text: null }])}><Plus size={17}/>Thêm bước</button>
     </section>

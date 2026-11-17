@@ -1,17 +1,21 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import 'api_client.dart';
 
 abstract final class AppEnvironment {
-  static const apiBaseUrl = String.fromEnvironment('API_BASE_URL');
+  static const apiBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: kDebugMode ? 'http://10.0.2.2:8080/api/v1' : '',
+  );
   static const regionCode = String.fromEnvironment(
     'PILOT_REGION_CODE',
-    defaultValue: 'VN-PILOT',
+    defaultValue: 'VN-DN',
   );
   static const regionLabel = String.fromEnvironment(
     'PILOT_REGION_LABEL',
-    defaultValue: 'Khu vực thí điểm',
+    defaultValue: 'Đà Nẵng',
   );
 }
 

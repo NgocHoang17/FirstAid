@@ -22,3 +22,7 @@ mobile/.idea/
 .vscode/
 .DS_Store
 *.log
+
+# Local application services, databases and credentials
+/.local/
+/.local-tools/

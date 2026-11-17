@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { BookOpen, Building2, Check, ChevronRight, Cross, FileText, FolderOpen, LockKeyhole, LogOut, ShieldCheck } from 'lucide-react';
+import { BookOpen, Check, ChevronRight, Cross, FileText, FolderOpen, LockKeyhole, LogOut, ShieldCheck } from 'lucide-react';
 import { AdminApi, ApiError } from './api';
 import { Busy, ConfirmDialog, Errors, Notice, type Confirmation } from './components';
 import { Editor } from './Editor';
 import { ResourceList } from './ResourceList';
 import { resourceLabels, type Admin, type Resource } from './models';
 
-const icons = { articles: FileText, categories: FolderOpen, sources: BookOpen, facilities: Building2 };
+const icons = { articles: FileText, categories: FolderOpen, sources: BookOpen };
 export function App({ api, demo = false }: { api: AdminApi; demo?: boolean }) {
   const [admin, setAdmin] = useState<Admin | null>(null);
   const [checking, setChecking] = useState(true); const [authError, setAuthError] = useState<unknown>();

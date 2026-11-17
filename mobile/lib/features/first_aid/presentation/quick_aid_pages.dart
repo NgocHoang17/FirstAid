@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/widgets/medical_emblem.dart';
 import '../data/reference_content_repository.dart';
 import 'reference_article_view.dart';
 
@@ -25,6 +26,33 @@ const situations = [
   'Động vật cắn / côn trùng đốt',
 ];
 
+IconData situationIcon(String code) {
+  const icons = [
+    Icons.accessibility_new_rounded,
+    Icons.monitor_heart_outlined,
+    Icons.air_rounded,
+    Icons.water_rounded,
+    Icons.bloodtype_outlined,
+    Icons.healing_rounded,
+    Icons.face_outlined,
+    Icons.personal_injury_outlined,
+    Icons.accessibility_rounded,
+    Icons.support_rounded,
+    Icons.local_fire_department_outlined,
+    Icons.bolt_rounded,
+    Icons.wb_sunny_outlined,
+    Icons.psychology_outlined,
+    Icons.monitor_heart_outlined,
+    Icons.shield_outlined,
+    Icons.science_outlined,
+    Icons.pets_outlined,
+  ];
+  final index = (int.tryParse(code.replaceFirst('FA', '')) ?? 0) - 1;
+  return index >= 0 && index < icons.length
+      ? icons[index]
+      : Icons.health_and_safety_outlined;
+}
+
 void openPage(BuildContext context, Widget page) =>
     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
 
@@ -35,69 +63,94 @@ class AidCard extends StatelessWidget {
     this.onTap,
     this.color = AppColors.surface,
     this.icon,
+    this.prominent = false,
     super.key,
   });
   final String title, subtitle;
   final VoidCallback? onTap;
   final Color color;
   final IconData? icon;
+  final bool prominent;
   @override
   Widget build(BuildContext context) => Material(
     color: color,
-    borderRadius: BorderRadius.circular(20),
+    elevation: onTap == null ? 0 : 1,
+    shadowColor: AppColors.primary.withValues(alpha: .08),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+      side: BorderSide(color: AppColors.border.withValues(alpha: .7)),
+    ),
     clipBehavior: Clip.antiAlias,
     child: InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(16),
       child: Padding(
         padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (icon != null) ...[
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.tint,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(icon, size: 22, color: AppColors.primary),
-                  ),
-                  const SizedBox(width: 12),
-                ],
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      height: 1.4,
-                    ),
-                  ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: prominent ? 138 : 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (prominent && icon != null) ...[
+                Row(
+                  children: [
+                    Icon(icon, size: 30, color: AppColors.primary),
+                    const Spacer(),
+                    if (onTap != null)
+                      const Icon(
+                        Icons.arrow_outward_rounded,
+                        size: 18,
+                        color: AppColors.accentInk,
+                      ),
+                  ],
                 ),
-                if (onTap != null) ...[
-                  const SizedBox(width: 8),
-                  const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 16,
-                    color: AppColors.primary,
-                  ),
-                ],
+                const SizedBox(height: 16),
               ],
-            ),
-            if (subtitle.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Text(
-                subtitle,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textSecondary,
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (icon != null && !prominent) ...[
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppColors.accentSoft,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(icon, size: 22, color: AppColors.primary),
+                    ),
+                    const SizedBox(width: 12),
+                  ],
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                  if (onTap != null && !prominent) ...[
+                    const SizedBox(width: 8),
+                    const Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 16,
+                      color: AppColors.primary,
+                    ),
+                  ],
+                ],
               ),
+              if (subtitle.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     ),
@@ -123,7 +176,7 @@ class AidButton extends StatelessWidget {
         minimumSize: const Size(48, 52),
         padding: const EdgeInsets.all(16),
         backgroundColor: emergency ? AppColors.emergency : AppColors.primary,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
       child: Text(
         label,
@@ -173,7 +226,7 @@ class AidScaffold extends StatelessWidget {
       ),
     ),
     body: ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       children: [
         for (final child in children) ...[child, const SizedBox(height: 16)],
       ],
@@ -200,141 +253,246 @@ class QuickAidHome extends StatelessWidget {
   final VoidCallback? onKnowledge, onSettings;
   final Future<ReferenceLibrary> Function()? libraryLoader;
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      actions: [
-        if (onSettings != null)
-          IconButton(
-            tooltip: "Cài đặt và dữ liệu",
-            onPressed: onSettings,
-            icon: const Icon(Icons.settings_outlined),
-          ),
-      ],
-      title: const Row(
-        children: [
-          Icon(Icons.health_and_safety_rounded, color: AppColors.primary),
-          SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              'FirstAid',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.bold),
+  Widget build(BuildContext context) {
+    final largeText = MediaQuery.textScalerOf(context).scale(16) > 24;
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          if (onSettings != null)
+            IconButton(
+              tooltip: "Cài đặt và dữ liệu",
+              onPressed: onSettings,
+              icon: const Icon(Icons.settings_outlined),
             ),
+        ],
+        title: const Row(
+          children: [
+            Icon(Icons.health_and_safety_rounded, color: AppColors.accentInk),
+            SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                'FirstAid',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          Text(
+            'Bình tĩnh.\nTừng bước, đúng cách.',
+            style: TextStyle(
+              fontSize: largeText ? 20 : 28,
+              height: 1.25,
+              letterSpacing: -.6,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          if (!largeText) ...[
+            const SizedBox(height: 16),
+            const Text(
+              'Kiến thức hôm nay, sẵn sàng khi cần.',
+              style: TextStyle(color: AppColors.textSecondary),
+            ),
+          ],
+          const SizedBox(height: 16),
+          QuickAidHero(
+            onTap: () =>
+                openPage(context, QuickAidList(libraryLoader: libraryLoader)),
+          ),
+          const SizedBox(height: 16),
+          const CallHelp(),
+          const SizedBox(height: 16),
+          const AidCard(
+            'Nội dung tham khảo trên thiết bị',
+            'Xem phạm vi áp dụng và nguồn của từng bài trước khi thực hiện hướng dẫn.',
+            color: AppColors.tint,
+            icon: Icons.offline_pin_outlined,
+          ),
+          const SizedBox(height: 16),
+          OutlinedButton.icon(
+            onPressed:
+                onKnowledge ??
+                () => openPage(
+                  context,
+                  QuickAidList(libraryLoader: libraryLoader),
+                ),
+            icon: const Icon(Icons.search),
+            label: const Text("Tìm bài sơ cứu…"),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'Khám phá theo nhóm',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final compact =
+                  constraints.maxWidth < 340 ||
+                  MediaQuery.textScalerOf(context).scale(16) > 22;
+              return Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: [
+                  for (final group in [
+                    (
+                      0,
+                      4,
+                      'Tuần hoàn & hô hấp',
+                      Icons.favorite_outline_rounded,
+                    ),
+                    (4, 10, 'Chấn thương', Icons.healing_rounded),
+                    (
+                      10,
+                      18,
+                      'Môi trường & tình huống khác',
+                      Icons.wb_sunny_outlined,
+                    ),
+                  ])
+                    SizedBox(
+                      width: compact || group.$1 == 10
+                          ? constraints.maxWidth
+                          : (constraints.maxWidth - 12) / 2,
+                      child: AidCard(
+                        group.$3,
+                        '${group.$2 - group.$1} nhóm tình huống',
+                        icon: group.$4,
+                        prominent: !compact && group.$1 != 10,
+                        color: group.$1 == 4
+                            ? AppColors.accentSoft
+                            : AppColors.surface,
+                        onTap: () => openPage(
+                          context,
+                          QuickAidList(
+                            start: group.$1,
+                            end: group.$2,
+                            libraryLoader: libraryLoader,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
         ],
       ),
-    ),
-    body: ListView(
-      padding: const EdgeInsets.all(24),
-      children: [
-        const Text(
-          'Bình tĩnh.\nTừng bước, đúng cách.',
-          style: TextStyle(
-            fontSize: 30,
-            height: 1.25,
-            letterSpacing: -.6,
-            fontWeight: FontWeight.bold,
+    );
+  }
+}
+
+class QuickAidHero extends StatelessWidget {
+  const QuickAidHero({required this.onTap, super.key});
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) => Material(
+    color: AppColors.primary,
+    borderRadius: BorderRadius.circular(22),
+    clipBehavior: Clip.antiAlias,
+    child: InkWell(
+      onTap: onTap,
+      child: Ink(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [AppColors.primaryDark, AppColors.primaryRaised],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
-        const SizedBox(height: 16),
-        const Text('Tra cứu kiến thức và hướng dẫn sơ cứu cơ bản.'),
-        const SizedBox(height: 16),
-        Material(
-          color: AppColors.primaryDark,
-          borderRadius: BorderRadius.circular(24),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(24),
-            onTap: () =>
-                openPage(context, QuickAidList(libraryLoader: libraryLoader)),
-            child: const Padding(
-              padding: EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: Padding(
+          padding: const EdgeInsets.all(22),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final largeText = MediaQuery.textScalerOf(context).scale(16) > 24;
+              final showArt =
+                  constraints.maxWidth >= 290 &&
+                  MediaQuery.textScalerOf(context).scale(16) < 22;
+              return Row(
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.health_and_safety_outlined,
-                        color: AppColors.onPrimaryMuted,
-                        size: 30,
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_outward_rounded,
-                        color: AppColors.onPrimaryMuted,
-                        size: 24,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 18),
-                  Text(
-                    'Cần sơ cứu ngay?',
-                    style: TextStyle(
-                      color: AppColors.onPrimary,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.onPrimary.withValues(alpha: .12),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Text(
+                            'SƠ CỨU NHANH',
+                            style: TextStyle(
+                              color: AppColors.onPrimaryMuted,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Cần sơ cứu ngay?',
+                          style: TextStyle(
+                            color: AppColors.onPrimary,
+                            fontSize: largeText ? 20 : 25,
+                            height: 1.25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          largeText
+                              ? 'Có thể đọc ngoại tuyến.'
+                              : 'Hướng dẫn từng bước.\nLuôn sẵn có khi ngoại tuyến.',
+                          style: const TextStyle(
+                            color: AppColors.onPrimaryMuted,
+                            fontSize: 14,
+                            height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: 18),
+                        const Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                'Mở hướng dẫn',
+                                style: TextStyle(
+                                  color: AppColors.onPrimary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Icon(
+                              Icons.arrow_forward_rounded,
+                              color: AppColors.accent,
+                              size: 20,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 12),
-                  Text(
-                    'Mở hướng dẫn nhanh\nCó thể dùng ngoại tuyến',
-                    style: TextStyle(color: AppColors.onPrimaryMuted),
-                  ),
+                  if (showArt) ...[
+                    const SizedBox(width: 12),
+                    const MedicalEmblem(),
+                  ],
                 ],
-              ),
-            ),
+              );
+            },
           ),
         ),
-        const SizedBox(height: 16),
-        const CallHelp(),
-        const SizedBox(height: 16),
-        const AidCard(
-          'Nội dung tham khảo trên thiết bị',
-          'Xem phạm vi áp dụng và nguồn của từng bài trước khi thực hiện hướng dẫn.',
-          color: AppColors.tint,
-          icon: Icons.offline_pin_outlined,
-        ),
-        const SizedBox(height: 16),
-        OutlinedButton.icon(
-          onPressed:
-              onKnowledge ??
-              () =>
-                  openPage(context, QuickAidList(libraryLoader: libraryLoader)),
-          icon: const Icon(Icons.search),
-          label: const Text("Tìm bài sơ cứu…"),
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          'Khám phá theo nhóm',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 16),
-        for (final group in [
-          (0, 4, 'Tuần hoàn & hô hấp'),
-          (4, 10, 'Chấn thương'),
-          (10, 18, 'Môi trường & tình huống khác'),
-        ]) ...[
-          AidCard(
-            group.$3,
-            '${group.$2 - group.$1} nhóm tình huống • Xem hướng dẫn',
-            icon: group.$1 == 0
-                ? Icons.favorite_outline_rounded
-                : group.$1 == 4
-                ? Icons.healing_rounded
-                : Icons.eco_outlined,
-            onTap: () => openPage(
-              context,
-              QuickAidList(
-                start: group.$1,
-                end: group.$2,
-                libraryLoader: libraryLoader,
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-        ],
-      ],
+      ),
     ),
   );
 }
@@ -391,6 +549,7 @@ class _QuickAidListState extends State<QuickAidList> {
           onChanged: (value) => setState(() => query = value),
           decoration: InputDecoration(
             hintText: 'Tìm tình huống sơ cứu…',
+            prefixIcon: const Icon(Icons.search_rounded),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
           ),
         ),
@@ -405,6 +564,7 @@ class _QuickAidListState extends State<QuickAidList> {
           AidCard(
             '${(i + 1).toString().padLeft(2, '0')}   ${situations[i]}',
             'Chọn để xem hướng dẫn  ›',
+            icon: situationIcon('FA${i + 1}'),
             onTap: () => openPage(
               context,
               AudiencePage(
@@ -465,6 +625,11 @@ class _AudiencePageState extends State<AudiencePage> {
               AidCard(
                 article.title,
                 '${article.ageLabel} • ${article.isPublic ? 'Nội dung có nguồn' : 'Bản tham khảo đang rà soát'}\n${article.scope}',
+                icon: article.ageGroup == 'CHILD'
+                    ? Icons.child_care_rounded
+                    : article.ageGroup == 'ADULT'
+                    ? Icons.person_outline_rounded
+                    : Icons.people_outline_rounded,
                 onTap: () => openPage(
                   context,
                   ReferenceArticleView(article: article, library: library!),

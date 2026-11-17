@@ -46,22 +46,6 @@ test('guards unsaved edits and handles reference deletion without losing data', 
   await expect(page.getByRole('alert')).toContainText('còn được tham chiếu');
   await expect(page.getByRole('button', { name: 'CẨM NANG SƠ CẤP CỨU', exact: true })).toBeVisible();
 });
-test('creates an inactive facility and validates activation, then logs out', async ({ page }) => {
-  await page.getByRole('navigation').getByRole('button', { name: 'Cơ sở y tế', exact: true }).click();
-  await page.getByRole('button', { name: 'Thêm mới', exact: true }).first().click();
-  await page.getByLabel('Tên cơ sở').fill('Cơ sở fixture — không liên hệ thật');
-  await page.getByLabel('Mã vùng', { exact: true }).fill('VN-TEST');
-  await page.getByLabel('Địa chỉ', { exact: false }).fill('Địa chỉ fixture');
-  await page.getByLabel('Đang sử dụng', { exact: true }).check();
-  await page.getByRole('button', { name: 'Lưu thay đổi', exact: true }).click();
-  await expect(page.getByRole('alert')).toContainText('Cần ngày xác minh');
-  await page.getByLabel('Đang sử dụng', { exact: true }).uncheck();
-  await page.getByRole('button', { name: 'Lưu thay đổi', exact: true }).click();
-  await expect(page.getByText('Đã lưu thay đổi.', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Đăng xuất', exact: true }).click();
-  await page.getByRole('dialog').getByRole('button', { name: 'Đăng xuất', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Chào mừng trở lại' })).toBeVisible();
-});
 test('edits source metadata and category keywords with multiline input', async ({ page }) => {
   await page.getByRole('navigation').getByRole('button', { name: 'Nguồn tài liệu', exact: true }).click();
   await page.getByRole('button', { name: 'Thêm mới', exact: true }).first().click();

@@ -1,46 +1,31 @@
-﻿# FirstAid mobile
+# FirstAid mobile
 
-Flutter client dùng BLoC và SQLite, tổ chức theo feature với repository tách giao diện khỏi dữ liệu.
+Flutter, BLoC và SQLite. Ba tab Trang chủ, Kiến thức, Hỏi đáp. Đọc [PRD](../docs/PRD.md) và [Frontend Guide](../docs/baseline-v2/03_FRONTEND_GUIDE.md).
 
-## Tài liệu
+## Chạy local
 
-Đọc [README dự án](../README.md), [hướng dẫn đọc](../docs/baseline-v2/README.md), [đặc tả](../docs/baseline-v2/01_SYSTEM_SPEC.md) và [contract](../docs/baseline-v2/06_SHARED_CONTRACTS.md). Frontend đọc thêm [03](../docs/baseline-v2/03_FRONTEND_GUIDE.md), [brief thiết kế](../docs/baseline-v2/02_FIGMA_DESIGN_BRIEF.md) và [tiêu chí nghiệm thu](../docs/baseline-v2/08_ACCEPTANCE_AND_PLAN.md).
-
-## Nguyên tắc
-
-Không login mobile. Nội dung core bundled vào SQLite; quick/learn dùng cùng Article. Cập nhật full snapshot thủ công và không làm mất dữ liệu khi lỗi. Chat RAG text chỉ online; danh bạ vẫn xem được khi không cấp quyền vị trí. Không thay bài người lớn cho đối tượng khác khi thiếu bài phù hợp.
-
-## Phát triển local
-
-Dùng phiên bản Flutter/Dart tương thích cấu hình build và lockfile:
+Khởi động dịch vụ theo [README gốc](../README.md#phát-triển-local), sau đó:
 
 ```powershell
 flutter pub get
 flutter run
 ```
 
-API chính dùng prefix `/api/v1`; base URL lấy từ cấu hình môi trường. Android emulator truy cập máy phát triển qua `10.0.2.2`. Kiểm nghiệm offline, quyền vị trí, font lớn và external actions theo tài liệu nghiệm thu.
+Android emulator mặc định dùng `http://10.0.2.2:8080/api/v1`. Điện thoại thật dùng `--dart-define=API_BASE_URL` với địa chỉ máy chủ truy cập được. Release dùng HTTPS.
 
-Truyền địa chỉ API gồm cả prefix khi chạy, ví dụ trên Android emulator:
+## Nội dung
 
-```powershell
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1 --dart-define=PILOT_REGION_CODE=VN-PILOT --dart-define="PILOT_REGION_LABEL=Khu vực thí điểm"
-```
+24 bài, 18 nhóm, 17 nguồn và hình nhắc nhớ đi kèm ứng dụng. Đọc đầy đủ và theo bước dùng cùng Article. Không yêu cầu tài khoản. Cập nhật qua Cài đặt, giữ dữ liệu khi lỗi.
 
-`PILOT_REGION_CODE` phải khớp vùng dữ liệu của máy chủ; `PILOT_REGION_LABEL` là tên vùng hiển thị. Bản release dùng API HTTPS. Khi không cấu hình API, các bài đã lưu vẫn đọc được; tính năng cần máy chủ hiển thị trạng thái chưa sẵn sàng.
+Không có quiz, danh bạ, bản đồ, GPS hoặc quyền vị trí. Hỏi đáp bằng ảnh theo đặc tả chỉ được bật sau khi tích hợp bộ xử lý đa phương thức thật. Không lưu ảnh hoặc lịch sử chat mặc định.
 
-Snapshot và danh bạ được lưu bằng SQLite trên Android/iOS. Cập nhật chỉ thay dữ liệu sau khi kiểm tra hợp lệ và ghi thành công. Danh bạ không kèm cơ sở minh họa; dữ liệu active cần được xác minh theo contract. Chat giữ câu hỏi trong bộ nhớ của phiên ứng dụng và không gửi lịch sử lên máy chủ.
+Trong khi phối hợp backend, bộ đọc snapshot v1 giữ tương thích định dạng server. Payload danh bạ không có màn hình sử dụng. Snapshot giáo dục schema 2 được quy định trong [06](../docs/baseline-v2/06_SHARED_CONTRACTS.md).
 
-## Bản đồ cơ sở y tế
-
-Trong Cơ sở y tế, chọn **Danh sách** hoặc **Bản đồ**. Tìm kiếm áp dụng cho cả hai chế độ. Chạm ghim để xem thông tin, gọi cơ sở hoặc mở **Chỉ đường**. Bấm **Dùng vị trí hiện tại** để hiển thị vị trí vừa lấy; ứng dụng không theo dõi vị trí nền. Từ chối quyền vẫn xem được bản đồ cơ sở.
-
-Ghim lấy từ danh bạ active đã tải vào thiết bị. Nhập dữ liệu theo [hướng dẫn Đà Nẵng](../data/facilities/README.md), sau đó tải danh bạ hoặc cập nhật snapshot trên app. File JSON trong repository không tự xuất hiện trên bản đồ khi chưa nhập và đồng bộ.
-
-Nền bản đồ dùng `flutter_map` và OpenStreetMap, không cần API key. Khi mất mạng hoặc lỗi tile, chọn **Xem danh sách đã lưu**. Cache tile của thư viện phục vụ tải nền thông thường, không bảo đảm bản đồ offline. Giữ attribution và User-Agent của ứng dụng; không thêm tải tile hàng loạt. Kiểm [chính sách tile OSM](https://operations.osmfoundation.org/policies/tiles/) trước khi phát hành hoặc tăng quy mô sử dụng.
-
-Kiểm thử bản đồ dùng tile giả lập, không gọi máy chủ bản đồ:
+## Kiểm tra
 
 ```powershell
-flutter test --no-pub test/facilities_map_test.dart
+flutter analyze
+flutter test
 ```
+
+Các bài kiểm visual và ảnh xem trước chỉ lưu local, được Git bỏ qua. Không đưa PDF gốc, ảnh hội thoại, secrets hoặc dữ liệu runtime vào Git.

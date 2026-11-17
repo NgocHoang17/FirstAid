@@ -6,6 +6,8 @@ FastAPI nội bộ dùng BM25 để tìm bài đã kiểm biên soạn. Chế đ
 
 ## Chạy local
 
+Để chạy cùng database, Admin và mobile, dùng `tools/start-local.ps1` từ thư mục gốc theo [README dự án](../README.md#phát-triển-local). Lệnh dựng corpus từ dữ liệu public của Spring và kiểm chat qua gateway thật. Các bước dưới đây dành cho chạy dịch vụ AI riêng.
+
 Yêu cầu Python 3.11. Chạy từ thư mục `ai/` bằng PowerShell:
 
 ```powershell

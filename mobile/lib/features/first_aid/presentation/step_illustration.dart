@@ -49,7 +49,9 @@ class _StepIllustrationState extends State<StepIllustration> {
     future: diagram,
     builder: (context, snapshot) {
       final data = snapshot.data;
-      if (data == null) return const SizedBox.shrink();
+      if (snapshot.connectionState != ConnectionState.done || data == null) {
+        return const SizedBox.shrink();
+      }
       return Padding(
         padding: const EdgeInsets.only(bottom: 16),
         child: Semantics(
