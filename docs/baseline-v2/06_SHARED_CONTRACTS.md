@@ -146,6 +146,36 @@ Validation publish: đủ title, category, variant, age_group, applies_to, summa
 
 ## 5. Giới hạn dữ liệu
 
+### Ảnh hướng dẫn của từng bước
+
+`Step` giữ tương thích các trường `asset_key`, `image_url`, `alt_text` và bổ sung:
+
+```json
+{
+  "image_layout": "grid",
+  "images": [
+    {
+      "media_id": "00000000-0000-4000-8000-000000000601",
+      "url": "/api/v1/media/00000000-0000-4000-8000-000000000601",
+      "alt_text": "Mô tả nội dung ảnh",
+      "caption": "Chú thích tùy chọn"
+    }
+  ]
+}
+```
+
+Thứ tự mảng là thứ tự hiển thị. Tối đa 6 ảnh mỗi bước; không trùng media_id trong một bước. `image_layout` gồm `stacked`, `grid`, `carousel`, mặc định `stacked`. Khi chữ lớn hoặc màn quá hẹp, lưới chuyển thành xếp dọc. Mô tả ảnh bắt buộc, chú thích tùy chọn.
+
+Admin tải một file qua POST `/api/v1/admin/media`, multipart part `file`, có session ADMIN và CSRF. Chỉ nhận JPEG/PNG giải mã được, tối đa 5 MiB và 16 megapixel. Server chuẩn hóa ảnh, bỏ metadata nhúng và trả 201 với `{id,url,width,height}` trong `data`. File vượt giới hạn multipart trả 413. Không lưu tên file như đường dẫn server.
+
+PUT Article gửi media_id, alt_text và caption; server tự tạo URL theo ID, không tin URL client. Bố cục và danh sách ảnh được lưu cùng transaction của bài. Lưu sửa bài public đưa bài về nháp theo quy tắc revision chung.
+
+GET `/api/v1/media/{id}` trả byte ảnh. Admin được xem ảnh đang biên tập. Người dùng công khai chỉ xem ảnh có liên kết tới bài public hợp lệ, danh mục và nguồn đang dùng. Gỡ xuất bản chặn đọc công khai ở request sau. Không cache HTTP công khai ảnh draft hoặc ảnh đã gỡ.
+
+Ảnh được lưu trong PostgreSQL `media_assets`, đi cùng sao lưu database. Ảnh tải lên chưa được gắn bài được giữ lại; không tự xóa tệp khi người biên tập bỏ ảnh khỏi một bước. Chưa có công cụ dọn media không còn tham chiếu.
+
+Ảnh bài học do Admin quản lý khác với ảnh câu hỏi AI ở mục 9.1. Mobile lưu metadata ảnh theo snapshot; tải byte ảnh khi có mạng. Khi chưa tải được, giữ nguyên hướng dẫn chữ và hiển thị trạng thái rõ ràng. Không cam kết ảnh upload mới luôn có sẵn ngoại tuyến; core offline tiếp tục dùng hình bundled.
+
 Các thực thể sản phẩm gồm Category, Article, Step, Source, SourceReference và AdminUser. Không có tài nguyên Facility hoặc dữ liệu định vị.
 
 ## 6. OfflineSnapshot giáo dục

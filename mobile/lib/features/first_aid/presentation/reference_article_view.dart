@@ -1,8 +1,10 @@
 import '../../../core/theme/app_colors.dart';
+import '../../../core/widgets/feature_widgets.dart';
 import 'package:flutter/material.dart';
 import '../data/reference_content_repository.dart';
 import 'quick_aid_pages.dart';
 import 'step_illustration.dart';
+import 'step_gallery.dart';
 
 class ReferenceArticleView extends StatefulWidget {
   const ReferenceArticleView({
@@ -46,9 +48,10 @@ class _ReferenceArticleViewState extends State<ReferenceArticleView> {
         controller: scroll,
         padding: const EdgeInsets.all(24),
         children: [
-          Text(
+          FeatureHeader(
             article.title,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            subtitle: 'Bài học sơ cứu · ${article.ageLabel}',
+            icon: Icons.menu_book_outlined,
           ),
           const SizedBox(height: 16),
           if (learn) ...[
@@ -224,7 +227,8 @@ class _ReferenceStepBlock extends StatelessWidget {
             style: const TextStyle(fontSize: 18, height: 1.5),
           ),
           const SizedBox(height: 16),
-          StepIllustration(step: step),
+          if (step.images.isEmpty) StepIllustration(step: step),
+          StepGallery(step: step),
         ],
       ),
     ),

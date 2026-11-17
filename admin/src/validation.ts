@@ -10,6 +10,8 @@ export function validate<R extends Resource>(resource: R, entity: Entities[R], c
     if (!/^[a-z0-9]+(?:[-_][a-z0-9]+)*$/.test(a.slug)) add('slug', 'Dùng chữ thường không dấu, số, dấu gạch ngang hoặc gạch dưới.');
     if (!/^[a-z0-9_]+$/.test(a.variant_key)) add('variant_key', 'Dùng chữ thường không dấu, số và dấu gạch dưới.');
     a.steps.forEach((s, i) => {
+      if ((s.images?.length || 0) > 6) add(`steps.${i}.images`, 'Mỗi bước tối đa 6 ảnh.');
+      s.images?.forEach((image, n) => { if (!image.alt_text.trim()) add(`steps.${i}.images.${n}.alt_text`, 'Cần mô tả ảnh cho người đọc màn hình.'); });
       required(`steps.${i}.title`, s.title); required(`steps.${i}.instruction`, s.instruction);
       if (s.position !== i + 1) add(`steps.${i}.position`, 'Thứ tự bước phải liên tiếp từ 1.');
       if (s.image_url && !https(s.image_url)) add(`steps.${i}.image_url`, 'Ảnh bổ sung phải dùng URL HTTPS.');

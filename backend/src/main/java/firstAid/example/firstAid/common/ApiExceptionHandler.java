@@ -16,6 +16,10 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    ResponseEntity<Map<String,Object>> uploadTooLarge(Exception ex) {
+        return ResponseEntity.status(413).body(Api.error("IMAGE_TOO_LARGE", "Ảnh vượt giới hạn 5 MB", List.of()));
+    }
     @ExceptionHandler(ApiFailure.class)
     ResponseEntity<Map<String, Object>> business(ApiFailure ex) {
         ResponseEntity.BodyBuilder response = ResponseEntity.status(ex.status());

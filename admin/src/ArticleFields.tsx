@@ -1,9 +1,11 @@
 import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react';
+import { StepMediaEditor } from './StepMediaEditor';
+import type { AdminApi } from './api';
 import { Field, Notice } from './components';
 import { illustrationCatalogue, StepIllustration } from './StepIllustration';
 import { ageLabels, nullable, type Article, type Category, type Source, type Step } from './models';
 
-export function ArticleFields({ article: a, categories, sources, change }: { article: Article; categories: Category[]; sources: Source[]; change: (article: Article) => void }) {
+export function ArticleFields({ article: a, categories, sources, change, api, onMediaBusy }: { article: Article; categories: Category[]; sources: Source[]; change: (article: Article) => void; api?: AdminApi; onMediaBusy?: (busy: boolean) => void }) {
   const set = (key: keyof Article, value: unknown) => change({ ...a, [key]: value });
   const updateStep = (index: number, key: keyof Step, value: unknown) => set('steps', a.steps.map((s, i) => i === index ? { ...s, [key]: value } : s));
   const reorder = (index: number, offset: number) => {
@@ -35,7 +37,7 @@ export function ArticleFields({ article: a, categories, sources, change }: { art
             {illustrationCatalogue.map(d => <option key={d.assetKey} value={d.assetKey}>{d.label} — {d.caption}</option>)}
           </select>
         </Field>
-        <StepIllustration step={s}/>
+        <StepIllustration step={s}/><StepMediaEditor step={s} api={api} onBusy={onMediaBusy} change={next => set('steps', a.steps.map((item, n) => n === i ? next : item))}/>
         <details><summary>Minh họa và khả năng tiếp cận</summary><div className="form-grid"><Field label="URL ảnh bổ sung (HTTPS)"><input id={`field-steps.${i}.image_url`} value={s.image_url || ''} onChange={e => updateStep(i, 'image_url', nullable(e.target.value))}/></Field><div className="full"><Field label="Mô tả hình"><input id={`field-steps.${i}.alt_text`} value={s.alt_text || ''} onChange={e => updateStep(i, 'alt_text', nullable(e.target.value))}/></Field></div></div></details>
       </div>)}
       <button type="button" className="add-button" onClick={() => set('steps', [...a.steps, { position: a.steps.length + 1, title: '', instruction: '', asset_key: null, image_url: null, alt_text: null }])}><Plus size={17}/>Thêm bước</button>

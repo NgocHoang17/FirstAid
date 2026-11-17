@@ -74,6 +74,8 @@ CREATE TABLE article_steps (
     asset_key TEXT,
     image_url TEXT,
     alt_text TEXT,
+    image_layout TEXT NOT NULL DEFAULT 'stacked' CHECK (image_layout IN ('stacked','grid','carousel')),
+    images_json TEXT NOT NULL DEFAULT '[]',
     UNIQUE (article_id, position),
     CHECK (image_url IS NULL OR image_url LIKE 'https://%'),
     CHECK ((asset_key IS NULL AND image_url IS NULL) OR (alt_text IS NOT NULL AND trim(alt_text) <> ''))

@@ -6,6 +6,7 @@ import '../../first_aid/presentation/quick_aid_pages.dart';
 import '../../first_aid/presentation/reference_article_view.dart';
 import '../../settings/data/content_update_cubit.dart';
 import '../../../core/widgets/feature_widgets.dart';
+import 'lesson_card.dart';
 
 const knowledgeGroups = {
   'CIRCULATION': 'Tuần hoàn & hô hấp',
@@ -172,10 +173,8 @@ class _KnowledgePageState extends State<KnowledgePage> {
                   }),
                 ),
               for (final article in articles) ...[
-                AidCard(
-                  article.title,
-                  '${article.ageLabel}\n${article.summary}',
-                  icon: situationIcon(article.categoryCode),
+                LessonCard(
+                  article: article,
                   onTap: () => openPage(
                     context,
                     ReferenceArticleView(

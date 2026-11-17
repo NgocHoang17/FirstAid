@@ -23,6 +23,8 @@ Trong khi phối hợp backend, bộ đọc snapshot v1 giữ tương thích đ�
 
 ## Kiểm tra
 
+Ảnh hướng dẫn do Admin tải lên có ba bố cục: xếp dọc, lưới và vuốt ngang. Ảnh xuất hiện sau chữ trong khối của bước; có chú thích và mô tả đọc màn hình. Lưới chuyển thành một cột khi chữ lớn. Ảnh tải từ server cần kết nối mạng; khi không tải được, phần hướng dẫn chữ vẫn đọc được. Hình bundled tiếp tục phục vụ các bước không có bộ ảnh upload.
+
 ```powershell
 flutter analyze
 flutter test
