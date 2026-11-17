@@ -41,19 +41,6 @@ export function validate<R extends Resource>(resource: R, entity: Entities[R], c
     if (s.original_url && !https(s.original_url)) add('original_url', 'Chỉ nhận URL HTTPS.');
     if (s.media_type === 'WEB' && (!s.original_url || s.page_count !== null)) add('original_url', 'Nguồn web cần URL HTTPS và không có số trang.');
     if (s.media_type === 'PDF' && (!Number.isInteger(s.page_count) || s.page_count! < 1)) add('page_count', 'PDF cần số trang nguyên dương.');
-  } else {
-    const f = entity as Entities['facilities']; required('name', f.name); required('address', f.address); required('region_code', f.region_code);
-    if ((f.latitude === null) !== (f.longitude === null)) add('latitude', 'Nhập đủ cả vĩ độ và kinh độ, hoặc để trống cả hai.');
-    if (f.latitude !== null && (!Number.isFinite(f.latitude) || Math.abs(f.latitude) > 90)) add('latitude', 'Vĩ độ từ -90 đến 90.');
-    if (f.longitude !== null && (!Number.isFinite(f.longitude) || Math.abs(f.longitude) > 180)) add('longitude', 'Kinh độ từ -180 đến 180.');
-    if (f.phone && (!/^\+?[\d ()-]{7,25}$/.test(f.phone) || f.phone.replace(/\D/g, '') === '115')) add('phone', 'Nhập số điện thoại riêng của cơ sở đã xác minh, không dùng 115.');
-    if (f.verified_at && (!Number.isFinite(Date.parse(f.verified_at)) || Date.parse(f.verified_at) > Date.now())) add('verified_at', 'Ngày xác minh phải hợp lệ và không ở tương lai.');
-    if (f.is_active) {
-      if (!f.phone) add('phone', 'Cần điện thoại đã được xác minh.');
-      if (f.latitude === null || f.longitude === null) add('latitude', 'Cơ sở đang sử dụng cần tọa độ.');
-      required('verification_note', f.verification_note);
-      if (!f.verified_at) add('verified_at', 'Cần ngày xác minh trước khi sử dụng.');
-    }
   }
   return errors;
 }

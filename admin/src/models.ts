@@ -1,4 +1,4 @@
-export type Resource = 'articles' | 'categories' | 'sources' | 'facilities';
+export type Resource = 'articles' | 'categories' | 'sources';
 export type Status = 'DRAFT' | 'PUBLISHED';
 export type AgeGroup = 'ADULT' | 'CHILD' | 'ALL';
 export interface Category {
@@ -23,18 +23,13 @@ export interface Article {
   steps: Step[]; warnings: string[]; seek_help: string[]; references: Reference[];
   status: Status; content_checked: boolean; checked_at: string | null; content_revision: number; updated_at: string;
 }
-export interface Facility {
-  id: string; name: string; region_code: string; address: string; phone: string | null;
-  latitude: number | null; longitude: number | null; emergency_24h: 'YES' | 'NO' | 'UNKNOWN';
-  verification_note: string; verified_at: string | null; is_active: boolean;
-}
-export interface Entities { articles: Article; categories: Category; sources: Source; facilities: Facility }
+export interface Entities { articles: Article; categories: Category; sources: Source }
 export type Entity = Entities[Resource];
 export interface Admin { id: string; username: string; role: 'ADMIN' }
 export interface Page<T> { items: T[]; page: number; page_size: number; total: number }
 export interface FieldError { field: string; message: string }
 export const ageLabels: Record<AgeGroup, string> = { ALL: 'Người lớn & trẻ em', ADULT: 'Người lớn', CHILD: 'Trẻ em' };
-export const resourceLabels: Record<Resource, string> = { articles: 'Bài sơ cứu', categories: 'Danh mục', sources: 'Nguồn tài liệu', facilities: 'Cơ sở y tế' };
+export const resourceLabels: Record<Resource, string> = { articles: 'Bài sơ cứu', categories: 'Danh mục', sources: 'Nguồn tài liệu' };
 export const normalize = (text: string) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
 // Preserve spaces while typing optional descriptions; blank input still maps to null.
 export const nullable = (text: string) => text.trim() ? text : null;
@@ -43,7 +38,6 @@ export function blankEntity<R extends Resource>(resource: R): Entities[R] {
     articles: { id: '', title: '', category_id: '', slug: '', variant_key: '', age_group: 'ALL', applies_to: '', summary: '', recognition: [], quick_actions: [], steps: [], warnings: [], seek_help: [], references: [], status: 'DRAFT', content_checked: false, checked_at: null, content_revision: 0, updated_at: '' },
     categories: { id: '', code: '', name: '', group_code: 'OTHER', description: '', keywords: [], sort_order: 1, is_active: true },
     sources: { id: '', code: '', title: '', publisher: '', publication_year: null, page_count: null, media_type: 'PDF', revision: 1, original_url: null, is_active: true, rights_note: '' },
-    facilities: { id: '', name: '', region_code: '', address: '', phone: null, latitude: null, longitude: null, emergency_24h: 'UNKNOWN', verification_note: '', verified_at: null, is_active: false },
   };
   return structuredClone(values[resource]);
 }

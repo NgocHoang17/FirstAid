@@ -26,12 +26,4 @@ describe('editor validation', () => {
     expect(validate('articles', a, categories, sources).map(e => e.field)).toEqual(expect.arrayContaining(['steps.0.image_url', 'steps.0.alt_text']));
     expect(validate('articles', a, categories, sources.map(s => ({ ...s, is_active: false })), true).map(e => e.field)).toContain('references.0.source_id');
   });
-  it('rejects unverified active facilities and invalid coordinates; UNKNOWN is valid', () => {
-    const f = { ...blankEntity('facilities'), name: 'Fixture — not real', address: 'Demo', region_code: 'VN-TEST', is_active: true };
-    expect(validate('facilities', f).map(e => e.field)).toEqual(expect.arrayContaining(['phone', 'latitude', 'verification_note', 'verified_at']));
-    const verified = { ...f, phone: '02361234567', latitude: 16, longitude: 108, verification_note: 'Fixture', verified_at: '2026-01-01T00:00:00Z' };
-    expect(validate('facilities', verified)).toEqual([]);
-    expect(validate('facilities', { ...verified, latitude: 100 }).map(e => e.field)).toContain('latitude');
-    expect(validate('facilities', { ...verified, phone: '115' }).map(e => e.field)).toContain('phone');
-  });
 });

@@ -8,7 +8,7 @@ export function createDemoTransport(): Transport {
   const db: { [K in Resource]: Entities[K][] } = {
     articles: structuredClone(library.articles) as Article[],
     categories: structuredClone(library.categories) as Category[],
-    sources: structuredClone(library.sources) as Source[], facilities: [],
+    sources: structuredClone(library.sources) as Source[],
   };
   let loggedIn = false;
   let token = crypto.randomUUID();
@@ -44,7 +44,7 @@ export function createDemoTransport(): Transport {
       if (method === 'GET') {
         if (id) return response(existing);
         const q = normalize(url.searchParams.get('q') || '');
-        const filtered = rows.filter(row => normalize(`${row.title || row.name} ${row.code || ''}`).includes(q) && ['status', 'category_id', 'region_code'].every(field => !url.searchParams.get(field) || row[field] === url.searchParams.get(field)));
+        const filtered = rows.filter(row => normalize(`${row.title || row.name} ${row.code || ''}`).includes(q) && ['status', 'category_id'].every(field => !url.searchParams.get(field) || row[field] === url.searchParams.get(field)));
         const page = Math.max(1, Number(url.searchParams.get('page') || 1));
         const pageSize = Math.min(100, Math.max(1, Number(url.searchParams.get('page_size') || 20)));
         return response({ items: filtered.slice((page - 1) * pageSize, page * pageSize), total: filtered.length, page, page_size: pageSize });
