@@ -70,7 +70,7 @@ Mã ổn định và cách chia bài có trong 07. Không gộp một hướng d
 | FR09 | Chatbot RAG | Nhập text và nhận phản hồi theo schema, có nguồn cho khẳng định y khoa |
 | FR10 | Giới hạn chatbot | Thiếu nguồn, thiếu dữ kiện, ngoài phạm vi, nguy cơ hoặc timeout có UI và hành vi riêng |
 | FR11 | Xem nguồn | Citation mở đúng tên nguồn/trang; metadata nguồn đọc được offline nếu đã trong dữ liệu local |
-| FR12 | Danh bạ khu vực | Có danh sách và chi tiết; không cấp vị trí vẫn chọn khu vực hoặc xem danh sách |
+| FR12 | Danh bạ khu vực | Chuyển Danh sách/Bản đồ, dùng chung tìm kiếm và dữ liệu đã lưu; chỉ ghim cơ sở active có tọa độ đã xác minh; không cấp vị trí vẫn xem được |
 | FR13 | Cơ sở gần vị trí | Tính khoảng cách đường thẳng và sắp tăng dần; không gọi là thời gian di chuyển |
 | FR14 | Gọi và mở bản đồ | Từ chi tiết cơ sở mở dialer hoặc app bản đồ, có phương án khi không mở được |
 | FR15 | Admin đăng nhập | Một role, endpoint ghi có xác thực; public không đọc được bản nháp |
@@ -99,7 +99,7 @@ Nếu offline: không gửi request, hiện thông báo và nút tìm trong ki�
 
 ### UC04 — Tìm cơ sở y tế
 
-Mở danh bạ → xem danh sách khu vực hoặc bấm Dùng vị trí → cấp quyền nếu muốn → sắp theo khoảng cách đường thẳng → mở chi tiết → gọi hoặc mở bản đồ ngoài. Không có quyền/vị trí thì vẫn xem danh sách. Dữ liệu offline chỉ gồm vùng đã có trên máy, kèm ngày kiểm tra thông tin.
+Mở danh bạ → chọn Danh sách hoặc Bản đồ → tìm cơ sở trong khu vực → mở chi tiết hoặc chạm ghim → xem tên, địa chỉ, số điện thoại → gọi hoặc mở chỉ đường trong ứng dụng bản đồ ngoài. Khi người dùng bấm Dùng vị trí, xin quyền foreground, đánh dấu vị trí vừa lấy và sắp danh sách theo khoảng cách đường thẳng. Không cấp vị trí vẫn xem danh sách và bản đồ cơ sở. Khi mất mạng hoặc lỗi nền bản đồ, cho phép trở về danh sách đã lưu; không cam kết bản đồ ngoại tuyến. Dữ liệu offline chỉ gồm vùng đã có trên máy, kèm ngày kiểm tra thông tin.
 
 ### UC05 — Quản lý bài
 

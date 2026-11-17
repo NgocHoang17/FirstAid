@@ -30,3 +30,17 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1 --dart-define
 `PILOT_REGION_CODE` phải khớp vùng dữ liệu của máy chủ; `PILOT_REGION_LABEL` là tên vùng hiển thị. Bản release dùng API HTTPS. Khi không cấu hình API, các bài đã lưu vẫn đọc được; tính năng cần máy chủ hiển thị trạng thái chưa sẵn sàng.
 
 Snapshot và danh bạ được lưu bằng SQLite trên Android/iOS. Cập nhật chỉ thay dữ liệu sau khi kiểm tra hợp lệ và ghi thành công. Danh bạ không kèm cơ sở minh họa; dữ liệu active cần được xác minh theo contract. Chat giữ câu hỏi trong bộ nhớ của phiên ứng dụng và không gửi lịch sử lên máy chủ.
+
+## Bản đồ cơ sở y tế
+
+Trong Cơ sở y tế, chọn **Danh sách** hoặc **Bản đồ**. Tìm kiếm áp dụng cho cả hai chế độ. Chạm ghim để xem thông tin, gọi cơ sở hoặc mở **Chỉ đường**. Bấm **Dùng vị trí hiện tại** để hiển thị vị trí vừa lấy; ứng dụng không theo dõi vị trí nền. Từ chối quyền vẫn xem được bản đồ cơ sở.
+
+Ghim lấy từ danh bạ active đã tải vào thiết bị. Nhập dữ liệu theo [hướng dẫn Đà Nẵng](../data/facilities/README.md), sau đó tải danh bạ hoặc cập nhật snapshot trên app. File JSON trong repository không tự xuất hiện trên bản đồ khi chưa nhập và đồng bộ.
+
+Nền bản đồ dùng `flutter_map` và OpenStreetMap, không cần API key. Khi mất mạng hoặc lỗi tile, chọn **Xem danh sách đã lưu**. Cache tile của thư viện phục vụ tải nền thông thường, không bảo đảm bản đồ offline. Giữ attribution và User-Agent của ứng dụng; không thêm tải tile hàng loạt. Kiểm [chính sách tile OSM](https://operations.osmfoundation.org/policies/tiles/) trước khi phát hành hoặc tăng quy mô sử dụng.
+
+Kiểm thử bản đồ dùng tile giả lập, không gọi máy chủ bản đồ:
+
+```powershell
+flutter test --no-pub test/facilities_map_test.dart
+```
