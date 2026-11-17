@@ -1,6 +1,6 @@
 # FirstAid
 
-FirstAid hỗ trợ tra cứu sơ cứu với khoảng 18 nhóm tình huống, hướng dẫn cố định đọc ngoại tuyến, chatbot RAG văn bản có nguồn và danh bạ cơ sở y tế. Mobile không cần tài khoản; web quản trị sử dụng một role ADMIN.
+FirstAid hỗ trợ giáo dục và phổ biến kiến thức sơ cứu ngoại viện qua bài học trực quan, tra cứu ngoại tuyến và hỏi đáp RAG có nguồn. Mobile không cần tài khoản; web quản trị sử dụng một role ADMIN.
 
 ## Tài liệu
 
@@ -18,20 +18,30 @@ Bắt đầu tại [hướng dẫn đọc](docs/baseline-v2/README.md), sau đó
 
 | Thành phần | Công nghệ | Trách nhiệm |
 | --- | --- | --- |
-| Mobile | Flutter, BLoC, SQLite | Hướng dẫn offline, tìm kiếm, chat và danh bạ |
+| Mobile | Flutter, BLoC, SQLite | Hướng dẫn offline, tìm kiếm, hỏi đáp |
 | API | Spring Boot, PostgreSQL | Nội dung, Admin auth, snapshot và gateway AI |
-| Web Admin | React + TypeScript | Quản lý bài, danh mục, nguồn và cơ sở y tế |
-| RAG | FastAPI, BM25, LLM provider | Truy xuất corpus có nguồn và phản hồi theo policy |
+| Web Admin | React + TypeScript | Quản lý bài, danh mục, hình và nguồn |
+| RAG | FastAPI, BM25, trả lời trích xuất | Truy xuất bài có nguồn, giữ đối tượng và citation |
 
 ## Phạm vi
 
-P0 gồm đọc/tìm bài quick và learn từ cùng dữ liệu, core offline từ lần mở đầu, RAG text, danh bạ, CRUD Admin và cập nhật full snapshot thủ công. CPR metronome là P1. Không triển khai voice, AI ảnh, mô phỏng/quiz, tài khoản mobile, hồ sơ nạn nhân hoặc điều phối xe. Tiêu chí ở [08](docs/baseline-v2/08_ACCEPTANCE_AND_PLAN.md).
+FirstAid hỗ trợ giáo dục và phổ biến kiến thức sơ cứu ngoại viện qua bài học trực quan, nội dung ngoại tuyến và hỏi đáp RAG bằng văn bản/hình ảnh. Đối tượng gồm người lớn và trẻ em, không bao gồm nhũ nhi. Không có quiz, danh bạ, bản đồ hoặc định vị. Không thay thế nhân viên y tế và dịch vụ cấp cứu. Đặc tả ở [01](docs/baseline-v2/01_SYSTEM_SPEC.md), nghiệm thu ở [08](docs/baseline-v2/08_ACCEPTANCE_AND_PLAN.md).
 
 ## Phát triển local
 
-Phiên bản SDK và dependencies lấy từ cấu hình build/lockfile của từng thành phần. Không đưa secrets vào repository.
+### Chạy ứng dụng với dữ liệu thật trên Windows
 
-Mobile:
+Cần Python 3.11+, Node.js theo `admin/package.json`, JDK 21 và Flutter. Script tự tìm JDK 21 trong Android Studio nếu `JAVA_HOME` chưa phù hợp. Lần đầu script tải PostgreSQL portable từ EDB vào thư mục công cụ của dự án.
+
+Tại thư mục gốc, chạy:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/start-local.ps1
+```
+
+Lệnh này khởi động PostgreSQL, Spring, chatbot và web Admin, nạp bộ dữ liệu đã biên soạn, rồi kiểm tra API. Mở **http://127.0.0.1:5173** để quản trị. Tài khoản được tạo riêng trên máy và lưu trong `.local/credentials.json`. Database, mật khẩu và log nằm trong `.local/`, được Git bỏ qua.
+
+Trong terminal khác, chạy mobile trên Android emulator:
 
 ```powershell
 cd mobile
@@ -39,11 +49,28 @@ flutter pub get
 flutter run
 ```
 
-Spring Boot trên Windows (cần PostgreSQL và biến môi trường theo [backend README](backend/README.md)):
+Debug mặc định kết nối `http://10.0.2.2:8080/api/v1`. Điện thoại thật cần `--dart-define=API_BASE_URL` trỏ tới máy chủ truy cập được. Bản release cấu hình API HTTPS theo môi trường.
+
+Dừng các dịch vụ local khi cần:
 
 ```powershell
-cd backend
-.\mvnw.cmd spring-boot:run
+powershell -ExecutionPolicy Bypass -File tools/start-local.ps1 -Stop
 ```
 
-API public dùng prefix `/api/v1`; FastAPI chỉ phục vụ nội bộ qua `/internal/v1`. Base URL cấu hình theo môi trường. Android emulator dùng `10.0.2.2` để truy cập dịch vụ trên máy phát triển.
+Database được giữ lại để lần sau dùng tiếp. Chạy lại lệnh khởi động giữ dữ liệu đã chỉnh bằng Admin.
+
+### Luồng dữ liệu
+
+1. `mobile/assets/content/reference_library.json` chứa 24 bài, 18 nhóm và 17 nguồn đã biên soạn.
+2. `tools/build_app_data.py` tạo `mobile/assets/content/offline_snapshot.json`. App cài mới đọc được bài và hình đi kèm, không cần mạng.
+3. Lệnh khởi động nạp dữ liệu nội dung vào PostgreSQL khi chưa có bài. Các chỉnh sửa từ Admin được giữ lại.
+4. Spring xuất snapshot. Mobile cập nhật qua **Cài đặt → Kiểm tra cập nhật**, kiểm và ghi SQLite nguyên tử.
+5. Chatbot dùng corpus từ snapshot public của Spring. Gateway kiểm nguồn và revision trước khi trả phản hồi.
+
+Chạy lại lệnh khởi động sau khi xuất bản nội dung để dựng lại corpus. Sau khi sửa nguồn biên soạn, chạy `python tools/build_app_data.py`; dùng `--check` để kiểm artifact.
+
+### Phối hợp backend và AI
+
+Đặc tả giáo dục và hỏi đáp kèm ảnh nằm trong bộ docs. Hỏi đáp kèm ảnh cần triển khai và nghiệm thu bộ xử lý đa phương thức thật theo [05](docs/baseline-v2/05_AI_RAG_GUIDE.md); không coi nhận file là hoàn thành AI.
+
+Backend do thành viên phụ trách chuyển đổi theo [04](docs/baseline-v2/04_BACKEND_GUIDE.md). Bộ chạy local giữ tương thích snapshot v1 cho tới khi client/server cùng hỗ trợ schema 2. Client không dùng dữ liệu danh bạ trong v1. Script không xóa dữ liệu đã có trong PostgreSQL.

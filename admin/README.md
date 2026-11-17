@@ -1,29 +1,33 @@
 # FirstAid Admin
 
-Web quản trị dùng React, TypeScript và Vite. Bốn mục chính gồm bài sơ cứu, danh mục, nguồn tài liệu và cơ sở y tế.
+Web quản trị dùng React, TypeScript và Vite. Ba mục chính gồm bài sơ cứu, danh mục và nguồn tài liệu.
 
 API dùng [contract chung](../docs/baseline-v2/06_SHARED_CONTRACTS.md). Web không tạo tài khoản mobile, tải PDF hoặc huấn luyện AI.
 
 ## Chạy local
 
-Yêu cầu Node.js từ 22.12 và npm. Cài đúng phiên bản trong `package-lock.json`:
+Để quản lý dữ liệu thật, chạy lệnh này từ thư mục gốc dự án:
 
 ```powershell
-cd admin
-npm.cmd ci
+powershell -ExecutionPolicy Bypass -File tools/start-local.ps1
 ```
 
-Để xem và thử giao diện độc lập:
+Mở <http://127.0.0.1:5173>. Lấy tài khoản quản trị được tạo riêng cho máy trong `.local/credentials.json`. Web đọc và ghi PostgreSQL qua Spring, cùng bộ bài và nguồn mà mobile sử dụng. Lệnh khởi động cũng chạy chatbot và nạp dữ liệu ban đầu. Xem [luồng chạy đầy đủ](../README.md#phát-triển-local).
+
+## Kiểm thử giao diện độc lập
+
+Chế độ demo dành cho kiểm thử giao diện trong bộ nhớ. Từ thư mục `admin/`, chạy:
 
 ```powershell
+npm.cmd ci
 npm.cmd run dev:demo
 ```
 
-Mở <http://127.0.0.1:5173>. Đăng nhập bằng tên `demo` và mật khẩu `demo`.
+Đăng nhập bằng tên `demo` và mật khẩu `demo`.
 
-Chế độ demo có banner riêng. Bộ bài và nguồn lấy từ thư viện tham khảo của dự án. Danh bạ khởi tạo rỗng. Thay đổi chỉ nằm trong bộ nhớ của tab và mất khi tải lại. Demo không ghi backend, SQLite hoặc dữ liệu mobile.
+Chế độ demo có banner riêng. Bộ bài và nguồn lấy từ thư viện tham khảo của dự án. Thay đổi chỉ nằm trong bộ nhớ của tab và mất khi tải lại. Demo không ghi backend, SQLite hoặc dữ liệu mobile.
 
-## Nối backend
+## Cấu hình server riêng
 
 1. Sao chép `.env.example` thành `.env.local`.
 2. Đặt `API_PROXY_TARGET` thành địa chỉ Spring Boot của bạn.
@@ -65,9 +69,8 @@ Không lưu mật khẩu, session token hoặc CSRF token vào localStorage. Tok
 
 Lưu sửa bài đã xuất bản sẽ đưa bài về nháp và xóa xác nhận trước đó. Web cảnh báo trước khi lưu. Người biên tập phải đối chiếu, lưu xác nhận và xuất bản lại.
 
-Nguồn PDF cần trang trích trong giới hạn tài liệu. Nguồn WEB dùng URL HTTPS và trang null. Preview chỉ hiện tên tài liệu, đơn vị và năm trong phần nguồn dành cho người đọc. Hình bundled được hiển thị trong mobile; preview Admin hiển thị mô tả và asset key.
+Nguồn PDF cần trang trích trong giới hạn tài liệu. Nguồn WEB dùng URL HTTPS và trang null. Preview chỉ hiện tên tài liệu, đơn vị và năm trong phần nguồn dành cho người đọc. Chọn hình từ thư viện dùng chung với mobile; hình và chú thích xuất hiện trong form và bản xem trước.
 
-Cơ sở y tế mới mặc định ngừng sử dụng. Chỉ bật sử dụng sau khi nhập thông tin liên hệ, tọa độ, nguồn và ngày xác minh. Giá trị cấp cứu 24/7 **Chưa xác minh** luôn hợp lệ.
 
 ## Kiểm tra và build
 

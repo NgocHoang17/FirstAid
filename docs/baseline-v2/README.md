@@ -1,10 +1,10 @@
 # FirstAid Development Pack
 
-**Baseline 2.0 **
+**Đặc tả giáo dục sơ cứu ngoại viện**
 
-Bộ tài liệu này mô tả phạm vi đã thống nhất: ứng dụng Flutter hỗ trợ khoảng 18 nhóm tình huống sơ cứu, đọc ngoại tuyến, chatbot RAG bằng văn bản, danh bạ cơ sở y tế và web quản trị với một vai trò Admin. Người dùng mobile không cần tài khoản.
+Bộ tài liệu này mô tả phạm vi đã thống nhất: ứng dụng Flutter hỗ trợ khoảng 18 nhóm tình huống sơ cứu, đọc ngoại tuyến, chatbot RAG bằng văn bản và hình ảnh và web quản trị với một vai trò Admin. Người dùng mobile không cần tài khoản.
 
-Phạm vi không bao gồm quy trình duyệt nhiều cấp, nhật ký nạn nhân, ký gói nội dung, thu hồi/rollback nhiều phiên bản, huấn luyện PhoBERT/NER, giọng nói hoặc nhận diện hình ảnh. Đây là tài liệu thiết kế, chưa phải kết quả đối chiếu mã nguồn hoặc chứng nhận nội dung y khoa.
+Phạm vi không bao gồm quy trình duyệt nhiều cấp, nhật ký nạn nhân, ký gói nội dung, thu hồi/rollback nhiều phiên bản, huấn luyện PhoBERT/NER, quiz, giọng nói, danh bạ, bản đồ, định vị hoặc chẩn đoán bằng ảnh. Đây là tài liệu thiết kế, chưa phải kết quả đối chiếu mã nguồn hoặc chứng nhận nội dung y khoa.
 
 ## 1. Các tệp trong gói
 
@@ -37,7 +37,7 @@ Phạm vi sản phẩm lấy từ 01. Payload và endpoint lấy từ 06. Dữ l
 
 Các lựa chọn kỹ thuật mặc định trong gói: Flutter mobile; Spring Boot; PostgreSQL; FastAPI cho RAG; React + TypeScript cho admin nếu repository chưa có lựa chọn khác; SQLite local. Đây là baseline triển khai mới, không khẳng định các thư viện đã tồn tại trong dự án. Không tự thay stack đang có; nếu repo khác baseline, báo khác biệt và đề xuất cách giữ tương thích.
 
-Những thông tin thực sự chưa biết dùng nhãn `[TODO / NEED DECISION]`, chủ yếu gồm provider/model AI, người xác nhận nội dung, quyền tái sử dụng tài liệu/hình, dữ liệu cơ sở thực và hạ tầng triển khai. Nhãn này không phải lý do để dừng toàn bộ công việc: dùng mock đúng schema cho phần độc lập, không dùng mock y khoa như dữ liệu thật.
+Những thông tin thực sự chưa biết dùng nhãn `[TODO / NEED DECISION]`, chủ yếu gồm provider/model AI, người xác nhận nội dung, quyền tái sử dụng tài liệu/hình, hạ tầng triển khai. Nhãn này không phải lý do để dừng toàn bộ công việc: dùng mock đúng schema cho phần độc lập, không dùng mock y khoa như dữ liệu thật.
 
 ## 4. Cách sử dụng tài liệu
 

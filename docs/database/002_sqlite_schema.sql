@@ -1,14 +1,13 @@
 -- FirstAid P0 local cache schema. Apply in Flutter's SQLite migration.
 -- On every connection run PRAGMA foreign_keys = ON before any transaction.
 -- JSON arrays are TEXT; the app validates JSON shape before insertion.
--- This schema accepts only a validated public OfflineSnapshot schema 1.
+-- Design reference for a fresh database using public OfflineSnapshot schema 2.
 
 CREATE TABLE app_metadata (
     id INTEGER PRIMARY KEY CHECK (id = 1),
-    schema_version INTEGER NOT NULL CHECK (schema_version = 1),
+    schema_version INTEGER NOT NULL CHECK (schema_version = 2),
     data_version TEXT NOT NULL,
     generated_at TEXT NOT NULL,
-    region_code TEXT NOT NULL,
     locale TEXT NOT NULL,
     emergency_number TEXT NOT NULL
 );
@@ -97,18 +96,3 @@ CREATE TABLE article_references (
     )
 );
 CREATE INDEX article_references_source_idx ON article_references (source_id);
-
-CREATE TABLE facilities (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    region_code TEXT NOT NULL,
-    address TEXT NOT NULL,
-    phone TEXT NOT NULL,
-    latitude REAL NOT NULL CHECK (latitude BETWEEN -90 AND 90),
-    longitude REAL NOT NULL CHECK (longitude BETWEEN -180 AND 180),
-    emergency_24h TEXT NOT NULL CHECK (emergency_24h IN ('YES', 'NO', 'UNKNOWN')),
-    verification_note TEXT NOT NULL,
-    verified_at TEXT NOT NULL,
-    is_active INTEGER NOT NULL CHECK (is_active = 1)
-);
-CREATE INDEX facilities_region_name_idx ON facilities (region_code, name);
