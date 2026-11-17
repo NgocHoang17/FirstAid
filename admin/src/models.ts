@@ -10,7 +10,9 @@ export interface Source {
   media_type: 'PDF' | 'WEB'; page_count: number | null; revision: number;
   original_url: string | null; is_active: boolean; rights_note: string;
 }
+export interface StepImage { media_id: string; url: string; alt_text: string; caption: string }
 export interface Step {
+  images?: StepImage[]; image_layout?: 'stacked' | 'grid' | 'carousel';
   id?: string; position: number; title: string; instruction: string;
   asset_key: string | null; image_url: string | null; alt_text: string | null;
 }

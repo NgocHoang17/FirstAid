@@ -37,6 +37,20 @@ export class AdminApi {
     return payload.data as T;
   }
   me() { return this.request<Admin>('/auth/me'); }
+  async uploadImage(file: File): Promise<{ id: string; url: string }> {
+    if (!this.csrf) await this.refreshCsrf();
+    const body = new FormData(); body.append('file', file);
+    let response: Response;
+    try { response = await this.transport('/api/v1/admin/media', { method: 'POST', body, credentials: 'include', headers: { [this.csrf!.header_name]: this.csrf!.token }, signal: AbortSignal.timeout(30000) }); }
+    catch { throw new ApiError(0, 'NETWORK_ERROR', 'Không tải được ảnh. Hãy kiểm tra kết nối và thử lại.'); }
+    const result = await response.json().catch(() => null);
+    if (!response.ok) {
+      if (response.status === 401) { this.csrf = null; this.onUnauthorized?.(); }
+      throw new ApiError(response.status, result?.error?.code || 'UPLOAD_FAILED', result?.error?.message || 'Không tải được ảnh. Kiểm tra định dạng và dung lượng.');
+    }
+    if (!result?.data?.id || result.data.url !== `/api/v1/media/${result.data.id}`) throw new ApiError(502, 'INVALID_RESPONSE', 'Thông tin ảnh không hợp lệ.');
+    return result.data;
+  }
   async login(username: string, password: string) {
     await this.refreshCsrf();
     const user = await this.request<Admin>('/auth/login', 'POST', { username, password });
