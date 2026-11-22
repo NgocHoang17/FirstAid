@@ -9,6 +9,7 @@ interface Diagram {
 }
 
 // Read the mobile catalogue directly: asset keys and captions stay identical.
+const pictures = import.meta.glob<string>('../../mobile/assets/illustrations/*.png',{eager:true,import:'default',query:'?url'});
 const files = import.meta.glob<Diagram>('../../mobile/assets/illustrations/*.json', { eager: true, import: 'default' });
 export const illustrationCatalogue = Object.entries(files).map(([path, diagram]) => ({
   ...diagram,
@@ -57,8 +58,9 @@ export function StepIllustration({ step }: { step: Step }) {
   if (!diagram || diagram.schema_version !== 1 || !drawings[diagram.kind]) {
     return <p className="illustration-unavailable" role="status">Không tìm thấy hình đã chọn. Hãy chọn lại từ thư viện minh họa.</p>;
   }
+  const picture = pictures['../../mobile/' + step.asset_key.replace('.json','.png')];
   return <figure className="step-illustration" role="img" aria-label={`${diagram.label}. ${step.alt_text || diagram.caption}`}>
-    <svg viewBox="0 0 320 114" fill="none" stroke="#005a78" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{drawings[diagram.kind]}</svg>
+    {picture ? <img src={picture} alt="" style={{width:"100%",borderRadius:12}}/> : <svg viewBox="0 0 320 114" fill="none" stroke="#005a78" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{drawings[diagram.kind]}</svg>}
     <figcaption><strong>{diagram.label}</strong><span>{diagram.caption}</span></figcaption>
   </figure>;
 }
