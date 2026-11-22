@@ -40,7 +40,10 @@ class ContentUpdateCubit extends Cubit<ContentState> {
       }
       final data = saved ?? await BundledSnapshot.load();
       final library =
-          saved == null && data['region_code'] != AppEnvironment.regionCode
+          saved == null &&
+              (data['schema_version'] == 1 ||
+                  data.containsKey('region_code')) &&
+              data['region_code'] != AppEnvironment.regionCode
           ? ReferenceLibrary.fromSnapshot({...data, 'facilities': <dynamic>[]})
           : validateSnapshot(data);
       if (saved == null && data['region_code'] == AppEnvironment.regionCode) {
@@ -74,12 +77,13 @@ class ContentUpdateCubit extends Cubit<ContentState> {
   }
 
   static ReferenceLibrary validateSnapshot(Map<String, dynamic> data) {
-    if (data['schema_version'] != 1) {
+    if (![1, 2].contains(data['schema_version'])) {
       throw const FormatException('Unsupported snapshot schema');
     }
     if ((data['data_version'] as String? ?? '').isEmpty ||
         DateTime.tryParse(data['generated_at'] as String? ?? '') == null ||
-        data['region_code'] != AppEnvironment.regionCode) {
+        ((data['schema_version'] == 1 || data.containsKey('region_code')) &&
+            data['region_code'] != AppEnvironment.regionCode)) {
       throw const FormatException('Invalid snapshot metadata');
     }
     final config = data['app_config'] as Map;
@@ -87,7 +91,7 @@ class ContentUpdateCubit extends Cubit<ContentState> {
       throw const FormatException('Unsupported local configuration');
     }
     // V1 directory fields are ignored; they are outside the education scope.
-    data['facilities'] = <dynamic>[];
+    if (data['schema_version'] == 1) data['facilities'] = <dynamic>[];
     return ReferenceLibrary.fromSnapshot(data);
   }
 
@@ -106,7 +110,11 @@ class ContentUpdateCubit extends Cubit<ContentState> {
     try {
       final response = await api.get(
         '/offline-snapshot',
-        query: {'region_code': AppEnvironment.regionCode},
+        query: {
+          'region_code': AppEnvironment.regionCode,
+          if (const bool.fromEnvironment('FIRSTAID_SNAPSHOT_V2'))
+            'schema_version': 2,
+        },
         headers: {
           if (before.downloadedAt != null)
             'If-None-Match': '"${before.version}"',

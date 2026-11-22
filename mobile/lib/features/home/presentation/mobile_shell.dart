@@ -93,10 +93,9 @@ class _MobileShellState extends State<MobileShell> {
                 ),
             ],
           ),
-          bottomNavigationBar: AppBottomNavigation(
-            index: index,
-            onSelect: select,
-          ),
+          bottomNavigationBar: MediaQuery.viewInsetsOf(context).bottom > 0
+              ? null
+              : AppBottomNavigation(index: index, onSelect: select),
         ),
       ),
     );

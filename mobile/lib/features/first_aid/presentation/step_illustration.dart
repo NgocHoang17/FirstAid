@@ -68,12 +68,24 @@ class _StepIllustrationState extends State<StepIllustration> {
               ),
               child: Column(
                 children: [
-                  AspectRatio(
-                    aspectRatio: 2.8,
-                    child: CustomPaint(
-                      painter: ReminderPainter(data['kind'] as String),
+                  if (const {
+                    'assets/illustrations/cold.json',
+                    'assets/illustrations/cool_burn.json',
+                  }.contains(widget.step.assetKey))
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: Image.asset(
+                        widget.step.assetKey!.replaceFirst('.json', '.png'),
+                        fit: BoxFit.contain,
+                      ),
+                    )
+                  else
+                    AspectRatio(
+                      aspectRatio: 2.8,
+                      child: CustomPaint(
+                        painter: ReminderPainter(data['kind'] as String),
+                      ),
                     ),
-                  ),
                   const SizedBox(height: 8),
                   Text(
                     data['label'] as String,
