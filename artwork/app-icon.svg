@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" aria-label="FirstAid">
+<defs><linearGradient id="sea" x2=".8" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#0b7380"/><stop offset="1" stop-color="#033f58"/></linearGradient></defs>
+<rect width="512" height="512" fill="url(#sea)"/>
+<path d="M197 183v-36c0-13 10-23 23-23h72c13 0 23 10 23 23v36" fill="none" stroke="#a1e7d9" stroke-width="23"/>
+<rect x="97" y="170" width="318" height="225" rx="53" fill="#123f50" opacity=".55"/>
+<rect x="97" y="161" width="318" height="225" rx="53" fill="#e4f7f1"/>
+<path d="M97 225q159 41 318 0v-11q0-53-53-53H150q-53 0-53 53z" fill="#bce6dc"/>
+<rect x="230" y="216" width="52" height="116" rx="9" fill="#076779"/><rect x="198" y="248" width="116" height="52" rx="9" fill="#076779"/>
+</svg>
