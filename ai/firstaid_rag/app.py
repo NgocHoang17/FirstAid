@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 import secrets
@@ -8,9 +9,12 @@ from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from .snapshot_sync import watch
 from .corpus import load_artifact
 from .engine import Engine
 from .models import Query, Response
+from .generation import GroundedGenerator
+from .prompts import PROMPT_VERSION
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +35,18 @@ def create_app(*, token=None, index_path=None, max_review_days=None):
         except (OSError, ValueError, KeyError, TypeError):
             logger.error("Corpus unavailable; query responses will fail closed")
             app.state.engine = Engine()
-        yield
+        try:
+            app.state.engine.generator = GroundedGenerator.from_environment()
+        except (ValueError, TypeError):
+            logger.error('Generation configuration unavailable; using source extraction')
+        snapshot_url = os.getenv('AI_PUBLIC_SNAPSHOT_URL')
+        watcher = asyncio.create_task(watch(snapshot_url, app, path, review_days)) if snapshot_url else None
+        try:
+            yield
+        finally:
+            if watcher:
+                watcher.cancel()
+                await asyncio.gather(watcher, return_exceptions=True)
 
     app = FastAPI(title="FirstAid internal retrieval", lifespan=lifespan,
                   docs_url=None, redoc_url=None, openapi_url=None)
@@ -50,8 +65,11 @@ def create_app(*, token=None, index_path=None, max_review_days=None):
         engine = app.state.engine
         return JSONResponse(status_code=200 if engine.version else 503, content={
             "status": "ready" if engine.version else "unavailable",
-            "mode": "extractive", "corpus_version": engine.version,
+            "mode": "grounded" if engine.generator else "extractive", "prompt_version": PROMPT_VERSION, "corpus_version": engine.version,
             "document_count": len(engine.documents)})
+
+    from .image_query import image_router
+    app.include_router(image_router(authenticate))
 
     @app.post("/internal/v1/query", response_model=Response, dependencies=[Depends(authenticate)])
     def query(body: Query):

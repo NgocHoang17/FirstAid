@@ -36,15 +36,19 @@ public class AssistantService {
     private final String baseUrl;
     private final String token;
     private final int maxPerMinute;
+    private final int timeoutSeconds;
     private final ConcurrentHashMap<String, ArrayDeque<Long>> windows = new ConcurrentHashMap<>();
     private final AtomicInteger requestCount = new AtomicInteger();
 
     public AssistantService(ObjectMapper json, JdbcTemplate db, EmergencyPolicy emergencyPolicy,
             @Value("${firstaid.ai.base-url}") String baseUrl,
             @Value("${firstaid.ai.internal-token}") String token,
-            @Value("${firstaid.ai.max-per-minute:20}") int maxPerMinute) {
+            @Value("${firstaid.ai.max-per-minute:20}") int maxPerMinute,
+            @Value("${firstaid.ai.request-timeout-seconds:12}") int timeoutSeconds) {
         this.json = json; this.db = db; this.emergencyPolicy = emergencyPolicy; this.baseUrl = baseUrl; this.token = token;
         this.maxPerMinute = maxPerMinute;
+        if (timeoutSeconds < 5 || timeoutSeconds > 100) throw new IllegalArgumentException("Invalid AI timeout");
+        this.timeoutSeconds = timeoutSeconds;
     }
 
     public Map<String, Object> query(Map<String, Object> body, String clientAddress) {
@@ -52,6 +56,8 @@ public class AssistantService {
         String message = Checks.text(body, "message", 2000, true);
         String age = body.get("age_group") == null ? null : Checks.value(body, "age_group", Set.of("ADULT", "CHILD", "ALL"));
         String mode = Checks.value(body, "context_mode", Set.of("learning", "unspecified"));
+        List<String> context = body.get("context_messages") == null ? List.of() : Checks.strings(body, "context_messages", 4);
+        if (context.stream().anyMatch(text -> text.length()>2000 || text.isBlank())) throw ApiFailure.invalid("context_messages", "Ngữ cảnh không hợp lệ");
         limit(clientAddress);
         if (emergencyPolicy.clearCurrentIncident(message)) {
             Map<String, Object> redirect = fallback(requestId, "emergency_redirect");
@@ -64,7 +70,8 @@ public class AssistantService {
             Map<String, Object> payload = new LinkedHashMap<>();
             payload.put("request_id", requestId.toString()); payload.put("message", message);
             payload.put("age_group", age); payload.put("context_mode", mode);
-            HttpRequest request = HttpRequest.newBuilder(uri).timeout(Duration.ofSeconds(12))
+            payload.put("context_messages", context);
+            HttpRequest request = HttpRequest.newBuilder(uri).timeout(Duration.ofSeconds(timeoutSeconds))
                     .header("Content-Type", "application/json").header("X-Internal-Token", token)
                     .POST(HttpRequest.BodyPublishers.ofString(json.writeValueAsString(payload))).build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

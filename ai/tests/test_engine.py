@@ -57,7 +57,8 @@ def test_every_answer_is_verbatim_with_valid_citations(engine):
         response = ask(engine, "Kiến thức " + document["title"], document["age_group"])
         assert response.status == "answered", document["title"]
         assert str(response.suggested_article_id) == document["article_id"]
-        assert [block.text for block in response.answer_blocks] == document["paragraphs"]
+        assert all(block.text in document['paragraphs'] for block in response.answer_blocks)
+        assert all(warning in [block.text for block in response.answer_blocks] for warning in document['sections']['warnings'])
         assert all(block.citation_ids for block in response.answer_blocks)
         for citation in response.citations:
             assert str(citation.article_id) == document["article_id"]
