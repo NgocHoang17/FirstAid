@@ -66,7 +66,7 @@ def paragraphs(article):
 def compile_corpus(payload):
     data = payload.get("data", payload)
     if not ((data.get("schema_version") == 2 and data.get("kind") == "reference_library")
-            or (data.get("schema_version") == 1 and "app_config" in data)):
+            or (data.get("schema_version") in (1, 2) and "app_config" in data)):
         raise ValueError("Expected a reviewed reference library or public snapshot")
     sources = unique_by_id(data["sources"])
     categories = unique_by_id(data["categories"])
@@ -110,7 +110,10 @@ def compile_corpus(payload):
                           "category_code": category["code"], "category_name": category["name"],
                           "title": article["title"], "age_group": article["age_group"],
                           "checked_at": article["checked_at"], "paragraphs": paragraphs(article),
-                          "references": refs})
+                          "references": refs,
+                          "sections": {**{key:article[key] for key in ['recognition','quick_actions','warnings','seek_help']},
+                                       'summary':[article['summary']],
+                                       'steps':[step['title']+': '+step['instruction'] for step in sorted(article['steps'],key=lambda s:s['position'])]}})
     manifest = {"format_version": FORMAT_VERSION, "input_sha256": digest(data),
                 "documents": documents}
     return {**manifest, "corpus_version": digest(manifest)}

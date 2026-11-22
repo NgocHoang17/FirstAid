@@ -5,14 +5,16 @@ from uuid import UUID
 from .models import AnswerBlock, Citation, Query, Response
 from .policy import any_phrase, decide
 from .retrieval import BM25, VARIANTS, contains, normalize, topics
+from .conversation import contextualize, focused_paragraphs
 
 
 class Engine:
-    def __init__(self, artifact=None, max_review_days=180):
+    def __init__(self, artifact=None, max_review_days=180, generator=None):
         self.version = artifact["corpus_version"] if artifact else None
         self.documents = artifact["documents"] if artifact else []
         self.index = BM25(self.documents)
         self.max_review_days = max_review_days
+        self.generator=generator
 
     def retrieve(self, query, code):
         normalized = normalize(query.message)
@@ -32,7 +34,7 @@ class Engine:
             candidates.append(index)
         return self.index.search(query.message, candidates)
 
-    def query(self, query: Query):
+    def query(self, query: Query, *, image_topic=None):
         response = Response(request_id=query.request_id, status="insufficient_evidence",
                             corpus_version=self.version)
         policy = decide(query.message)
@@ -44,7 +46,14 @@ class Engine:
         if self.version is None:
             response.status = "unavailable"
             return response
-        codes = topics(query.message)
+        original_message=query.message
+        if image_topic:
+            label = next(d['category_name'] for d in self.documents if d['category_code'] == image_topic)
+            query = query.model_copy(update={'message': f'{query.message} {label}'})
+            codes = {image_topic}
+        else:
+            query = contextualize(query)
+            codes = topics(query.message)
         if not codes:
             return response
         if len(codes) > 1:
@@ -84,6 +93,11 @@ class Engine:
         if not matches:
             return response
         document = matches[0][1]
+        selected=focused_paragraphs(document,original_message)
+        needs_generation=selected is None
+        if needs_generation:
+            if image_topic or self.generator is None or not any_phrase(normalize(original_message),['tai sao','vi sao']): return response
+            selected=document['paragraphs']
         # Deterministic extractive answer: all text comes from a single complete,
         # reviewed article. No model can add doses or fabricate citations.
         response.citations = [Citation(id=f"c{index}", evidence_id=document["evidence_id"],
@@ -91,8 +105,25 @@ class Engine:
                                        article_revision=document["article_revision"], **reference)
                               for index, reference in enumerate(document["references"], start=1)]
         ids = [citation.id for citation in response.citations]
-        response.answer_blocks = [AnswerBlock(text=paragraph, citation_ids=ids)
-                                  for paragraph in document["paragraphs"]]
+        sections = document.get('sections', {})
+        def block_kind(index, paragraph):
+            if index == 0:
+                return 'heading'
+            for key, kind in [('warnings','warning'), ('seek_help','help'), ('steps','steps')]:
+                if paragraph in sections.get(key, []):
+                    return kind
+            return 'paragraph'
+        response.answer_blocks = [AnswerBlock(text=paragraph, citation_ids=ids,kind=block_kind(i, paragraph))
+                                  for i,paragraph in enumerate(selected)]
+        if not image_topic and self.generator is not None and document.get('sections'):
+            generated=self.generator.generate(query.model_copy(update={'message':original_message}),document,selected,ids)
+            if generated:
+                response.answer_blocks=generated
+                response.generation_mode='grounded'
+            elif needs_generation:
+                response.answer_blocks=[]
+                response.citations=[]
+                return response
         response.suggested_article_id = UUID(document["article_id"])
         response.status = "answered"
         return response

@@ -16,6 +16,14 @@ class Query(BaseModel):
     message: str = Field(min_length=1, max_length=2000)
     age_group: AgeGroup | None = None
     context_mode: Literal["learning", "unspecified"] = "unspecified"
+    context_messages: list[str] = Field(default_factory=list, max_length=4)
+
+    @field_validator('context_messages')
+    @classmethod
+    def bounded_context(cls, values):
+        if any(not value.strip() or len(value)>2000 for value in values):
+            raise ValueError('Invalid context')
+        return [value.strip() for value in values]
 
     @field_validator("message", mode="before")
     @classmethod
@@ -38,6 +46,7 @@ class Citation(BaseModel):
 class AnswerBlock(BaseModel):
     text: str
     citation_ids: list[str]
+    kind: Literal['paragraph','heading','steps','warning','help'] = 'paragraph'
 
 
 class Response(BaseModel):
@@ -50,3 +59,4 @@ class Response(BaseModel):
     safety_message_code: Literal["CONTACT_HELP", "OPEN_FIRST_AID_GUIDE"] | None = None
     clarification_question: str | None = None
     corpus_version: str | None = None
+    generation_mode: Literal['extractive','grounded'] = 'extractive'

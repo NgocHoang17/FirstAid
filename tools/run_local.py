@@ -241,6 +241,39 @@ def main():
            'SESSION_COOKIE_SECURE': 'false', 'ADMIN_ORIGIN': 'http://127.0.0.1:5173',
            'AI_BASE_URL': 'http://127.0.0.1:8001', 'AI_INTERNAL_TOKEN': config['internal_token'],
            'LOGGING_LEVEL_ROOT': 'INFO', 'LOGGING_LEVEL_ORG_SPRINGFRAMEWORK': 'INFO', 'DEBUG': 'false'}
+    gemini_key = env.pop('GEMINI_API_KEY', '').strip()
+    admin_env = {key: value for key, value in os.environ.items() if key != 'GEMINI_API_KEY'}
+    generation_file = LOCAL / 'generation.json'
+    if generation_file.exists():
+        generation = json.loads(generation_file.read_text(encoding='utf-8'))
+        if generation.get('mode') not in ('extractive','grounded'):
+            raise ValueError('generation.json: mode must be extractive or grounded')
+        budget=float(generation.get('generation_timeout_seconds',8))
+        gateway=int(generation.get('gateway_timeout_seconds',12))
+        if not 1<=budget<=90 or not 5<=gateway<=100 or gateway<budget+2:
+            raise ValueError('Generation budget must be below the gateway timeout')
+        if generation['mode']=='grounded' and not generation.get('model','').strip():
+            raise ValueError('Set the model ID before enabling grounded mode')
+        provider=generation.get('provider','ollama' if 'ollama_url' in generation else 'gemini')
+        if provider not in ('gemini','ollama'):
+            raise ValueError('generation.json: provider must be gemini or ollama')
+        key_file=LOCAL/'gemini-key.txt'
+        if not gemini_key and key_file.exists():
+            gemini_key=key_file.read_text(encoding='utf-8-sig').strip()
+        if provider=='gemini' and generation['mode']=='grounded' and not gemini_key:
+            raise ValueError('Set GEMINI_API_KEY or paste the key into .local/gemini-key.txt; never commit keys')
+        env.update({'AI_GENERATION_MODE':generation['mode'],
+                    'AI_GENERATION_PROVIDER':provider,
+                    'AI_GEMINI_MODEL':generation.get('model','gemini-3.8-flash'),
+                    'AI_OLLAMA_URL':generation.get('ollama_url','http://127.0.0.1:11434'),
+                    'AI_OLLAMA_MODEL':generation.get('model',''),
+                    'AI_GENERATION_TIMEOUT_SECONDS':str(budget),
+                    'AI_REQUEST_TIMEOUT_SECONDS':str(gateway)})
+    generation_settings={key:env.get(key,'') for key in ['AI_GENERATION_MODE','AI_GENERATION_PROVIDER','AI_GEMINI_MODEL','AI_OLLAMA_URL','AI_OLLAMA_MODEL','AI_GENERATION_TIMEOUT_SECONDS']}
+    # Include key rotation without persisting the credential itself.
+    generation_settings['credential_digest']=hashlib.sha256(gemini_key.encode()).hexdigest()
+    generation_settings['source']=[path.read_text(encoding='utf-8') for path in sorted((ROOT/'ai/firstaid_rag').glob('*.py'))]
+    generation_fingerprint=hashlib.sha256(json.dumps(generation_settings,sort_keys=True).encode()).hexdigest()
     if not listening(8080):
         print('Building and starting Spring...', flush=True)
         run(['cmd.exe', '/c', str(ROOT / 'backend/mvnw.cmd'), '-q', '-DskipTests', 'package'],
@@ -263,7 +296,7 @@ def main():
     artifact = compile_corpus(snapshot)
     if listening(8001) and 'ai' in state:
         health = wait_http('http://127.0.0.1:8001/health', headers={'X-Internal-Token': config['internal_token']}).json()
-        if health['corpus_version'] != artifact['corpus_version']:
+        if health['corpus_version'] != artifact['corpus_version'] or state.get('ai_generation_fingerprint') != generation_fingerprint:
             # This process belongs to this local stack and uses the old artifact.
             command = ['powershell', '-NoProfile', '-Command',
                 f"$p=Get-CimInstance Win32_Process -Filter 'ProcessId = {int(state['ai'])}'; "
@@ -281,16 +314,19 @@ def main():
         print('Starting source-grounded chat...', flush=True)
         process = start([sys.executable, '-m', 'uvicorn', 'firstaid_rag.app:create_app', '--factory',
                          '--host', '127.0.0.1', '--port', '8001', '--no-access-log'],
-                        'ai', cwd=ROOT / 'ai', env={**env, 'AI_INDEX_PATH': str(corpus_path)}, state=state)
+                        'ai', cwd=ROOT / 'ai', env={**env, 'GEMINI_API_KEY': gemini_key, 'AI_INDEX_PATH': str(corpus_path),
+                         'AI_PUBLIC_SNAPSHOT_URL': API + '/offline-snapshot?region_code=VN-DN'}, state=state)
         wait_http('http://127.0.0.1:8001/health', headers={'X-Internal-Token': config['internal_token']}, process=process)
     elif 'ai' not in state:
         raise RuntimeError('Port 8001 belongs to another service.')
+    state['ai_generation_fingerprint']=generation_fingerprint
+    save(STATE_FILE,state)
     if not listening(5173):
         if not (ROOT / 'admin/node_modules/vite/bin/vite.js').exists():
-            run(['cmd.exe', '/c', 'npm.cmd', 'ci'], cwd=ROOT / 'admin', log=LOCAL / 'admin-install.log')
+            run(['cmd.exe', '/c', 'npm.cmd', 'ci'], cwd=ROOT / 'admin', env=admin_env, log=LOCAL / 'admin-install.log')
         node = shutil.which('node')
         process = start([node, str(ROOT / 'admin/node_modules/vite/bin/vite.js'), '--host', '127.0.0.1'],
-                        'admin', cwd=ROOT / 'admin', state=state)
+                        'admin', cwd=ROOT / 'admin', env=admin_env, state=state)
         wait_http('http://127.0.0.1:5173', process=process)
     elif 'admin' not in state:
         raise RuntimeError('Port 5173 belongs to another service.')

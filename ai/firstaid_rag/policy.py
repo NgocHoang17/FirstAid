@@ -26,7 +26,7 @@ def decide(message):
     if incident and (not learning or personal or any_phrase(text, ["dang bi", "vua bi", "cuu voi"])):
         return "emergency_redirect"
     months = re.findall(r"\b(\d+)\s*(?:thang|months?)\b", text)
-    if (any_phrase(text, ["nhu nhi", "so sinh", "duoi 1 tuoi", "duoi mot tuoi", "infant"])
+    if (any_phrase(text, ["nhu nhi", "so sinh", "duoi 1 tuoi", "duoi mot tuoi", "0 tuoi", "chua day 1 tuoi", "infant"])
             or any(int(age) < 12 for age in months)):
         return "out_of_scope"
     if any_phrase(text, ["bo qua", "ignore", "system prompt", "developer", "jailbreak",
