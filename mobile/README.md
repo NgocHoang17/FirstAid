@@ -17,9 +17,9 @@ Android emulator mặc định dùng `http://10.0.2.2:8080/api/v1`. Điện tho�
 
 24 bài, 18 nhóm, 17 nguồn và hình nhắc nhớ đi kèm ứng dụng. Đọc đầy đủ và theo bước dùng cùng Article. Không yêu cầu tài khoản. Cập nhật qua Cài đặt, giữ dữ liệu khi lỗi.
 
-Không có quiz, danh bạ, bản đồ, GPS hoặc quyền vị trí. Hỏi đáp bằng ảnh theo đặc tả chỉ được bật sau khi tích hợp bộ xử lý đa phương thức thật. Không lưu ảnh hoặc lịch sử chat mặc định.
+Không có quiz, danh bạ, bản đồ, GPS hoặc quyền vị trí. Trong Hỏi đáp, người học có thể chọn, xem trước, bỏ ảnh JPEG/PNG rồi gửi kèm câu hỏi. Luồng gửi ảnh cần gateway hỗ trợ multipart và Gemini phía server. Không lưu ảnh hoặc lịch sử chat mặc định.
 
-Trong khi phối hợp backend, bộ đọc snapshot v1 giữ tương thích định dạng server. Payload danh bạ không có màn hình sử dụng. Snapshot giáo dục schema 2 được quy định trong [06](../docs/baseline-v2/06_SHARED_CONTRACTS.md).
+Mobile đọc được public snapshot v1 và v2. Chỉ thêm `--dart-define=FIRSTAID_SNAPSHOT_V2=true` khi gateway đã cung cấp schema 2. Payload danh bạ không có màn hình sử dụng. Snapshot giáo dục schema 2 được quy định trong [06](../docs/baseline-v2/06_SHARED_CONTRACTS.md).
 
 ## Kiểm tra
 
@@ -30,4 +30,4 @@ flutter analyze
 flutter test
 ```
 
-Các bài kiểm visual và ảnh xem trước chỉ lưu local, được Git bỏ qua. Không đưa PDF gốc, ảnh hội thoại, secrets hoặc dữ liệu runtime vào Git.
+Lưu ảnh xem trước và bộ kiểm giao diện cá nhân trong `.local/` ở thư mục gốc. Đặt ngoài `mobile/test/` để `flutter test` chỉ chạy bộ kiểm của dự án. Không đưa PDF gốc, ảnh hội thoại, secrets hoặc dữ liệu runtime vào Git.

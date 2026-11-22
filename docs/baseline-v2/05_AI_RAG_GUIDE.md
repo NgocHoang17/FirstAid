@@ -4,7 +4,7 @@
 
 Hỗ trợ học tập và tra cứu kiến thức sơ cứu bằng văn bản, hình ảnh. RAG dùng tài liệu tham khảo được tuyển chọn. Hình do người dùng gửi không phải nguồn y khoa và không dùng để chẩn đoán.
 
-Ưu tiên triển khai local. Không khẳng định hỗ trợ ảnh chỉ vì endpoint nhận được file. Phải kiểm bộ xử lý ảnh và chất lượng phản hồi trên phần cứng chạy thật.
+RAG truy xuất tài liệu tại dịch vụ AI phía server; phần sinh và kiểm phản hồi dùng Gemini API cloud. API key chỉ đặt ở server, không đưa vào mobile hoặc Git. Chế độ trích xuất vẫn hoạt động khi chưa bật model hoặc khi model không đạt kiểm tra. Không khẳng định hỗ trợ ảnh chỉ vì provider nhận được file; phải kiểm pipeline ảnh và chất lượng phản hồi thực tế.
 
 ## 2. Nguồn và corpus
 
@@ -36,6 +36,8 @@ BM25 là baseline văn bản. OCR là xử lý chữ trong ảnh, không đủ �
 - Chỉ answered khi khẳng định được tài liệu hỗ trợ và nguồn còn hợp lệ.
 
 ## 5. Chọn mô hình và đánh giá
+
+Grounded Generation dùng các prompt có version, JSON schema, evidence_ids và lượt kiểm hỗ trợ bằng chứng trước khi trả. Không chỉ thay vài câu mở đầu cho bản trích xuất. Phạm vi, cảnh báo và điều kiện tìm trợ giúp từ tài liệu được giữ lại độc lập với phần mô hình sinh. Kiểm ngữ nghĩa bằng mô hình không phải chứng nhận tính đúng; cần đánh giá trên model thật. Cấu hình và chế độ fallback theo [Grounded Generation](../../ai/GROUNDED_GENERATION.md).
 
 Chọn mô hình thị giác, OCR và bộ sinh sau khi đo RAM/VRAM, tiếng Việt, giấy phép, độ trễ và chất lượng có nguồn. Chế độ trích xuất không có LLM vẫn là baseline tra cứu văn bản, không được gắn nhãn đã hoàn thành đa phương thức.
 

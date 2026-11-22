@@ -16,6 +16,8 @@ Mobile phục vụ học và tra cứu kiến thức sơ cứu cho người lớ
 
 ## 3. Hỏi đáp đa phương thức
 
+Màn hỏi đáp dùng bong bóng hội thoại, ô nhập cố định phía dưới, trạng thái đang trả lời và tự cuộn khi có tin mới. Người dùng hỏi tiếp trong phiên hoặc chọn Cuộc trò chuyện mới để xóa ngữ cảnh. Chỉ gửi tối đa bốn câu hỏi gần nhất theo contract; không lưu lịch sử mặc định. Citation được kiểm bên trong nhưng không hiển thị thành nút nguồn ở màn chat. Trang bài học và nguồn của bài vẫn hoạt động độc lập.
+
 Người dùng nhập câu hỏi và tùy chọn một ảnh. Hiển thị ảnh thu nhỏ, nút bỏ ảnh, giới hạn dung lượng và trạng thái gửi. Chỉ gửi sau thao tác xác nhận của người dùng.
 
 Kiểm JPEG/PNG, tối đa 5 MiB và 16 megapixel. Không hiển thị ảnh lỗi như đã gửi thành công. Không tự suy tuổi từ ảnh. Không tự gửi lại khi kết nối trở lại.

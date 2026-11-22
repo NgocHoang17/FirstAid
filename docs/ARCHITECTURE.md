@@ -7,7 +7,7 @@
 | Flutter | Bài học trực quan, tra cứu theo bước, nguồn và hỏi đáp văn bản/hình ảnh |
 | SQLite và assets | Bài, bước, nguồn và hình thiết yếu để đọc ngoại tuyến |
 | Spring Boot | Public API, Admin, validation, snapshot và gateway AI |
-| PostgreSQL | Category, Article, Step, Source, SourceReference và AdminUser |
+| PostgreSQL | Category, Article, Step, Source, SourceReference, MediaAsset và AdminUser |
 | React Admin | Biên tập danh mục, bài học, hình và metadata nguồn |
 | FastAPI RAG | Xử lý câu hỏi/ảnh, retrieval, phản hồi có nguồn và policy |
 

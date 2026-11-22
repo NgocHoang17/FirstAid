@@ -1,33 +1,28 @@
 # FirstAid backend
 
-Spring Boot 4.1.1 / Java 21, PostgreSQL 15+ và Flyway. API theo [contract](../docs/baseline-v2/06_SHARED_CONTRACTS.md), lược đồ theo [thiết kế CSDL](../docs/DATABASE_DESIGN.md).
+Spring Boot, Java 21, PostgreSQL và Flyway. Dùng [bàn giao backend](../docs/BACKEND_HANDOFF.md) để nhận việc. API theo [hợp đồng chung](../docs/baseline-v2/06_SHARED_CONTRACTS.md). Migration thực thi nằm trong [db/migration](src/main/resources/db/migration).
 
-## Chạy local
+## Chạy cùng dự án trên Windows
 
-1. Tạo PostgreSQL database rỗng, user có quyền tạo bảng trong database đó. Đặt `DB_URL`, `DB_USER`, `DB_PASSWORD` từ [mẫu cấu hình](.env.example). Flyway tự chạy `V1__schema.sql` và `V2__reference_metadata.sql` khi khởi động.
-2. Đặt `ADMIN_SEED_USERNAME` và `ADMIN_SEED_PASSWORD` (ít nhất 12 ký tự) cho lần tạo Admin đầu tiên. Không có tài khoản/mật khẩu mặc định trong mã nguồn. Lần chạy sau có thể bỏ hai biến này; seed không ghi đè mật khẩu đã có.
-3. Xác minh khu vực/số hỗ trợ trước khi đặt `PUBLIC_REGION` và `EMERGENCY_NUMBER`. Khi một trong hai để trống, endpoint snapshot trả 503 thay vì xuất cấu hình chưa kiểm. Đặt `SESSION_COOKIE_SECURE=false` **chỉ khi chạy HTTP local**; trên HTTPS giữ `true`.
-4. Chạy `./mvnw spring-boot:run` (Windows: `.\mvnw.cmd spring-boot:run`). Public GET ở `/api/v1`; Admin dùng session cookie và `X-CSRF-TOKEN` lấy từ `GET /api/v1/admin/auth/csrf`. Login nhận JSON `{username,password}`. Sau login lấy lại CSRF token.
+Dùng [launcher local](../README.md#phát-triển-local) để khởi động PostgreSQL, Spring, FastAPI và Admin. Launcher lưu thông tin kết nối và tài khoản local trong `.local/credentials.json` tại thư mục gốc. Lần chạy lại giữ nội dung đã sửa bằng Admin.
 
-`AI_BASE_URL` và `AI_INTERNAL_TOKEN` chỉ dùng ở backend; FastAPI phải ở mạng nội bộ. Khi chưa cấu hình AI, `/api/v1/assistant/query` trả `status=unavailable` đúng schema, không trả nội dung mô phỏng như dữ liệu thật. CORS chỉ cho origin cấu hình bằng `ADMIN_ORIGIN`.
+## Chạy riêng Spring
 
-## Dữ liệu tham chiếu
+1. Tạo PostgreSQL database và user có quyền chạy Flyway.
+2. Đặt biến môi trường cho tiến trình Java theo [mẫu cấu hình](.env.example). Khi khởi động, Flyway áp dụng tuần tự các migration trong repository.
+3. Đặt `ADMIN_SEED_USERNAME` và `ADMIN_SEED_PASSWORD` khi tạo tài khoản đầu tiên. Mật khẩu dài ít nhất 12 ký tự. Seeder giữ mật khẩu đã lưu.
+4. Đặt `PUBLIC_LOCALE`, `PUBLIC_REGION` và `EMERGENCY_NUMBER` theo môi trường. Snapshot v1 cần `region_code` khớp `PUBLIC_REGION`.
+5. Đặt `ADMIN_ORIGIN` theo origin của web. Chỉ đặt `SESSION_COOKIE_SECURE=false` khi dùng HTTP local.
+6. Chạy `./mvnw spring-boot:run` từ thư mục này. Trên PowerShell, chạy `.\mvnw.cmd spring-boot:run`.
 
-Migration V2 chỉ seed 18 danh mục và 14 metadata nguồn, giữ UUID từ `mobile/assets/content/reference_library.json`. **Không tự publish** 24 bài DRAFT hoặc cơ sở giả. Nếu muốn đưa toàn bộ bài tham chiếu vào DB phát triển để biên tập, chạy [script import DRAFT](scripts/import_reference_drafts.sql) **một lần trên DB chưa có Article** sau khi Flyway chạy. Script giữ ID bài/bước, 58 trích dẫn và trạng thái DRAFT; nó từ chối DB đã có bài. Nội dung chưa được xác nhận độc lập và không xuất qua API public.
+Public và Admin API dùng prefix `/api/v1`. Để đăng nhập Admin, lấy CSRF từ `GET /api/v1/admin/auth/csrf`. Gửi token vào header trả về từ endpoint đó và gửi `{username,password}` đến `POST /api/v1/admin/auth/login`. Sau login, lấy lại CSRF. Giữ session cookie cho các request tiếp theo.
 
-Backend không ghi chat history, bệnh án, tài khoản mobile, guided graph hoặc vector index trong PostgreSQL. Corpus RAG được build ở FastAPI từ nguồn đã chọn; Spring kiểm lại citation/revision trước khi trả.
+Spring nhận `AI_BASE_URL` và `AI_INTERNAL_TOKEN` để gọi FastAPI qua mạng riêng. Chat trả `unavailable` khi chưa kết nối được AI. Đặt `AI_REQUEST_TIMEOUT_SECONDS=35` cho môi trường kiểm Gemini theo [hướng dẫn AI](../ai/GROUNDED_GENERATION.md). Khóa Gemini thuộc tiến trình AI.
 
-## Kiểm tra local
+## Dữ liệu và kiểm thử
 
-Trên **DB thử nghiệm riêng**, đặt `TEST_ADMIN_USERNAME`/`TEST_ADMIN_PASSWORD` trùng Admin seed rồi chạy `powershell -ExecutionPolicy Bypass -File .\scripts\smoke.ps1`. Script chỉ nhận API HTTP localhost, tạo một bài minh họa, kiểm auth/CSRF, draft/public, duplicate references, bảo vệ source, publish, revision, ETag/304 và xóa bài sau khi thử.
-
-Để kiểm gateway AI, chạy `node scripts/mock_ai_fixture.js` trong terminal khác, đặt `AI_BASE_URL=http://127.0.0.1:18081` và `AI_INTERNAL_TOKEN=LocalInternalTestToken`, khởi động lại backend rồi chạy `node scripts/ai_gateway_smoke.js`. Mock chỉ dành cho test và không tự bật trong production.
-
-## Các ranh giới cần kiểm khi tích hợp
-
-- Public không đọc DRAFT; publish cần `content_checked`, đủ section, nguồn active và trang hợp lệ.
-- PUT Article nhận `expected_revision`; sửa bài PUBLISHED chuyển DRAFT và đổi `data_version`.
-- Snapshot dùng transaction `REPEATABLE_READ`, ETag token và 304 không body. Mobile chỉ áp dụng snapshot schema 1 sau khi validate và thay SQLite trong một transaction.
-- Xóa category/source còn liên kết bị chặn; đổi source revision khiến citation corpus cũ bị từ chối.
-
-Backend cũ dùng `/api/v1/handbook`, `/api/v1/triage`, `/api/v1/facilities/nearby` với dữ liệu hardcode đã được thay bằng các path trong contract 06. Mobile hiện có thể vẫn cần cập nhật client khi nối API mới.
+- Dùng launcher để nạp thư viện đã biên soạn. Dùng `scripts/import_reference_drafts.sql` trên database thử trống phần bài khi cần kiểm riêng dữ liệu nháp. Bản nháp chỉ hiện với Admin.
+- Chạy `./mvnw test` hoặc `.\mvnw.cmd test` để kiểm Spring. Dùng DB thử riêng cho các script có ghi dữ liệu.
+- Đặt `TEST_ADMIN_USERNAME` và `TEST_ADMIN_PASSWORD` cho `scripts/smoke.ps1`. Script v1 gửi `region_code=VN-PILOT`. Cấu hình backend thử cùng mã vùng. Chạy `powershell -ExecutionPolicy Bypass -File scripts/smoke.ps1 -BaseUrl http://127.0.0.1:18080/api/v1`.
+- Dùng `node scripts/mock_ai_fixture.js` và `node scripts/ai_gateway_smoke.js` để kiểm gateway văn bản. Fixture AI nghe cổng 18081. Script gọi Spring cổng 18080. Đặt `AI_BASE_URL=http://127.0.0.1:18081` và `AI_INTERNAL_TOKEN=LocalInternalTestToken` cho backend thử.
+- Chạy kiểm ảnh bước, xuất bản và đồng bộ theo [BE-04](../docs/BACKEND_HANDOFF.md#be-04-kiểm-tích-hợp-trên-môi-trường-riêng).
