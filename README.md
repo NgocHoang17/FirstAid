@@ -4,15 +4,10 @@ FirstAid hỗ trợ giáo dục và phổ biến kiến thức sơ cứu ngoại
 
 ## Tài liệu
 
-Đây là bộ đặc tả sản phẩm và hướng dẫn phát triển dùng chung. Tài liệu không ghi tiến độ, danh sách tính năng đã làm hoặc kiểm kê mã nguồn. Chỉ sửa đặc tả khi có quyết định thay đổi yêu cầu, kiến trúc hoặc contract; tiến độ và kết quả kiểm thử được báo trong task/PR.
-
-Bắt đầu tại [hướng dẫn đọc](docs/baseline-v2/README.md), sau đó đọc [đặc tả hệ thống](docs/baseline-v2/01_SYSTEM_SPEC.md) và [contract chung](docs/baseline-v2/06_SHARED_CONTRACTS.md).
-
-- [Dữ liệu chuẩn tham chiếu](docs/DATA_REFERENCE.md): nội dung theo 18 nhóm, biến thể đối tượng và độ phủ nguồn.
-- [PRD](docs/PRD.md): mục tiêu và phạm vi sản phẩm.
-- [Kiến trúc](docs/ARCHITECTURE.md): thành phần, trách nhiệm và luồng dữ liệu.
-- [Thiết kế cơ sở dữ liệu](docs/DATABASE_DESIGN.md): quan hệ PostgreSQL/SQLite, ràng buộc và SQL tham chiếu.
-- [Quy tắc đóng góp](CONTRIBUTING.md).
+- [Bàn giao backend](docs/BACKEND_HANDOFF.md) ghi việc theo thứ tự thực hiện và tiêu chí nghiệm thu.
+- [Đặc tả hệ thống](docs/baseline-v2/01_SYSTEM_SPEC.md), [hợp đồng API](docs/baseline-v2/06_SHARED_CONTRACTS.md) và [hướng dẫn đọc](docs/baseline-v2/README.md) dùng chung cho cả nhóm.
+- [Thiết kế dữ liệu](docs/DATABASE_DESIGN.md) và [dữ liệu tham chiếu](docs/DATA_REFERENCE.md) mô tả cấu trúc, phạm vi nội dung và nguồn.
+- [Kiến trúc](docs/ARCHITECTURE.md) và [quy tắc đóng góp](CONTRIBUTING.md) dùng khi phát triển.
 
 ## Công nghệ
 
@@ -21,7 +16,7 @@ Bắt đầu tại [hướng dẫn đọc](docs/baseline-v2/README.md), sau đó
 | Mobile | Flutter, BLoC, SQLite | Hướng dẫn offline, tìm kiếm, hỏi đáp |
 | API | Spring Boot, PostgreSQL | Nội dung, Admin auth, snapshot và gateway AI |
 | Web Admin | React + TypeScript | Quản lý bài, danh mục, hình và nguồn |
-| RAG | FastAPI, BM25, trả lời trích xuất | Truy xuất bài có nguồn, giữ đối tượng và citation |
+| RAG | FastAPI, BM25, Gemini tùy cấu hình | Truy xuất bài có nguồn, giữ đối tượng và citation |
 
 ## Phạm vi
 
@@ -67,10 +62,8 @@ Database được giữ lại để lần sau dùng tiếp. Chạy lại lệnh 
 4. Spring xuất snapshot. Mobile cập nhật qua **Cài đặt → Kiểm tra cập nhật**, kiểm và ghi SQLite nguyên tử.
 5. Chatbot dùng corpus từ snapshot public của Spring. Gateway kiểm nguồn và revision trước khi trả phản hồi.
 
-Chạy lại lệnh khởi động sau khi xuất bản nội dung để dựng lại corpus. Sau khi sửa nguồn biên soạn, chạy `python tools/build_app_data.py`; dùng `--check` để kiểm artifact.
+Khi chạy bằng launcher, AI kiểm ETag của snapshot mỗi 30 giây và cập nhật corpus. Sau khi sửa dữ liệu biên soạn, chạy `python tools/build_app_data.py`. Dùng `--check` để đối chiếu bản đóng gói.
 
 ### Phối hợp backend và AI
 
-Đặc tả giáo dục và hỏi đáp kèm ảnh nằm trong bộ docs. Hỏi đáp kèm ảnh cần triển khai và nghiệm thu bộ xử lý đa phương thức thật theo [05](docs/baseline-v2/05_AI_RAG_GUIDE.md); không coi nhận file là hoàn thành AI.
-
-Backend do thành viên phụ trách chuyển đổi theo [04](docs/baseline-v2/04_BACKEND_GUIDE.md). Bộ chạy local giữ tương thích snapshot v1 cho tới khi client/server cùng hỗ trợ schema 2. Client không dùng dữ liệu danh bạ trong v1. Script không xóa dữ liệu đã có trong PostgreSQL.
+Đọc [bàn giao backend](docs/BACKEND_HANDOFF.md) khi nối gateway ảnh, snapshot v2 và migration. Đọc [cấu hình Gemini](ai/GROUNDED_GENERATION.md) khi kiểm model thật.

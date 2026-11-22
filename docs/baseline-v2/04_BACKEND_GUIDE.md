@@ -1,8 +1,8 @@
-# Backend Implementation Guide
+# Hướng dẫn triển khai backend
 
 ## 1. Trách nhiệm
 
-Spring cung cấp API nội dung học tập, nguồn, Admin, snapshot và gateway AI. PostgreSQL lưu Category, Article, Step, Source, SourceReference, AdminUser. Không có chức năng danh bạ hoặc dữ liệu định vị trong mô hình sản phẩm.
+Spring cung cấp API nội dung học tập, nguồn, Admin, snapshot và gateway AI. PostgreSQL lưu Category, Article, Step, Source, SourceReference, MediaAsset và AdminUser. Không có chức năng danh bạ hoặc dữ liệu định vị trong mô hình sản phẩm.
 
 ## 2. Nội dung và quản trị
 
@@ -22,15 +22,9 @@ Giới hạn một JPEG/PNG, 5 MiB, 16 megapixel. Loại metadata không cần t
 
 FastAPI chỉ truy cập nội bộ. Token và provider secret nằm ở server. Giới hạn kích thước, tốc độ, đồng thời, thời gian và thời hạn file tạm. Dọn file khi thành công, lỗi hoặc timeout.
 
-## 5. Bàn giao và migration
+## 5. Migration và cấu hình
 
-Backend do thành viên phụ trách thực hiện. Tài liệu đặc tả không đồng nghĩa endpoint đã triển khai.
-
-- Gỡ public/Admin API danh bạ và quyền truy cập tương ứng.
-- Tạo migration tiến về trước. Không sửa Flyway migration đã áp dụng.
-- Không tự xóa dữ liệu trong database đang chạy. Sao lưu và chốt chuyển đổi trước thao tác loại bảng.
-- Cung cấp snapshot giáo dục, giữ v1 trong giai đoạn client chuyển đổi.
-- Triển khai gateway ảnh và kiểm tích hợp với dịch vụ đa phương thức thật.
+Thêm migration Flyway tiến về trước. Giữ checksum của migration đã áp dụng. Kiểm trên database mới và bản sao database cần nâng cấp. Dùng [bàn giao backend](../BACKEND_HANDOFF.md) để nhận việc và [README backend](../../backend/README.md) để cấu hình môi trường.
 
 ## 6. Kiểm thử
 

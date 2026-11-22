@@ -33,7 +33,7 @@ Các bài dùng chung template, schema và renderer trong 06. Mục tiêu đủ 
 | FA17 | Nghi ngộ độc | OTHER | Khác đường phơi nhiễm/nguyên nhân phải giữ giới hạn, không hướng dẫn gây nôn/thuốc tự do | ngộ độc, uống nhầm, hóa chất |
 | FA18 | Động vật cắn và côn trùng đốt | OTHER | Chó/mèo cắn, rắn cắn, ong/côn trùng nên tách khi khác xử trí; không bắt user nhận loài để AI đoán | chó cắn, mèo cắn, rắn cắn, ong đốt |
 
-Keyword là hỗ trợ tìm kiếm, không chứng minh triệu chứng đó xác định một bệnh. Các keyword không được dùng tự động để chọn thủ thuật trong guided flow. Tên/ID Category giữ ổn định; Article có thể được bổ sung sau đối chiếu nguồn.
+Keyword là hỗ trợ tìm kiếm, không chứng minh triệu chứng đó xác định một bệnh. Chỉ dùng keyword để tìm nhóm và bài học. Tên/ID Category giữ ổn định; Article có thể được bổ sung sau đối chiếu nguồn.
 
 ## 3. Cấu trúc mỗi bài
 

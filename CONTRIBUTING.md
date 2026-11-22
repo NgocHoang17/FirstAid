@@ -2,7 +2,7 @@
 
 ## Nhánh và commit
 
-Không làm trực tiếp trên `main`. Dùng `feature/ten-tinh-nang`, `bugfix/ten-loi` hoặc `docs/ten-tai-lieu`. Commit dùng `feat:`, `fix:`, `docs:`, `chore:` hoặc `refactor:` theo nội dung thực tế. Không gộp thay đổi sẵn của người khác vào task.
+Tạo nhánh công việc từ nhánh mặc định `master`. Dùng `feature/ten-tinh-nang`, `bugfix/ten-loi` hoặc `docs/ten-tai-lieu`. Commit dùng `feat:`, `fix:`, `docs:`, `chore:` hoặc `refactor:` theo nội dung thực tế. Không gộp thay đổi sẵn của người khác vào task.
 
 ## Đọc tài liệu theo công việc
 
@@ -14,7 +14,7 @@ Scope theo 01, payload/API theo 06, catalog theo 07; khi thay contract phải c�
 
 - Flutter/Dart: biến/hàm `camelCase`, class `PascalCase`.
 - Java/Spring Boot: biến/phương thức `camelCase`, class `PascalCase`.
-- Python/FastAPI RAG (mục tiêu): biến/hàm `snake_case`, class `PascalCase`.
+- Python/FastAPI RAG: biến/hàm `snake_case`, class `PascalCase`.
 - JSON/API: field `snake_case` theo 06, không suy từ cách đặt tên của ngôn ngữ.
 
 Giữ BLoC và tổ chức hiện có khi phù hợp. Không thêm dependency hoặc chức năng ngoài scope chỉ vì xuất hiện trong tài liệu cũ. Chạy kiểm phù hợp với phần thay đổi, báo giới hạn thực tế; không commit secret hoặc PDF gốc mặc định.

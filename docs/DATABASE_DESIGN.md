@@ -23,6 +23,6 @@ Snapshot giáo dục schema 2 theo [06](baseline-v2/06_SHARED_CONTRACTS.md). Ki�
 
 ## SQL và migration
 
-[PostgreSQL](database/001_postgresql_schema.sql) và [SQLite](database/002_sqlite_schema.sql) là SQL thiết kế cho cơ sở dữ liệu mới. Chúng không được dùng để chạy lại lên database có dữ liệu.
+[PostgreSQL](database/001_postgresql_schema.sql) và [SQLite](database/002_sqlite_schema.sql) là SQL thiết kế cho cơ sở dữ liệu mới. Đây là lược đồ tham chiếu. Backend thực thi [migration Flyway](../backend/src/main/resources/db/migration). Flutter lưu snapshot JSON trong bảng SQLite `snapshot`. Lược đồ SQLite chuẩn hóa dùng để mô tả quan hệ dữ liệu.
 
 Thành viên backend tạo migration tiến về trước, xử lý sao lưu và chuyển đổi API. Không sửa migration đã áp dụng hoặc xóa bảng/dữ liệu đang dùng một cách tự động.
