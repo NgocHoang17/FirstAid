@@ -49,6 +49,22 @@ def test_media_security_layout_and_publication_lifecycle():
             response=client.post(f'/admin/articles/{identifier}/publish',headers=headers,json={'expected_revision':saved['content_revision']})
             assert response.status_code==200,response.text
             assert public.get(image['url'].replace('/api/v1','')).status_code==200
+            snapshot = public.get('/offline-snapshot',params={'region_code':'VN-DN'})
+            snapshot.raise_for_status()
+            published = snapshot.json()['data']
+            visible = next(item for item in published['articles'] if item['id']==identifier)
+            assert visible['steps'][0]['images'][0]['media_id']==image['id']
+            published_etag = snapshot.headers['etag']
             client.post(f'/admin/articles/{identifier}/unpublish',headers=headers,json={'expected_revision':saved['content_revision']}).raise_for_status()
             assert public.get(image['url'].replace('/api/v1','')).status_code==404
             assert client.get(image['url'].replace('/api/v1','')).status_code==200
+            snapshot = public.get('/offline-snapshot',params={'region_code':'VN-DN'},headers={'If-None-Match':published_etag})
+            assert snapshot.status_code==200
+            withdrawn = snapshot.json()['data']
+            assert identifier not in {item['id'] for item in withdrawn['articles']}
+            # Optional handoff to the Flutter SQLite acceptance test.
+            export = os.getenv('FIRSTAID_TEST_SNAPSHOTS')
+            if export:
+                import json
+                from pathlib import Path
+                Path(export).write_text(json.dumps({'id':identifier,'published':published,'withdrawn':withdrawn}),encoding='utf-8')

@@ -19,8 +19,6 @@ def test_shipped_snapshot_matches_reviewed_sources():
     assert len(snapshot['sources']) == 17
     assert snapshot['facilities'] == []
     assert all(a['status'] == 'PUBLISHED' and a['content_checked'] for a in snapshot['articles'])
-    assert all(f['is_active'] and f['verified_at'] for f in snapshot['facilities'])
-
 
 
 @pytest.fixture
