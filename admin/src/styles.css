@@ -49,3 +49,17 @@ dialog{border:1px solid #bfd1d7;border-radius:16px;box-shadow:0 20px 90px #16313
 .step-gallery.layout-carousel{flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px}
 .layout-carousel figure{flex:0 0 94%;scroll-snap-align:start}.layout-carousel img{aspect-ratio:4/3}
 @media(max-width:760px){.media-item{flex-direction:column}.media-item>img{width:100%;max-height:180px}.media-details{width:100%}.step-gallery.layout-grid{grid-template-columns:1fr}}
+.signin-page{min-height:100svh;display:grid;place-items:center;padding:clamp(16px,5vw,54px);background:radial-gradient(ellipse at 8% 0%,#cee9ec,transparent 52%),#eef5f7}
+.signin-shell{width:min(100%,440px);min-width:0;margin:auto;box-sizing:border-box;overflow:hidden;border-radius:24px;border:1px solid #c6dce1;background:white;box-shadow:0 18px 64px #003f5714}
+.signin-brand{background:linear-gradient(110deg,#003f57,#096b76);color:white;display:flex;align-items:center;gap:12px;padding:24px clamp(20px,6vw,38px);font-size:26px;font-weight:700}
+.signin-brand svg{padding:8px;width:42px;height:42px;border-radius:12px;background:#c7f1e9;color:#005861}
+.signin-form{padding:clamp(20px,6vw,38px);display:grid;gap:18px;min-width:0}
+.signin-form h1{font-size:clamp(24px,5vw,30px);margin:0;color:#123c4c;line-height:1.35}
+.signin-form>p{margin:-8px 0 3px;color:#446373}
+.signin-form .field{min-width:0;margin:0}
+.signin-form input{width:100%;min-width:0;box-sizing:border-box}
+.signin-password{position:relative}
+.signin-password input{padding-right:64px}
+.signin-password button{position:absolute;right:4px;top:50%;transform:translateY(-50%);padding:6px 10px;border:none;color:#005a78;background:white;border-radius:8px;font-weight:600}
+.compact-login .signin-shell{border:0;box-shadow:none;border-radius:0}
+.compact-login .signin-form{padding:12px 2px}

@@ -149,7 +149,7 @@ public class ArticleService {
             String layout = s.get("image_layout") == null ? "stacked" : Checks.value(s, "image_layout", Set.of("stacked","grid","carousel"));
             List<Map<String,Object>> gallery = new ArrayList<>();
             Set<UUID> mediaIds = new HashSet<>();
-            for (Map<String,Object> picture : Checks.objects(s, "images", 6)) {
+            for (Map<String,Object> picture : s.get("images") == null ? List.<Map<String,Object>>of() : Checks.objects(s, "images", 6)) {
                 UUID mediaId = Checks.uuid(picture, "media_id");
                 if (!mediaIds.add(mediaId) || db.queryForObject("SELECT count(*) FROM media_assets WHERE id=?", Long.class,mediaId)==0)
                     throw ApiFailure.invalid("images", "Ảnh không tồn tại hoặc bị trùng");
