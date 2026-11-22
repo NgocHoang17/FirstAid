@@ -254,7 +254,6 @@ class QuickAidHome extends StatelessWidget {
   final Future<ReferenceLibrary> Function()? libraryLoader;
   @override
   Widget build(BuildContext context) {
-    final largeText = MediaQuery.textScalerOf(context).scale(16) > 24;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -283,23 +282,6 @@ class QuickAidHome extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          Text(
-            'Kiến thức nhỏ.\nGiá trị lớn.',
-            style: TextStyle(
-              fontSize: largeText ? 20 : 28,
-              height: 1.25,
-              letterSpacing: -.6,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          if (!largeText) ...[
-            const SizedBox(height: 16),
-            const Text(
-              'Kiến thức hôm nay, sẵn sàng khi cần.',
-              style: TextStyle(color: AppColors.textSecondary),
-            ),
-          ],
-          const SizedBox(height: 16),
           QuickAidHero(
             onTap:
                 onKnowledge ??
@@ -314,13 +296,6 @@ class QuickAidHome extends StatelessWidget {
                 openPage(context, QuickAidList(libraryLoader: libraryLoader)),
             icon: const Icon(Icons.health_and_safety_outlined),
             label: const Text('Cần sơ cứu ngay?'),
-          ),
-          const SizedBox(height: 16),
-          const AidCard(
-            'Học mọi lúc, kể cả khi ngoại tuyến',
-            'Bài học và nguồn tham khảo luôn sẵn trên thiết bị.',
-            color: AppColors.accentSoft,
-            icon: Icons.offline_pin_outlined,
           ),
           const SizedBox(height: 16),
           OutlinedButton.icon(
@@ -420,7 +395,7 @@ class QuickAidHero extends StatelessWidget {
             builder: (context, constraints) {
               final largeText = MediaQuery.textScalerOf(context).scale(16) > 24;
               final showArt =
-                  constraints.maxWidth >= 290 &&
+                  constraints.maxWidth >= 268 &&
                   MediaQuery.textScalerOf(context).scale(16) < 22;
               return Row(
                 children: [
@@ -438,7 +413,7 @@ class QuickAidHero extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Text(
-                            'CÙNG HỌC SƠ CỨU',
+                            'THƯ VIỆN FIRSTAID',
                             style: TextStyle(
                               color: AppColors.onPrimaryMuted,
                               fontSize: 11,
@@ -449,7 +424,7 @@ class QuickAidHero extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Sẵn sàng\ngiúp đỡ.',
+                          'Học sơ cứu\ntừng bước.',
                           style: TextStyle(
                             color: AppColors.onPrimary,
                             fontSize: largeText ? 20 : 25,
@@ -461,7 +436,7 @@ class QuickAidHero extends StatelessWidget {
                         Text(
                           largeText
                               ? 'Có thể đọc ngoại tuyến.'
-                              : 'Tìm hiểu hôm nay.\nVững vàng hơn khi cần.',
+                              : 'Tra cứu hướng dẫn cho người lớn và trẻ em, kể cả khi ngoại tuyến.',
                           style: const TextStyle(
                             color: AppColors.onPrimaryMuted,
                             fontSize: 14,

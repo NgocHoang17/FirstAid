@@ -84,7 +84,7 @@ class ReferenceLibrary {
   final Map<String, ReferenceCategory> categories;
   final String reviewNotice;
   factory ReferenceLibrary.fromSnapshot(Map<String, dynamic> data) {
-    if (data['schema_version'] != 1) {
+    if (![1, 2].contains(data['schema_version'])) {
       throw const FormatException('Unsupported snapshot');
     }
     final categories = (data['categories'] as List)

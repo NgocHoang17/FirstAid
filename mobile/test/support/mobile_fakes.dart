@@ -44,8 +44,6 @@ class MemoryStore implements SnapshotStore {
 class FakeNetwork extends NetworkStatus {
   bool online = true;
   @override
-  Stream<bool> get changes => const Stream.empty();
-  @override
   Future<bool> isOnline() async => online;
 }
 

@@ -1,6 +1,10 @@
+import 'dart:typed_data';
+import 'package:dio/dio.dart';
 import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/network/app_services.dart';
+import '../../first_aid/presentation/quick_aid_pages.dart'
+    show searchKey, situations;
 
 enum ChatStatus {
   answered,
@@ -27,9 +31,11 @@ class ChatReply {
     this.question,
     this.categoryCode,
     this.articleId,
+    this.blockKinds = const [],
   });
   final ChatStatus status;
   final List<String> blocks;
+  final List<String> blockKinds;
   final List<ChatCitation> citations;
   final String? question, categoryCode, articleId;
 
@@ -46,7 +52,7 @@ class ChatReply {
       'unavailable' => ChatStatus.unavailable,
       _ => throw const FormatException('Unknown chat status'),
     };
-    final blocks = <String>[], citations = <ChatCitation>[];
+    final blocks = <String>[], kinds = <String>[], citations = <ChatCitation>[];
     if (status == ChatStatus.answered) {
       final byId = <String, ChatCitation>{};
       for (final raw in data['citations'] as List) {
@@ -69,6 +75,19 @@ class ChatReply {
           throw const FormatException('Uncited answer');
         }
         blocks.add(text);
+        final kind =
+            raw['kind'] as String? ??
+            (blocks.length == 1 ? 'heading' : 'paragraph');
+        if (!{
+          'paragraph',
+          'heading',
+          'steps',
+          'warning',
+          'help',
+        }.contains(kind)) {
+          throw const FormatException('Unknown answer block kind');
+        }
+        kinds.add(kind);
         for (final id in ids) {
           if (!citations.contains(byId[id])) citations.add(byId[id]!);
         }
@@ -83,6 +102,7 @@ class ChatReply {
     return ChatReply(
       status: status,
       blocks: blocks,
+      blockKinds: kinds,
       citations: citations,
       question: question,
       categoryCode: data['suggested_category_code'] as String?,
@@ -92,11 +112,19 @@ class ChatReply {
 }
 
 class ChatTurn {
-  const ChatTurn(this.message, this.age, {this.reply, this.offline = false});
+  const ChatTurn(
+    this.message,
+    this.age, {
+    this.reply,
+    this.offline = false,
+    this.hasImage = false,
+    this.issue,
+  });
   final String message;
   final String? age;
   final ChatReply? reply;
-  final bool offline;
+  final bool offline, hasImage;
+  final String? issue;
 }
 
 class AssistantState {
@@ -112,6 +140,10 @@ class AssistantState {
 class AssistantCubit extends Cubit<AssistantState> {
   AssistantCubit(this.api) : super(const AssistantState());
   final PublicApi api;
+  void clearConversation() {
+    if (!state.sending) emit(AssistantState(offline: state.offline));
+  }
+
   Future<void> checkConnection() async {
     final online = await api.network.isOnline();
     if (!isClosed) {
@@ -134,30 +166,94 @@ class AssistantCubit extends Cubit<AssistantState> {
     return '${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}-${hex.substring(16, 20)}-${hex.substring(20)}';
   }
 
-  Future<void> send(String message, String? age, {bool retry = false}) async {
+  Future<void> send(
+    String message,
+    String? age, {
+    bool retry = false,
+    Uint8List? image,
+    String? mime,
+  }) async {
     message = message.trim();
     if (state.sending || message.isEmpty || message.length > 2000) return;
     final previous = [...state.turns];
     if (retry && previous.isNotEmpty) previous.removeLast();
+    final normalized = searchKey(message);
+    final ages = RegExp(r'\b(\d{1,3}) tuoi\b').allMatches(normalized).toList();
+    if (RegExp(r'\b(tre|be)\b').hasMatch(normalized) &&
+        !normalized.contains('nguoi lon')) {
+      age = 'CHILD';
+    } else if (normalized.contains('nguoi lon') &&
+        !normalized.contains('tre em')) {
+      age = 'ADULT';
+    } else {
+      age ??= ages.length == 1
+          ? (int.parse(ages.single.group(1)!) >= 18 ? 'ADULT' : 'CHILD')
+          : previous.isEmpty
+          ? null
+          : previous.last.age;
+    }
+    final context = previous
+        .where(
+          (turn) =>
+              turn.reply?.status == ChatStatus.answered ||
+              turn.reply?.status == ChatStatus.clarificationNeeded,
+        )
+        .map((turn) {
+          final code = turn.reply?.categoryCode;
+          if (turn.hasImage &&
+              code != null &&
+              RegExp(r'^FA\d{2}$').hasMatch(code)) {
+            final index = int.parse(code.substring(2)) - 1;
+            if (index >= 0 &&
+                index < situations.length &&
+                turn.message.length < 1900) {
+              return '${situations[index]} · ${turn.message}';
+            }
+          }
+          return turn.message;
+        })
+        .toList();
     emit(
       AssistantState(
-        turns: [...previous, ChatTurn(message, age)],
+        turns: [
+          ...previous,
+          ChatTurn(message, age, hasImage: image != null),
+        ],
         sending: true,
       ),
     );
     ChatReply reply;
+    String? issue;
     var offline = false;
     try {
       final id = _requestId();
-      final response = await api.ask({
+      final request = <String, dynamic>{
         'client_request_id': id,
         'message': message,
         'age_group': age,
         'context_mode': 'learning',
-      });
+        if (context.isNotEmpty)
+          'context_messages': context
+              .skip(context.length > 4 ? context.length - 4 : 0)
+              .toList(),
+      };
+      final response = image == null
+          ? await api.ask(request)
+          : await api.askImage(request, image, mime!);
       reply = ChatReply.parse(response, id);
     } catch (error) {
       offline = error is OfflineException;
+      if (image != null && error is DioException) {
+        issue = switch (error.response?.statusCode) {
+          403 =>
+            'Máy chủ chưa cho phép gửi ảnh. Bạn có thể tiếp tục bằng câu hỏi văn bản.',
+          404 || 405 =>
+            'Máy chủ chưa hỗ trợ nhận ảnh. Bạn có thể mô tả hình bằng chữ để tiếp tục.',
+          413 => 'Ảnh quá lớn. Hãy chọn ảnh dưới 5 MiB và 16 triệu điểm ảnh.',
+          415 => 'Máy chủ chỉ nhận ảnh JPEG hoặc PNG hợp lệ.',
+          _ => null,
+        };
+      }
       reply = ChatReply(status: ChatStatus.unavailable);
     }
     if (!isClosed) {
@@ -165,7 +261,14 @@ class AssistantCubit extends Cubit<AssistantState> {
         AssistantState(
           turns: [
             ...previous,
-            ChatTurn(message, age, reply: reply, offline: offline),
+            ChatTurn(
+              message,
+              age,
+              reply: reply,
+              offline: offline,
+              hasImage: image != null,
+              issue: issue,
+            ),
           ],
           offline: offline,
         ),

@@ -10,28 +10,50 @@ class LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final large = MediaQuery.textScalerOf(context).scale(16) > 24;
+    final palette = switch (article.categoryCode) {
+      'FA01' ||
+      'FA02' ||
+      'FA03' ||
+      'FA04' => (const Color(0xfff7e4df), const Color(0xff853a30)),
+      'FA05' ||
+      'FA06' ||
+      'FA07' ||
+      'FA08' ||
+      'FA09' ||
+      'FA10' => (const Color(0xffdaefea), const Color(0xff176358)),
+      'FA11' ||
+      'FA12' ||
+      'FA13' => (const Color(0xfff7eace), const Color(0xff785315)),
+      _ => (AppColors.tint, AppColors.primary),
+    };
     final artwork = Container(
       width: large ? double.infinity : 82,
       height: large ? 88 : 96,
       decoration: BoxDecoration(
-        color: AppColors.tint,
+        color: palette.$1,
         borderRadius: BorderRadius.circular(14),
       ),
       child: Stack(
         alignment: Alignment.center,
         children: [
           Positioned(
-            right: 8,
-            top: 8,
-            child: Icon(
-              Icons.add_rounded,
-              color: AppColors.primary.withValues(alpha: .14),
-              size: 20,
+            bottom: -18,
+            right: -14,
+            child: Container(
+              width: 68,
+              height: 68,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: 8,
+                  color: palette.$2.withValues(alpha: .09),
+                ),
+              ),
             ),
           ),
           Icon(
             situationIcon(article.categoryCode),
-            color: AppColors.primary,
+            color: palette.$2,
             size: 38,
           ),
         ],
@@ -41,7 +63,7 @@ class LessonCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          article.ageLabel,
+          '${article.ageLabel} · ${article.steps.length} bước',
           style: const TextStyle(
             fontSize: 12,
             color: AppColors.accentInk,
@@ -60,7 +82,7 @@ class LessonCard extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           article.summary,
-          maxLines: large ? null : 2,
+          maxLines: large ? null : 3,
           overflow: large ? null : TextOverflow.ellipsis,
           style: const TextStyle(fontSize: 14, color: AppColors.textSecondary),
         ),

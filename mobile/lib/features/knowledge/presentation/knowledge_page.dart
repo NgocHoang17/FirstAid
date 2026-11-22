@@ -1,4 +1,3 @@
-import '../../../core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../first_aid/data/reference_content_repository.dart';
@@ -74,12 +73,16 @@ class _KnowledgePageState extends State<KnowledgePage> {
             : searchArticles(library, search.text, age: age, group: group);
         return ListView(
           padding: pagePadding,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           key: const PageStorageKey('knowledge'),
           children: [
-            const FeatureHeader(
-              'Kiến thức sơ cứu',
-              subtitle: 'Tìm hiểu để sẵn sàng giúp đỡ.',
-              icon: Icons.menu_book_outlined,
+            const Text(
+              'Thư viện sơ cứu',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                letterSpacing: -.7,
+              ),
             ),
             sectionGap,
             TextField(
@@ -130,32 +133,20 @@ class _KnowledgePageState extends State<KnowledgePage> {
                 onAction: () => context.read<ContentUpdateCubit>().load(),
               )
             else ...[
-              if (group == null && search.text.isEmpty)
-                for (final entry in knowledgeGroups.entries) ...[
-                  AidCard(
-                    entry.value,
-                    'Khám phá các bài liên quan',
-                    icon: switch (entry.key) {
-                      'CIRCULATION' => Icons.favorite_outline_rounded,
-                      'TRAUMA' => Icons.healing_rounded,
-                      'ENVIRONMENT' => Icons.eco_outlined,
-                      _ => Icons.health_and_safety_outlined,
-                    },
-                    color: AppColors.tint,
-                    onTap: () => setState(() => group = entry.key),
-                  ),
-                  sectionGap,
+              Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                children: [
+                  for (final entry in knowledgeGroups.entries)
+                    FilterChip(
+                      label: Text(entry.value),
+                      selected: group == entry.key,
+                      onSelected: (selected) =>
+                          setState(() => group = selected ? entry.key : null),
+                    ),
                 ],
-              if (group != null) ...[
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: InputChip(
-                    label: Text(knowledgeGroups[group]!),
-                    onDeleted: () => setState(() => group = null),
-                  ),
-                ),
-                sectionGap,
-              ],
+              ),
+              sectionGap,
               Text(
                 '${articles.length} bài hướng dẫn',
                 style: const TextStyle(fontWeight: FontWeight.bold),
