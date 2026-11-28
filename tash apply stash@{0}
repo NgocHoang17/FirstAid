@@ -1,0 +1,74 @@
+ backend/.env.example                               |   30 [32m+[m[31m-[m
+ backend/.gitattributes                             |    6 [32m+[m[31m-[m
+ backend/.gitignore                                 |   41 [32m+[m[31m-[m
+ backend/.mvn/wrapper/maven-wrapper.properties      |    3 [31m-[m
+ backend/README.md                                  |  124 [32m+[m[31m-[m
+ .../db/migration => db/migrations}/V1__schema.sql  |    0
+ .../migrations}/V2__reference_metadata.sql         |    0
+ .../migration => db/migrations}/V3__step_media.sql |    0
+ backend/db/migrations/V4__node_sessions.sql        |    7 [32m+[m
+ .../seeds/import-reference-drafts.sql}             |    0
+ backend/mvnw                                       |  295 [31m----[m
+ backend/mvnw.cmd                                   |  190 [31m--[m
+ backend/package-lock.json                          | 1837 [32m++++++++++++++++++++[m
+ backend/package.json                               |   30 [32m+[m
+ backend/pom.xml                                    |   33 [31m-[m
+ backend/scripts/database/migrate.js                |    8 [32m+[m
+ backend/scripts/database/seed.js                   |   19 [32m+[m
+ .../{ai_gateway_smoke.js => smoke/ai-gateway.js}   |    7 [32m+[m[31m-[m
+ backend/scripts/{smoke.ps1 => smoke/api.ps1}       |    0
+ backend/src/app.js                                 |   49 [32m+[m
+ backend/src/config/asset-keys.json                 |   28 [32m+[m
+ backend/src/config/index.js                        |   37 [32m+[m
+ backend/src/database/bootstrap.js                  |   12 [32m+[m
+ backend/src/database/migrate.js                    |   48 [32m+[m
+ backend/src/database/pool.js                       |   21 [32m+[m
+ backend/src/database/row-mappers.js                |   11 [32m+[m
+ backend/src/database/seed.js                       |   37 [32m+[m
+ .../example/firstAid/FirstAidApplication.java      |   13 [31m-[m
+ .../firstAid/assistant/AssistantController.java    |   21 [31m-[m
+ .../firstAid/assistant/AssistantService.java       |  191 [31m--[m
+ .../firstAid/assistant/EmergencyPolicy.java        |   19 [31m-[m
+ .../example/firstAid/auth/AdminSeeder.java         |   24 [31m-[m
+ .../example/firstAid/auth/AuthController.java      |   78 [31m-[m
+ .../example/firstAid/auth/LoginLimiter.java        |   27 [31m-[m
+ .../example/firstAid/auth/SecurityConfig.java      |   88 [31m-[m
+ .../java/firstAid/example/firstAid/common/Api.java |   32 [31m-[m
+ .../firstAid/common/ApiExceptionHandler.java       |   54 [31m-[m
+ .../example/firstAid/common/ApiFailure.java        |   39 [31m-[m
+ .../firstAid/example/firstAid/common/Checks.java   |  101 [31m--[m
+ .../firstAid/content/AdminContentController.java   |  124 [31m--[m
+ .../example/firstAid/content/ArticleService.java   |  243 [31m---[m
+ .../example/firstAid/content/CatalogService.java   |  211 [31m---[m
+ .../example/firstAid/content/MediaController.java  |   70 [31m-[m
+ .../firstAid/content/OfflineController.java        |   76 [31m-[m
+ .../firstAid/content/PublicConfigVersioner.java    |   27 [31m-[m
+ .../example/firstAid/content/PublicController.java |   63 [31m-[m
+ .../firstAid/example/firstAid/content/Rows.java    |   95 [31m-[m
+ backend/src/main/resources/application.properties  |   21 [31m-[m
+ backend/src/modules/articles/article.routes.js     |   24 [32m+[m
+ backend/src/modules/articles/article.service.js    |  140 [32m++[m
+ backend/src/modules/assistant/assistant.routes.js  |   17 [32m+[m
+ backend/src/modules/assistant/assistant.service.js |  113 [32m++[m
+ backend/src/modules/auth/auth.js                   |   53 [32m+[m
+ backend/src/modules/catalog/catalog.routes.js      |   24 [32m+[m
+ backend/src/modules/catalog/catalog.service.js     |   75 [32m+[m
+ backend/src/modules/media/media.routes.js          |   27 [32m+[m
+ backend/src/modules/media/media.service.js         |   46 [32m+[m
+ backend/src/modules/snapshot/snapshot.routes.js    |   13 [32m+[m
+ backend/src/modules/snapshot/snapshot.service.js   |   33 [32m+[m
+ backend/src/server.js                              |   26 [32m+[m
+ backend/src/shared/api.js                          |  101 [32m++[m
+ backend/src/shared/query-params.js                 |   22 [32m+[m
+ .../firstAid/assistant/EmergencyPolicyTest.java    |   22 [31m-[m
+ .../firstAid/content/MediaControllerTest.java      |   24 [31m-[m
+ .../fixtures/mock-ai-server.js}                    |    2 [32m+[m[31m-[m
+ backend/tests/helpers/integration.js               |   59 [32m+[m
+ backend/tests/integration/api.test.js              |  136 [32m++[m
+ backend/tests/integration/assistant.test.js        |  146 [32m++[m
+ backend/tests/integration/migration.test.js        |   50 [32m+[m
+ backend/tests/integration/runtime.test.js          |   44 [32m+[m
+ backend/tests/unit/policy.test.js                  |   55 [32m+[m
+ mobile/README.md                                   |   18 [32m+[m[31m-[m
+ mobile/integration_test/real_data_test.dart        |   79 [32m+[m[31m-[m
+ 73 files changed, 3559 insertions(+), 2280 deletions(-)
