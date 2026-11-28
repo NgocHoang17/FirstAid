@@ -51,6 +51,21 @@ test('existing clients retain auth, CRUD, publication, media and snapshot behavi
     assert.equal(origin.headers.get('access-control-allow-origin'), f.config.adminOrigin);
     assert.equal((await req('/admin/facilities', { admin: true })).status, 404);
   });
+  await t.test('catalogue search filters before pagination and rejects unsupported categories', async () => {
+    const category = await req('/admin/categories?q=FA01&page_size=1', { admin: true });
+    assert.equal(category.status, 200);
+    assert.equal(category.data.total, 1);
+    assert.equal(category.data.items[0].code, 'FA01');
+    const source = await req('/admin/sources?q=cam%20nang&page_size=1', { admin: true });
+    assert.equal(source.status, 200);
+    assert.equal(source.data.total, 1);
+    assert.equal(source.data.items[0].code, 'PNT2024');
+    assert.equal((await req('/admin/sources?q=%25', { admin: true })).data.total, 0);
+    assert.equal((await req('/admin/categories?q=FA01&page=2&page_size=1', { admin: true })).data.items.length, 0);
+    const rejected = await write('/admin/categories', { code: 'FA19', name: 'Unsupported', group_code: 'OTHER', keywords: [], sort_order: 19, is_active: true });
+    assert.equal(rejected.status, 400);
+    assert.equal((await req('/categories')).data.items.some(c => c.code === 'FA19'), false);
+  });
   await t.test('media is decoded and private until attached to a public article', async () => {
     const data = await sharp({ create: { width: 20, height: 12, channels: 3, background: '#abc' } }).png().toBuffer();
     const form = () => { const b = new FormData(); b.append('file', new Blob([data], { type: 'image/png' }), 'photo.png'); return b; };

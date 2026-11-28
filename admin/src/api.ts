@@ -58,7 +58,7 @@ export class AdminApi {
     if (user.role !== 'ADMIN') throw new ApiError(403, 'ACCESS_DENIED', 'Tài khoản không có quyền quản trị.');
     return user;
   }
-  async logout() { await this.request('/auth/logout', 'POST'); this.csrf = null; }
+  async logout() { await this.request('/auth/logout', 'POST', {}); this.csrf = null; }
   list<R extends Resource>(resource: R, filters: Record<string, string | number> = {}) {
     const params = new URLSearchParams();
     for (const [key, value] of Object.entries(filters)) if (value !== '') params.set(key, String(value));

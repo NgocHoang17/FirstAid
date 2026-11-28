@@ -33,7 +33,7 @@ def database():
     test_dsn = psycopg.conninfo.make_conninfo(**{**params, 'dbname': name})
     try:
         with psycopg.connect(test_dsn) as connection:
-            migrations = ROOT / 'backend/src/main/resources/db/migration'
+            migrations = ROOT / 'backend/db/migrations'
             connection.execute((migrations / 'V1__schema.sql').read_text(encoding='utf-8'))
             connection.execute((migrations / 'V2__reference_metadata.sql').read_text(encoding='utf-8'))
         yield test_dsn

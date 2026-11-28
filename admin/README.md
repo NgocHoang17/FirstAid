@@ -12,7 +12,7 @@ API dùng [contract chung](../docs/baseline-v2/06_SHARED_CONTRACTS.md). Web khô
 powershell -ExecutionPolicy Bypass -File tools/start-local.ps1
 ```
 
-Mở <http://127.0.0.1:5173>. Lấy tài khoản quản trị được tạo riêng cho máy trong `.local/credentials.json`. Web đọc và ghi PostgreSQL qua Spring, cùng bộ bài và nguồn mà mobile sử dụng. Lệnh khởi động cũng chạy chatbot và nạp dữ liệu ban đầu. Xem [luồng chạy đầy đủ](../README.md#phát-triển-local).
+Mở <http://127.0.0.1:5173>. Lấy tài khoản quản trị được tạo riêng cho máy trong `.local/credentials.json`. Web đọc và ghi PostgreSQL qua backend Node.js, cùng bộ bài và nguồn mà mobile sử dụng. Lệnh khởi động cũng chạy chatbot và nạp dữ liệu ban đầu. Xem [luồng chạy đầy đủ](../README.md#phát-triển-local).
 
 ## Kiểm thử giao diện độc lập
 
@@ -30,7 +30,7 @@ Chế độ demo có banner riêng. Bộ bài và nguồn lấy từ thư viện
 ## Cấu hình server riêng
 
 1. Sao chép `.env.example` thành `.env.local`.
-2. Đặt `API_PROXY_TARGET` thành địa chỉ Spring Boot của bạn.
+2. Đặt `API_PROXY_TARGET` thành địa chỉ Node.js của bạn.
 3. Chạy lệnh sau:
 
 ```powershell
@@ -38,6 +38,20 @@ npm.cmd run dev
 ```
 
 Web gọi `/api/v1/admin` qua proxy cùng origin. Chế độ thường không tự chuyển sang demo khi API lỗi.
+
+### Kiểm trình duyệt với backend thật
+
+Khởi động stack với `tools/start-local.ps1 -PortableDatabase` để dùng database riêng có bộ seed. Từ thư mục `admin`, chạy:
+
+```powershell
+$credentials = Get-Content ../.local/credentials.json -Raw | ConvertFrom-Json
+$env:FIRSTAID_TEST_ADMIN_USERNAME = $credentials.admin_username
+$env:FIRSTAID_TEST_ADMIN_PASSWORD = $credentials.admin_password
+$env:PLAYWRIGHT_CHANNEL = 'chrome'
+npm.cmd run test:e2e:live
+```
+
+Bộ này kiểm đăng nhập, tìm danh mục/nguồn và đăng xuất qua API thật; không sửa nội dung. Cần Chrome đã cài khi dùng `PLAYWRIGHT_CHANNEL=chrome`. `FIRSTAID_ADMIN_TEST_URL` đổi địa chỉ Admin khi cần. `test:e2e` vẫn kiểm giao diện demo riêng.
 
 Backend cần cung cấp các endpoint trong mục 8 của contract. Các yêu cầu tích hợp:
 

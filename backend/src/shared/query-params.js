@@ -19,4 +19,12 @@ function bounded(items, max) {
   return { items };
 }
 
-module.exports = { pageParams, filters, bounded };
+function searchCatalog(items, query) {
+  const normalize = text => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').replace(/[đĐ]/g, 'd').toLowerCase();
+  const needle = normalize(query || '').trim();
+  if (!needle) return items;
+  return items.filter(item => [item.code, item.name, item.title, item.publisher]
+    .some(value => typeof value === 'string' && normalize(value).includes(needle)));
+}
+
+module.exports = { pageParams, filters, bounded, searchCatalog };

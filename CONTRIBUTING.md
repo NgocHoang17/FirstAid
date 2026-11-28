@@ -13,7 +13,7 @@ Scope theo 01, payload/API theo 06, catalog theo 07; khi thay contract phải c�
 ## Quy ước tên
 
 - Flutter/Dart: biến/hàm `camelCase`, class `PascalCase`.
-- Java/Spring Boot: biến/phương thức `camelCase`, class `PascalCase`.
+- JavaScript/Node.js: biến/hàm `camelCase`, class `PascalCase`; backend CommonJS.
 - Python/FastAPI RAG: biến/hàm `snake_case`, class `PascalCase`.
 - JSON/API: field `snake_case` theo 06, không suy từ cách đặt tên của ngôn ngữ.
 

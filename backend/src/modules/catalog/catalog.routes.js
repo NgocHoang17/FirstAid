@@ -1,6 +1,6 @@
 const { Catalog } = require('./catalog.service');
 const { checks: C, ok } = require('../../shared/api');
-const { pageParams, bounded } = require('../../shared/query-params');
+const { pageParams, bounded, searchCatalog } = require('../../shared/query-params');
 
 function registerCatalogRoutes(api, admin, { read, write }) {
   for (const [resource, single, save, remove] of [
@@ -8,7 +8,8 @@ function registerCatalogRoutes(api, admin, { read, write }) {
   ]) {
     admin.get('/' + resource, async (req, res) => {
       const { page, size } = pageParams(req.query);
-      const all = await read(db => new Catalog(db)[resource](true));
+      const query = C.text(req.query, 'q', 2000);
+      const all = searchCatalog(await read(db => new Catalog(db)[resource](true)), query);
       res.json(ok({ items: all.slice((page - 1) * size, page * size), page, page_size: size, total: all.length }));
     });
     admin.get('/' + resource + '/:id', async (req, res) => res.json(ok(await read(db => new Catalog(db)[single](C.uuid(req.params, 'id'))))));
