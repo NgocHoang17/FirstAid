@@ -1,32 +1,49 @@
-﻿# FirstAid mobile
+# FirstAid mobile
 
-Flutter client dùng BLoC và SQLite, tổ chức theo feature với repository tách giao diện khỏi dữ liệu.
+Flutter, BLoC và SQLite. Ba tab Trang chủ, Kiến thức, Hỏi đáp. Đọc [PRD](../docs/PRD.md) và [Frontend Guide](../docs/baseline-v2/03_FRONTEND_GUIDE.md).
 
-## Tài liệu
+## Chạy local
 
-Đọc [README dự án](../README.md), [hướng dẫn đọc](../docs/baseline-v2/README.md), [đặc tả](../docs/baseline-v2/01_SYSTEM_SPEC.md) và [contract](../docs/baseline-v2/06_SHARED_CONTRACTS.md). Frontend đọc thêm [03](../docs/baseline-v2/03_FRONTEND_GUIDE.md), [brief thiết kế](../docs/baseline-v2/02_FIGMA_DESIGN_BRIEF.md) và [tiêu chí nghiệm thu](../docs/baseline-v2/08_ACCEPTANCE_AND_PLAN.md).
-
-## Nguyên tắc
-
-Không login mobile. Nội dung core bundled vào SQLite; quick/learn dùng cùng Article. Cập nhật full snapshot thủ công và không làm mất dữ liệu khi lỗi. Chat RAG text chỉ online; danh bạ vẫn xem được khi không cấp quyền vị trí. Không thay bài người lớn cho đối tượng khác khi thiếu bài phù hợp.
-
-## Phát triển local
-
-Dùng phiên bản Flutter/Dart tương thích cấu hình build và lockfile:
+Khởi động backend Node.js theo [README backend](../backend/README.md) và FastAPI theo [README AI](../ai/README.md), sau đó:
 
 ```powershell
 flutter pub get
 flutter run
 ```
 
-API chính dùng prefix `/api/v1`; base URL lấy từ cấu hình môi trường. Android emulator truy cập máy phát triển qua `10.0.2.2`. Kiểm nghiệm offline, quyền vị trí, font lớn và external actions theo tài liệu nghiệm thu.
+Android emulator mặc định dùng `http://10.0.2.2:8080/api/v1`. Điện thoại thật dùng `--dart-define=API_BASE_URL` với địa chỉ máy chủ truy cập được. Release dùng HTTPS.
 
-Truyền địa chỉ API gồm cả prefix khi chạy, ví dụ trên Android emulator:
+## Nội dung
+
+24 bài, 18 nhóm, 17 nguồn và hình nhắc nhớ đi kèm ứng dụng. Đọc đầy đủ và theo bước dùng cùng Article. Không yêu cầu tài khoản. Cập nhật qua Cài đặt, giữ dữ liệu khi lỗi.
+
+Không có quiz, danh bạ, bản đồ, GPS hoặc quyền vị trí. Trong Hỏi đáp, người học có thể chọn, xem trước, bỏ ảnh JPEG/PNG rồi gửi kèm câu hỏi. Luồng gửi ảnh cần gateway hỗ trợ multipart và Gemini phía server. Không lưu ảnh hoặc lịch sử chat mặc định.
+
+Mobile đọc được public snapshot v1 và v2. Chỉ thêm `--dart-define=FIRSTAID_SNAPSHOT_V2=true` khi gateway đã cung cấp schema 2. Payload danh bạ không có màn hình sử dụng. Snapshot giáo dục schema 2 được quy định trong [06](../docs/baseline-v2/06_SHARED_CONTRACTS.md).
+
+## Kiểm tra
+
+Ảnh hướng dẫn do Admin tải lên có ba bố cục: xếp dọc, lưới và vuốt ngang. Ảnh xuất hiện sau chữ trong khối của bước; có chú thích và mô tả đọc màn hình. Lưới chuyển thành một cột khi chữ lớn. Ảnh tải từ server cần kết nối mạng; khi không tải được, phần hướng dẫn chữ vẫn đọc được. Hình bundled tiếp tục phục vụ các bước không có bộ ảnh upload.
 
 ```powershell
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1 --dart-define=PILOT_REGION_CODE=VN-PILOT --dart-define="PILOT_REGION_LABEL=Khu vực thí điểm"
+flutter pub get
+flutter analyze
+flutter test
 ```
 
-`PILOT_REGION_CODE` phải khớp vùng dữ liệu của máy chủ; `PILOT_REGION_LABEL` là tên vùng hiển thị. Bản release dùng API HTTPS. Khi không cấu hình API, các bài đã lưu vẫn đọc được; tính năng cần máy chủ hiển thị trạng thái chưa sẵn sàng.
+Chạy các lệnh từ thư mục `mobile`. `flutter pub get` tạo `.dart_tool/package_config.json` để Dart/IDE nhận các import `package:mobile`, `flutter_test` và `integration_test`. Nếu các import còn bị đánh dấu đỏ, kiểm tra SDK của IDE trùng với `flutter --version` trong terminal và Dart đáp ứng `sdk` trong `pubspec.yaml`, rồi khởi động lại Dart Analysis Server.
 
-Snapshot và danh bạ được lưu bằng SQLite trên Android/iOS. Cập nhật chỉ thay dữ liệu sau khi kiểm tra hợp lệ và ghi thành công. Danh bạ không kèm cơ sở minh họa; dữ liệu active cần được xác minh theo contract. Chat giữ câu hỏi trong bộ nhớ của phiên ứng dụng và không gửi lịch sử lên máy chủ.
+`flutter test` chạy bộ unit/widget trong `test/`, không cần backend. Ca `publication_sync_test.dart` chỉ chạy khi có biến `FIRSTAID_TEST_SNAPSHOTS` trỏ đến fixture xuất từ kiểm thử xuất bản backend; thiếu fixture thì ca này được bỏ qua có chủ đích.
+
+### Integration test trên Android
+
+`integration_test/real_data_test.dart` cần thiết bị Android/emulator, backend Node.js + PostgreSQL đã seed bộ 24 bài và FastAPI có corpus hoạt động. Đây là kiểm thử trực tiếp dịch vụ thật, không dùng API giả lập. Mỗi lần chạy tạo database SQLite test riêng và xóa khi kết thúc.
+
+```powershell
+flutter devices
+flutter test integration_test/real_data_test.dart -d <ANDROID_DEVICE_ID> --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1
+```
+
+Thay `<ANDROID_DEVICE_ID>` bằng ID từ `flutter devices`. `10.0.2.2` dành cho Android emulator; điện thoại thật cần địa chỉ LAN của máy chạy backend. V1 cần `PUBLIC_REGION` của backend khớp `PILOT_REGION_CODE` (mặc định `VN-DN`). Không để Flutter tự chọn Windows cho bài kiểm thử Android: Windows cần Visual Studio C++ toolchain và bộ lưu SQLite hiện tại của app dành cho nền tảng mobile.
+
+Lưu ảnh xem trước và bộ kiểm giao diện cá nhân trong `.local/` ở thư mục gốc. Đặt ngoài `mobile/test/` để `flutter test` chỉ chạy bộ kiểm của dự án. Không đưa PDF gốc, ảnh hội thoại, secrets hoặc dữ liệu runtime vào Git.
