@@ -1,61 +1,46 @@
-# Bàn giao backend FirstAid
+﻿# Bàn giao backend và kiểm tích hợp
 
-Mốc đối chiếu mã nguồn ngày 22/11/2026. Người nhận là thành viên phụ trách Spring Boot và PostgreSQL. Dùng tài liệu này để giao việc. Ghi kết quả từng hạng mục trong PR. Đặc tả sản phẩm và hợp đồng API dùng chung nằm ở [01](baseline-v2/01_SYSTEM_SPEC.md) và [06](baseline-v2/06_SHARED_CONTRACTS.md).
+Backend dùng Node.js + Express + PostgreSQL. API giữ prefix `/api/v1`; Admin React và mobile Flutter dùng cùng hợp đồng JSON. Hướng dẫn chạy tại [README gốc](../README.md#phát-triển-local), [backend](../backend/README.md), [mobile](../mobile/README.md) và [AI](../ai/README.md).
 
-## Điểm bắt đầu
+## Các luồng đã triển khai
 
-| Thành phần | Căn cứ bàn giao |
+| Luồng | Mã và cách phối hợp |
 | --- | --- |
-| Spring và PostgreSQL | Public API nội dung, auth Admin, CRUD, upload ảnh bước, snapshot v1 và gateway chat văn bản đã có mã triển khai. Flyway dùng V1–V3. [Hướng dẫn backend](../backend/README.md) |
-| Flutter | Đọc snapshot v1/v2. Mặc định gọi v1, gửi thêm `schema_version=2` khi bật `FIRSTAID_SNAPSHOT_V2`. Có giao diện chọn ảnh và gửi multipart qua Spring. [Hướng dẫn mobile](../mobile/README.md) |
-| FastAPI | Đọc snapshot public v1/v2. Có endpoint ảnh nội bộ và bộ kiểm ảnh không dùng khóa. Dịch vụ local mặc định trả lời văn bản bằng nội dung trích xuất. [Hướng dẫn AI](../ai/README.md) |
+| Admin | Session PostgreSQL, cookie HttpOnly, CSRF trước thao tác ghi, CRUD bài/danh mục/nguồn, revision và publish/unpublish. Danh mục giới hạn FA01–FA18 giống mobile. Tìm danh mục/nguồn hỗ trợ không dấu và phân trang sau lọc. |
+| Nội dung public | Chỉ xuất bài PUBLISHED đã kiểm, danh mục/nguồn còn active. Snapshot v1/v2 đọc cùng dữ liệu trong transaction REPEATABLE READ và có ETag riêng. |
+| Mobile | Nhận snapshot qua Cài đặt → Kiểm tra cập nhật, kiểm schema/nguồn/ID rồi ghi SQLite nguyên tử. Hỏng bản cập nhật thì giữ bản hiện tại. |
+| Ảnh bước | Upload JPEG/PNG, tối đa 5 MiB/16 MP. Backend chuẩn hóa ảnh và chỉ cho public đọc khi gắn bài public hợp lệ. Mobile nhận gallery xếp dọc, lưới hoặc vuốt ngang. |
+| AI | Backend chuyển JSON hoặc multipart `request` + `image` tới FastAPI nội bộ, cùng token. Gateway kiểm lại citation và article/source revision trong PostgreSQL. |
+| Migration | Runner Node.js thực thi V1–V4 trong `backend/db/migrations`. Nhận lịch sử Flyway V1–V3 khi checksum đúng; không sửa migration cũ. |
 
-## BE-01. Snapshot giáo dục v2
+Các luồng có mã triển khai vẫn cần được kiểm cùng nhau trên môi trường đích. Test giả lập provider không xác nhận chất lượng Gemini thật.
 
-**Người phụ trách** · Backend. Phối hợp với mobile và AI khi mở phiên bản mới.
+## Chạy và cấu hình
 
-1. Bổ sung chọn schema trong `OfflineController`. Giữ v1 cho request không chỉ định phiên bản. V1 tiếp tục nhận `region_code`. V2 cho phép bỏ tham số này, đồng thời chấp nhận request từ Flutter vẫn gửi mã vùng cũ.
-2. Trả v2 theo mục 6 của hợp đồng. Dùng cùng nguồn dữ liệu public, giới hạn và transaction `REPEATABLE_READ`. Giữ thứ tự bước, ID, revision, tham chiếu và metadata gallery.
-3. Sinh `data_version` riêng theo schema. Đồng bộ ETag với token trong payload theo quy tắc của client. Không cắt âm thầm danh sách khi vượt giới hạn.
-4. Sau nghiệm thu, chuyển cấu hình mobile và `AI_PUBLIC_SNAPSHOT_URL` sang v2. Cập nhật launcher, công cụ seed và test tích hợp cùng đợt chuyển.
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/start-local.ps1
+```
 
-**Nghiệm thu:** v1 và v2 cho cùng danh sách bài hợp lệ. V2 bỏ `region_code` và `facilities` trong payload. Gửi ETag v1 sang v2 nhận 200. Gửi lại ETag của cùng bản v2 nhận 304 với body rỗng. Xuất bản, sửa bài đã xuất bản và gỡ bài làm thay đổi snapshot. Kiểm nâng cấp từ SQLite đã có v1 và khởi động lại app sau khi nhận v2. FastAPI đổi corpus và gateway từ chối citation của revision đã gỡ. [Hợp đồng snapshot](baseline-v2/06_SHARED_CONTRACTS.md#6-offlinesnapshot-giáo-dục)
+Mặc định launcher dùng PostgreSQL trong `backend/.env` nếu file có sẵn. Thêm `-PortableDatabase` để dùng database local riêng, hoặc `-SkipAi` khi chỉ cần API/Admin. Backend seed bộ bài khi bảng bài đang trống; giữ nội dung Admin đã chỉnh. Launcher duy trì token/session secret trong `.local/credentials.json` và không ghi đè `.env`.
 
-## BE-02. Gateway hỏi đáp bằng ảnh
+Admin gọi API qua proxy, cấu hình `API_PROXY_TARGET`. Mobile emulator dùng `http://10.0.2.2:8080/api/v1`; điện thoại thật dùng IP LAN. Snapshot v1 cần `PILOT_REGION_CODE` trùng `PUBLIC_REGION` (mặc định `VN-DN`). Bật v2 bằng `FIRSTAID_SNAPSHOT_V2=true` khi cả môi trường đã sẵn sàng.
 
-**Người phụ trách** · Backend. AI phụ trách đánh giá Gemini sau khi gateway hoạt động.
+AI mặc định dùng trích xuất có nguồn, không cần provider cloud. Cấu hình Gemini và khóa chỉ ở server theo [Grounded Generation](../ai/GROUNDED_GENERATION.md). Dùng corpus từ snapshot backend đang phục vụ.
 
-1. Thêm `POST /api/v1/assistant/query-with-image` vào `AssistantController`. Sửa `SecurityConfig` để cho phép đúng POST này và miễn CSRF theo cách của chat văn bản. Giữ nguyên quyền và CSRF của Admin.
-2. Tách phần kiểm câu hỏi, giới hạn yêu cầu, chính sách sự cố và kiểm phản hồi để dùng chung trong `AssistantService`. Chuyển `client_request_id` sang `request_id` trong part JSON nội bộ.
-3. Chuyển đúng hai part `request` và `image` đến `POST /internal/v1/query-with-image`. Spring gắn `X-Internal-Token`. Giới hạn một JPEG/PNG, 5 MiB, tối đa 16 megapixel khi giải mã. FastAPI giải mã, kiểm định dạng và loại metadata trước khi gọi Gemini.
-4. Map 400, 413 và 415 thành envelope lỗi public. Áp dụng giới hạn tốc độ và thời gian trong hợp đồng. Khi provider lỗi hoặc hết hạn, trả trạng thái `unavailable` theo quy tắc chung. Dọn ảnh tạm khi kết thúc request.
+## Nghiệm thu trên môi trường riêng
 
-**Nghiệm thu không cần khóa:** gửi multipart từ Flutter qua Spring hoặc fixture HTTP. Kiểm ảnh trắng, part bị thiếu/trùng, MIME không hợp lệ, file quá giới hạn, upstream timeout, request ID sai và citation đã cũ. Xác nhận lỗi hiển thị đúng trên mobile và Admin vẫn yêu cầu CSRF. Dùng stub nội bộ cho ca `answered` có nguồn và ca sai đối tượng.
+1. Chạy unit test backend bằng `npm.cmd test`. Đặt `TEST_DATABASE_URL` trỏ database kiểm thử riêng và chạy `npm.cmd run test:integration` trong `backend/`. Bộ này tạo/xóa schema của chính nó để kiểm migration, seed, session/CSRF, xung đột, xuất bản, media, snapshot và gateway AI.
+2. Chạy Admin thật bằng `npm.cmd run dev`; không dùng `dev:demo` để nghiệm thu kết nối PostgreSQL. Các ca Playwright mặc định dùng demo và chỉ xác minh giao diện.
+3. Kiểm tạo bài nháp → lưu xác nhận → xuất bản → snapshot có bài → mobile nhận đúng revision. Sau đó gỡ bài, kiểm ETag đổi và mobile loại bài ở lần đồng bộ tiếp theo.
+4. Chạy `tools/tests/test_step_media_live.py` trên backend kiểm thử đã seed. Đặt `FIRSTAID_MEDIA_TEST_URL` gồm `/api/v1`, `FIRSTAID_MEDIA_TEST_USER`, `FIRSTAID_MEDIA_TEST_PASSWORD` và `FIRSTAID_TEST_SNAPSHOTS` là đường dẫn xuất fixture. Bộ kiểm tạo bài riêng, kiểm ảnh trước/sau xuất bản và xuất snapshot trước/sau gỡ bài.
+5. Truyền cùng `FIRSTAID_TEST_SNAPSHOTS` cho `flutter test test/publication_sync_test.dart`. Kiểm persistence SQLite bằng `flutter test test/snapshot_persistence_test.dart`. Android chạy toàn luồng qua `integration_test/real_data_test.dart`, cần emulator/thiết bị và backend/AI thật.
+6. Gỡ bài hoặc đổi revision rồi kiểm gateway ngừng trả citation cũ. Với Gemini thật, kiểm thêm văn bản/ảnh, ảnh mờ/ngoài phạm vi, chỉ thị trong ảnh và ghi độ trễ p50/p95 theo [nghiệm thu](baseline-v2/08_ACCEPTANCE_AND_PLAN.md).
 
-**Nghiệm thu với Gemini:** chạy bộ ca ảnh, kiểm phản hồi tiếng Việt và nguồn ở luồng mobile → Spring → FastAPI. Đo độ trễ và kiểm chính sách cho ảnh mờ, ảnh ngoài phạm vi, chỉ thị trong ảnh và yêu cầu suy đoán tuổi hoặc chẩn đoán. Khóa thuộc môi trường AI. [Hợp đồng multipart](baseline-v2/06_SHARED_CONTRACTS.md#91-câu-hỏi-kèm-hình-ảnh) · [Bộ đánh giá ảnh](../ai/evaluation/image_cases.py)
+## Phần cần xác minh trước phát hành
 
-## BE-03. Loại bỏ danh bạ khỏi Spring
+- Luồng Android trên thiết bị đích, mất mạng, cập nhật khi đang đọc và chữ 200%.
+- Chất lượng Gemini văn bản/ảnh bằng provider thật; bộ hồi quy phần mềm không thay kết quả đo này.
+- HTTPS, proxy, cookie Secure, ký APK và cách sao lưu/khôi phục database của môi trường triển khai.
+- Nguồn và quyền sử dụng ảnh, việc đối chiếu nội dung khi bài thay đổi.
 
-**Người phụ trách** · Backend. Làm sau khi có phương án tương thích BE-01.
-
-1. Gỡ public/Admin routes `/facilities` ở `PublicController` và `AdminContentController`. Gỡ truy vấn và hàm chuyển đổi bản ghi ở `CatalogService` và `Rows` khi hết nơi gọi.
-2. Chốt với nhóm việc giữ dữ liệu cũ. Xuất bản sao lưu và kiểm khôi phục trên DB thử trước migration. Giữ nguyên checksum migration V1–V3. Tạo migration tiếp theo sau khi nhóm duyệt phương án dữ liệu.
-3. Giữ trường `facilities: []` trong v1 để client cũ đọc được sau khi backend ngừng cung cấp danh bạ. Bỏ truy vấn danh bạ khỏi snapshot ở cùng đợt chuyển đổi.
-
-**Nghiệm thu:** chạy Flyway trên DB mới và DB nâng từ V3 có dữ liệu. Kiểm các bài, bước, nguồn, media, tài khoản Admin và phiên bản nội dung. Các route danh bạ không còn trả dữ liệu. Mobile cài mới và mobile đã có cache đều đọc được bài học. [Thiết kế và migration](DATABASE_DESIGN.md)
-
-## BE-04. Kiểm tích hợp trên môi trường riêng
-
-1. Tạo DB thử với cấu hình tại [README backend](../backend/README.md). Chạy kiểm tra Maven, sau đó kiểm đăng nhập, CSRF, cập nhật xung đột, publish/unpublish, quyền đọc ảnh và ETag.
-2. Dùng `tools/tests/test_step_media_live.py` trên backend thử để tạo hai snapshot trước và sau khi gỡ bài. Đặt `FIRSTAID_MEDIA_TEST_URL` gồm prefix `/api/v1`. Cấp `FIRSTAID_MEDIA_TEST_USER` và `FIRSTAID_MEDIA_TEST_PASSWORD` cho DB thử. Dùng cùng đường dẫn tuyệt đối trong `FIRSTAID_TEST_SNAPSHOTS` để xuất fixture từ Python và đọc bằng `mobile/test/publication_sync_test.dart`.
-3. Kiểm lệnh smoke backend khi đổi snapshot. Script `backend/scripts/smoke.ps1` hiện gửi mã vùng `VN-PILOT`. Khi chạy fixture cũ, đặt `PUBLIC_REGION=VN-PILOT` trên backend thử. Khi nâng script theo v2, kiểm cả đường dẫn v1.
-4. Ghi trong PR phiên bản Flyway, cách tái hiện, môi trường kiểm thử, kết quả và bước chuyển cấu hình.
-
-## Phối hợp với các phần khác
-
-| Chủ trì | Việc còn lại |
-| --- | --- |
-| AI | Kiểm Gemini thật cho văn bản và ảnh khi có khóa. Ghi chất lượng, p50/p95 và chi phí. Bộ hồi quy local phục vụ kiểm phần mềm, còn chất lượng Gemini cần đo bằng API thật. |
-| Mobile | Kiểm v2 và hỏi đáp ảnh theo API mới trên Android Emulator Windows. Bao phủ mạng lỗi, quay lại bài học khi dịch vụ không khả dụng và chữ 200% theo tiêu chí nghiệm thu. |
-| Nội dung | Bổ sung hình hướng dẫn có nguồn và quyền sử dụng cho các bước cần minh họa. Duy trì việc đối chiếu nguồn khi dữ liệu thay đổi. |
-| Phát hành | Chốt môi trường triển khai khi cần sử dụng ngoài máy phát triển. Android Emulator là môi trường demo hiện tại. |
+Các route danh bạ/GPS không thuộc phạm vi hiện tại; dữ liệu legacy vẫn được giữ trong PostgreSQL. Không tự xóa bảng legacy khi triển khai.

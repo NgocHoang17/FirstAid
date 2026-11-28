@@ -18,6 +18,8 @@ describe('Admin HTTP contract', () => {
     expect(calls.map(c => c.path)).toEqual(['/api/v1/admin/auth/csrf', '/api/v1/admin/auth/login', '/api/v1/admin/auth/csrf', '/api/v1/admin/auth/logout']);
     expect(new Headers(calls[1].init?.headers).get('X-CSRF-TOKEN')).toBe('before-login');
     expect(new Headers(calls[3].init?.headers).get('X-CSRF-TOKEN')).toBe('after-login');
+    expect(new Headers(calls[3].init?.headers).get('Content-Type')).toBe('application/json');
+    expect(calls[3].init?.body).toBe('{}');
     expect(calls.every(c => c.init?.credentials === 'include')).toBe(true);
   });
   it('sends expected_revision without writable server fields', async () => {

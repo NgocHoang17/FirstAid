@@ -8,7 +8,7 @@ FastAPI nội bộ dùng BM25 để tìm bài đã kiểm biên soạn. Chế đ
 
 Hội thoại dùng tối đa bốn câu hỏi gần nhất để nối chủ đề, không lưu lịch sử tại server. Nguồn được truy xuất mới cho từng lượt; lịch sử không trở thành bằng chứng y khoa. Câu hỏi giải thích thiếu bằng chứng được từ chối thay vì suy diễn. Sau khi thay bộ xây corpus, chạy lại bộ local để nạp chỉ mục chứa cấu trúc section.
 
-Để chạy cùng database, Admin và mobile, dùng `tools/start-local.ps1` từ thư mục gốc theo [README dự án](../README.md#phát-triển-local). Lệnh dựng corpus từ dữ liệu public của Spring và kiểm chat qua gateway thật. Các bước dưới đây dành cho chạy dịch vụ AI riêng.
+Để chạy cùng database, Admin và mobile, dùng `tools/start-local.ps1` từ thư mục gốc theo [README dự án](../README.md#phát-triển-local). Lệnh dựng corpus từ dữ liệu public của backend Node.js và kiểm chat qua gateway thật. Các bước dưới đây dành cho chạy dịch vụ AI riêng.
 
 Yêu cầu Python 3.11. Chạy từ thư mục `ai/` bằng PowerShell:
 
@@ -21,9 +21,9 @@ $env:AI_INDEX_PATH = 'data/index/corpus.json'
 .venv/Scripts/python.exe -m uvicorn firstaid_rag.app:create_app --factory --host 127.0.0.1 --port 8001 --no-access-log
 ```
 
-Giữ token trong biến môi trường. Dùng cùng giá trị cho `AI_INTERNAL_TOKEN` của Spring. Không ghi token vào Git, mobile hoặc ảnh chụp màn hình. `.env.example` chỉ mô tả cấu hình; dịch vụ không tự đọc tệp `.env`.
+Giữ token trong biến môi trường. Dùng cùng giá trị cho `AI_INTERNAL_TOKEN` của backend Node.js. Không ghi token vào Git, mobile hoặc ảnh chụp màn hình. `.env.example` chỉ mô tả cấu hình; dịch vụ không tự đọc tệp `.env`.
 
-Đặt `AI_BASE_URL=http://127.0.0.1:8001` ở Spring trên cùng máy. Trong container, dùng địa chỉ mạng riêng của dịch vụ AI. Mobile tiếp tục gọi `/api/v1/assistant/query` của Spring.
+Đặt `AI_BASE_URL=http://127.0.0.1:8001` ở backend Node.js trên cùng máy. Trong container, dùng địa chỉ mạng riêng của dịch vụ AI. Mobile tiếp tục gọi `/api/v1/assistant/query` của backend Node.js.
 
 Gọi kiểm tra từ terminal đã có biến token:
 
@@ -42,7 +42,7 @@ Builder không nhận raw PDF. Các trường quiz, đáp án, ghi chú nội b�
 
 Artifact có hash dữ liệu và `corpus_version`. Ghi tệp tạm rồi thay thế nguyên khối. Hash phát hiện hỏng tệp, không phải chữ ký xác thực. Bảo vệ quyền ghi thư mục index. Không commit PDF gốc, index hoặc báo cáo chạy local.
 
-Khi tích hợp, build từ snapshot của chính backend đang chạy. Dừng và khởi động lại AI sau khi thay artifact. Spring phải kiểm lại source/article revision và trạng thái public cho từng response. Các bài bị gỡ hoặc sửa trên backend không được tiếp tục dùng bằng chứng cũ.
+Khi tích hợp, build từ snapshot của chính backend đang chạy. Dừng và khởi động lại AI sau khi thay artifact. backend Node.js phải kiểm lại source/article revision và trạng thái public cho từng response. Các bài bị gỡ hoặc sửa trên backend không được tiếp tục dùng bằng chứng cũ.
 
 `AI_MAX_REVIEW_DAYS` mặc định 180, cho phép 1 đến 365. Evidence quá hạn bị loại khi truy vấn. Đây là giới hạn vận hành, không phải thời hạn hiệu lực y khoa. Kiểm lại nguồn trước khi cập nhật ngày kiểm.
 
@@ -57,7 +57,7 @@ Khi tích hợp, build từ snapshot của chính backend đang chạy. Dừng v
 
 Bộ phân loại dùng quy tắc tiếng Việt, có thể bỏ sót cách diễn đạt, lỗi chính tả hoặc ngữ cảnh phức tạp. Các alias chỉ phục vụ tìm kiếm. BM25 score không biểu thị độ tin cậy y khoa. Câu trả lời trích xuất chọn phần liên quan và giữ cảnh báo; chế độ sinh dùng nội dung truy xuất làm bằng chứng. Mỗi request nhận tối đa bốn câu hỏi trước từ client, server không lưu lịch sử chat.
 
-Dịch vụ chỉ lắng nghe localhost hoặc mạng riêng. Không mở trực tiếp ra Internet. Spring chịu trách nhiệm session Admin, giới hạn request public và timeout 12 giây. Chế độ trích xuất không gọi provider và không có retry tự động.
+Dịch vụ chỉ lắng nghe localhost hoặc mạng riêng. Không mở trực tiếp ra Internet. backend Node.js chịu trách nhiệm session Admin, giới hạn request public và timeout 12 giây. Chế độ trích xuất không gọi provider và không có retry tự động.
 
 ## Kiểm thử
 
@@ -67,7 +67,7 @@ Dịch vụ chỉ lắng nghe localhost hoặc mạng riêng. Không mở trực
 .venv/Scripts/python.exe tools/smoke.py
 ```
 
-Smoke test tự mở FastAPI trên cổng localhost tạm, kiểm request HTTP rồi tắt tiến trình. Không kết nối Spring hoặc database.
+Smoke test tự mở FastAPI trên cổng localhost tạm, kiểm request HTTP rồi tắt tiến trình. Không kết nối backend Node.js hoặc database.
 
 Đọc [phương pháp đánh giá](evaluation/README.md). Kiểm tích hợp cuối cần backend/database thật, cùng bộ bài public, ID và revision. Bộ tham khảo trong mobile không tự thay seed DRAFT của backend. Không nới điều kiện kiểm citation để làm demo chạy.
 

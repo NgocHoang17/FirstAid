@@ -24,7 +24,7 @@ class Catalog {
   async exists(sql, params) { return (await this.db.query(sql, params)).rowCount > 0; }
   async saveCategory(id, b) {
     const code = C.text(b, 'code', 4, true);
-    if (!/^FA[0-9]{2}$/.test(code)) throw invalid('code', 'Cần mã FAxx');
+    if (!/^FA(0[1-9]|1[0-8])$/.test(code)) throw invalid('code', 'Mã danh mục trong phạm vi FA01–FA18');
     const name = C.text(b, 'name', 200, true), group = C.value(b, 'group_code', ['CIRCULATION', 'TRAUMA', 'ENVIRONMENT', 'OTHER']);
     const description = C.text(b, 'description', 4000) || '', keywords = C.strings(b, 'keywords', 100);
     const sort = C.integer(b, 'sort_order', 0, 10000, 0), active = C.bool(b, 'is_active', true);

@@ -1,6 +1,5 @@
 # FirstAid backend — Node.js + PostgreSQL
 
-<<<<<<< HEAD
 Backend dùng Node.js 22.12+ (khuyến nghị Node 24 LTS), Express và PostgreSQL 15+. API vẫn ở `/api/v1`, cổng mặc định 8080. Mobile Flutter, React Admin và dịch vụ FastAPI giữ nguyên. Không cần Java hoặc Maven cho backend này.
 
 Chọn PostgreSQL vì dự án đã dùng quan hệ Category → Article → Step/SourceReference, revision và giao dịch xuất bản. Giữ database này cho phép chuyển runtime mà vẫn giữ UUID, nội dung, media và mật khẩu bcrypt đã có. Không cần chuyển dữ liệu sang MongoDB.
@@ -68,7 +67,7 @@ Kiểm nhanh: `http://127.0.0.1:8080/api/v1/categories`. Phát triển với t�
 - Mobile: giữ URL debug `http://10.0.2.2:8080/api/v1` trên Android emulator. V1 mặc định dùng `PUBLIC_REGION=VN-DN`, khớp cấu hình mobile. Release dùng API HTTPS theo môi trường.
 - FastAPI: chạy theo [README AI](../ai/README.md), đặt cùng `AI_INTERNAL_TOKEN` ở cả hai tiến trình. `AI_BASE_URL` là địa chỉ nội bộ. Gemini key chỉ thuộc tiến trình AI. Có thể đặt `AI_PUBLIC_SNAPSHOT_URL=http://127.0.0.1:8080/api/v1/offline-snapshot?schema_version=2` cho AI đồng bộ corpus.
 
-**Launcher ở gốc `tools/start-local.ps1` / `tools/run_local.py` còn gọi Maven/JAR và yêu cầu JDK.** Các file ngoài backend được giữ nguyên theo phạm vi chuyển đổi. Dùng các lệnh riêng ở trên và hướng dẫn từng thành phần để chạy Node.js; launcher gốc không khởi động backend mới. Các tài liệu chung vẫn có thể gọi API là “Spring”; hợp đồng JSON và URL vẫn được giữ.
+Launcher ở gốc `tools/start-local.ps1` chạy backend Node.js, FastAPI và Admin. Nếu có `backend/.env`, launcher dùng PostgreSQL đó và chỉ seed khi chưa có bài; thêm `-PortableDatabase` để dùng database riêng. Thêm `-SkipAi` khi chỉ cần backend/Admin. Token AI và session secret local được duy trì trong `.local/credentials.json`; không sửa `.env`. Đọc [README gốc](../README.md#phát-triển-local).
 
 ## Nâng cấp database từ Spring
 
@@ -85,6 +84,7 @@ Tài khoản/mật khẩu bcrypt cũ vẫn dùng được. Session Spring cũ kh
 - Envelope `{data,meta.trace_id}` và `{error:{code,message,field_errors},meta.trace_id}`, UUID, snake_case, mã lỗi và phân trang Admin theo [hợp đồng chung](../docs/baseline-v2/06_SHARED_CONTRACTS.md).
 - Admin đăng nhập bằng session cookie HttpOnly, CSRF `X-CSRF-TOKEN`, không dùng JWT. Lấy token qua `GET /admin/auth/csrf` trước login và lấy lại sau login. Session ID/token đổi khi login, logout hủy session. HTTPS cần `SESSION_COOKIE_SECURE=true`; khi qua proxy, đặt đúng `TRUST_PROXY_HOPS`.
 - CRUD categories/sources/articles; nested steps/references lưu nguyên tử; `expected_revision` ngăn ghi đè; sửa bài public đưa về DRAFT, bỏ xác nhận và tăng revision. Publish kiểm trường bắt buộc, nguồn/trang, category active và content_checked. Không xóa/gỡ category hay source đang được bài public dùng. Metadata nguồn ảnh hưởng provenance làm tăng source revision.
+- Mã danh mục ghi qua API giới hạn FA01–FA18 để mobile nhận được snapshot. Danh sách Admin categories/sources nhận `q`, tìm không dấu theo tên/mã/đơn vị và tính tổng/phân trang sau lọc.
 - Public chỉ đọc bài PUBLISHED, đã kiểm và category/sources active. Ảnh bước tối đa 6/bước; URL do server tạo. Upload JPEG/PNG tối đa 5 MiB/16 MP, giải mã và bỏ metadata; media chỉ công khai khi gắn bài public. Gỡ bài chặn đọc ảnh công khai ngay request tiếp theo.
 - `GET /offline-snapshot?region_code=VN-DN` giữ v1 và `facilities: []`. `?schema_version=2` trả v2 không cần vùng; v1/v2 có ETag riêng. Snapshot đọc trong giao dịch REPEATABLE READ, không cắt âm thầm dữ liệu vượt giới hạn.
 - `/assistant/query` nhận JSON; `/assistant/query-with-image` nhận đúng part `request` (JSON) và `image`. Gateway chuyển request_id/token tới AI, kiểm lại citation/source/article/age/revision bằng database, thay title nguồn bằng metadata và trả fallback khi upstream lỗi. Ảnh chỉ ở RAM trong vòng đời request, không ghi chat/ảnh lên disk hoặc log. Timeout ảnh tối đa 35 giây; timeout văn bản cấu hình 5–100 giây.
@@ -113,31 +113,3 @@ npm.cmd run smoke:api -- -BaseUrl http://127.0.0.1:8080/api/v1
 ```
 
 `npm.cmd run fixture:ai` chạy HTTP server giả lập ở `tests/fixtures/mock-ai-server.js` trên cổng 18081. Trỏ backend thử tới fixture bằng `AI_BASE_URL=http://127.0.0.1:18081` và `AI_INTERNAL_TOKEN=LocalInternalTestToken`, rồi chạy `npm.cmd run smoke:ai`. Gateway smoke mặc định gọi backend cổng 18080; dùng `TEST_API_URL` để đổi URL đầy đủ `/api/v1/assistant/query` khi cần. Tắt fixture AI trước khi nối dịch vụ thật.
-=======
-Spring Boot, Java 21, PostgreSQL và Flyway. Dùng [bàn giao backend](../docs/BACKEND_HANDOFF.md) để nhận việc. API theo [hợp đồng chung](../docs/baseline-v2/06_SHARED_CONTRACTS.md). Migration thực thi nằm trong [db/migration](src/main/resources/db/migration).
-
-## Chạy cùng dự án trên Windows
-
-Dùng [launcher local](../README.md#phát-triển-local) để khởi động PostgreSQL, Spring, FastAPI và Admin. Launcher lưu thông tin kết nối và tài khoản local trong `.local/credentials.json` tại thư mục gốc. Lần chạy lại giữ nội dung đã sửa bằng Admin.
-
-## Chạy riêng Spring
-
-1. Tạo PostgreSQL database và user có quyền chạy Flyway.
-2. Đặt biến môi trường cho tiến trình Java theo [mẫu cấu hình](.env.example). Khi khởi động, Flyway áp dụng tuần tự các migration trong repository.
-3. Đặt `ADMIN_SEED_USERNAME` và `ADMIN_SEED_PASSWORD` khi tạo tài khoản đầu tiên. Mật khẩu dài ít nhất 12 ký tự. Seeder giữ mật khẩu đã lưu.
-4. Đặt `PUBLIC_LOCALE`, `PUBLIC_REGION` và `EMERGENCY_NUMBER` theo môi trường. Snapshot v1 cần `region_code` khớp `PUBLIC_REGION`.
-5. Đặt `ADMIN_ORIGIN` theo origin của web. Chỉ đặt `SESSION_COOKIE_SECURE=false` khi dùng HTTP local.
-6. Chạy `./mvnw spring-boot:run` từ thư mục này. Trên PowerShell, chạy `.\mvnw.cmd spring-boot:run`.
-
-Public và Admin API dùng prefix `/api/v1`. Để đăng nhập Admin, lấy CSRF từ `GET /api/v1/admin/auth/csrf`. Gửi token vào header trả về từ endpoint đó và gửi `{username,password}` đến `POST /api/v1/admin/auth/login`. Sau login, lấy lại CSRF. Giữ session cookie cho các request tiếp theo.
-
-Spring nhận `AI_BASE_URL` và `AI_INTERNAL_TOKEN` để gọi FastAPI qua mạng riêng. Chat trả `unavailable` khi chưa kết nối được AI. Đặt `AI_REQUEST_TIMEOUT_SECONDS=35` cho môi trường kiểm Gemini theo [hướng dẫn AI](../ai/GROUNDED_GENERATION.md). Khóa Gemini thuộc tiến trình AI.
-
-## Dữ liệu và kiểm thử
-
-- Dùng launcher để nạp thư viện đã biên soạn. Dùng `scripts/import_reference_drafts.sql` trên database thử trống phần bài khi cần kiểm riêng dữ liệu nháp. Bản nháp chỉ hiện với Admin.
-- Chạy `./mvnw test` hoặc `.\mvnw.cmd test` để kiểm Spring. Dùng DB thử riêng cho các script có ghi dữ liệu.
-- Đặt `TEST_ADMIN_USERNAME` và `TEST_ADMIN_PASSWORD` cho `scripts/smoke.ps1`. Script v1 gửi `region_code=VN-PILOT`. Cấu hình backend thử cùng mã vùng. Chạy `powershell -ExecutionPolicy Bypass -File scripts/smoke.ps1 -BaseUrl http://127.0.0.1:18080/api/v1`.
-- Dùng `node scripts/mock_ai_fixture.js` và `node scripts/ai_gateway_smoke.js` để kiểm gateway văn bản. Fixture AI nghe cổng 18081. Script gọi Spring cổng 18080. Đặt `AI_BASE_URL=http://127.0.0.1:18081` và `AI_INTERNAL_TOKEN=LocalInternalTestToken` cho backend thử.
-- Chạy kiểm ảnh bước, xuất bản và đồng bộ theo [BE-04](../docs/BACKEND_HANDOFF.md#be-04-kiểm-tích-hợp-trên-môi-trường-riêng).
->>>>>>> origin/master

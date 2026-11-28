@@ -1,9 +1,8 @@
-"""Start the local PostgreSQL, Spring, RAG and Admin stack with reviewed data."""
+"""Start the Node.js, PostgreSQL, RAG and Admin stack with reviewed data."""
 import argparse
 import hashlib
 import json
 import os
-import re
 import secrets
 import shutil
 import socket
@@ -19,7 +18,6 @@ import psycopg
 from psycopg import sql
 
 from build_app_data import ROOT, build, OUTPUT
-from import_app_data import import_data
 
 LOCAL = ROOT / '.local'
 STATE_FILE = LOCAL / 'services.json'
@@ -58,6 +56,20 @@ def listening(port):
         return sock.connect_ex(('127.0.0.1', port)) == 0
 
 
+def stop_owned_process(state, name):
+    if name not in state:
+        return
+    result = subprocess.run(['powershell', '-NoProfile', '-Command',
+        f"$p=Get-CimInstance Win32_Process -Filter 'ProcessId = {int(state[name])}'; if ($p) {{ $p.CommandLine }}"],
+        capture_output=True, text=True, creationflags=CREATE_FLAGS)
+    if not result.stdout.strip():
+        return
+    if str(ROOT).lower() not in result.stdout.lower():
+        raise RuntimeError(f'Cannot identify the existing local {name} process.')
+    subprocess.run(['taskkill', '/PID', str(state[name]), '/T', '/F'], check=True,
+                   capture_output=True, creationflags=CREATE_FLAGS)
+
+
 def wait_http(url, *, headers=None, process=None):
     deadline = time.monotonic() + 90
     with httpx.Client(trust_env=False, timeout=3) as client:
@@ -78,6 +90,9 @@ def postgres_tools():
     configured = os.environ.get('FIRSTAID_PG_BIN')
     if configured:
         return Path(configured)
+    installed = sorted(Path('C:/Program Files/PostgreSQL').glob('*/bin/pg_ctl.exe'), reverse=True)
+    if installed:
+        return installed[0].parent
     binary = PG_ROOT / 'pgsql/bin'
     if (binary / 'pg_ctl.exe').exists():
         return binary
@@ -100,11 +115,15 @@ def postgres_tools():
 def configuration():
     LOCAL.mkdir(exist_ok=True)
     if CONFIG_FILE.exists():
-        return json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
+        config = json.loads(CONFIG_FILE.read_text(encoding='utf-8'))
+        if not config.get('session_secret'):
+            config['session_secret'] = secrets.token_urlsafe(48)
+            save(CONFIG_FILE, config)
+        return config
     config = {'database_user': 'firstaid_local', 'database_password': secrets.token_urlsafe(32),
               'database_name': 'firstaid', 'database_port': 55432,
               'admin_username': 'firstaid_admin', 'admin_password': secrets.token_urlsafe(24),
-              'internal_token': secrets.token_urlsafe(32)}
+              'internal_token': secrets.token_urlsafe(32), 'session_secret': secrets.token_urlsafe(48)}
     save(CONFIG_FILE, config)
     return config
 
@@ -134,7 +153,7 @@ def start_postgres(config, binary):
     return psycopg.conninfo.make_conninfo(dbname=config['database_name'], **params)
 
 
-def stop_services(binary):
+def stop_services(binary=None):
     state = json.loads(STATE_FILE.read_text(encoding='utf-8')) if STATE_FILE.exists() else {}
     for name in ['admin', 'ai', 'backend']:
         if name in state:
@@ -149,15 +168,15 @@ def stop_services(binary):
                 if str(ROOT).lower() in (process.get('CommandLine') or '').lower():
                     subprocess.run(['taskkill', '/PID', str(state[name]), '/T', '/F'],
                                    capture_output=True, creationflags=CREATE_FLAGS)
-    if (PG_DATA / 'PG_VERSION').exists():
+    if (PG_DATA / 'PG_VERSION').exists() and binary:
         subprocess.run([str(binary / 'pg_ctl.exe'), '-D', str(PG_DATA), '-m', 'fast', '-w', 'stop'],
                        capture_output=True, creationflags=CREATE_FLAGS)
     STATE_FILE.unlink(missing_ok=True)
 
 
-def verify(config, seed, *, compare_seed=True):
+def verify(config, seed, *, compare_seed=True, check_ai=True, region='VN-DN'):
     with httpx.Client(base_url=API, trust_env=False, timeout=15) as client:
-        snapshot_response = client.get('/offline-snapshot', params={'region_code': 'VN-DN'})
+        snapshot_response = client.get('/offline-snapshot', params={'region_code': region})
         snapshot_response.raise_for_status()
         snapshot = snapshot_response.json()['data']
         for key in ['categories', 'articles', 'sources']:
@@ -165,12 +184,16 @@ def verify(config, seed, *, compare_seed=True):
                 raise ValueError(f'Public {key} do not match shipped data')
             response = client.get('/' + key, params={})
             response.raise_for_status()
-            if {row['id'] for row in response.json()['data']['items']} != {row['id'] for row in snapshot[key]}:
+            public_ids = {row['id'] for row in response.json()['data']['items']}
+            snapshot_ids = {row['id'] for row in snapshot[key]}
+            # Public sources can include active documents not yet cited by a published article.
+            matches = snapshot_ids.issubset(public_ids) if key == 'sources' else public_ids == snapshot_ids
+            if not matches:
                 raise ValueError(f'Public {key} list differs from snapshot')
         for key in ['articles', 'sources']:
             if snapshot[key]:
                 client.get(f"/{key}/{snapshot[key][0]['id']}").raise_for_status()
-        cached = client.get('/offline-snapshot', params={'region_code': 'VN-DN'},
+        cached = client.get('/offline-snapshot', params={'region_code': region},
                             headers={'If-None-Match': snapshot_response.headers['etag']})
         assert cached.status_code == 304
         csrf = client.get('/admin/auth/csrf').json()['data']
@@ -182,7 +205,7 @@ def verify(config, seed, *, compare_seed=True):
         replies = []
         for message, age, expected in ([('Kiến thức sơ cứu bỏng nhiệt nhẹ', None, 'answered'),
                 ('Kiến thức CPR trẻ em', 'CHILD', 'answered'),
-                ('Kiến thức CPR', None, 'clarification_needed')] if compare_seed else []):
+                ('Kiến thức CPR', None, 'clarification_needed')] if compare_seed and check_ai else []):
             result = client.post('/assistant/query', json={'client_request_id': str(uuid4()),
                 'message': message, 'age_group': age, 'context_mode': 'learning'})
             result.raise_for_status()
@@ -191,7 +214,7 @@ def verify(config, seed, *, compare_seed=True):
                 raise ValueError(f"Unexpected chat status {reply['status']}, expected {expected}")
             replies.append({'status': reply['status'], 'citations': len(reply['citations'])})
         csrf = client.get('/admin/auth/csrf').json()['data']
-        assert client.post('/admin/auth/logout', headers={csrf['header_name']: csrf['token']}).status_code == 204
+        assert client.post('/admin/auth/logout', headers={csrf['header_name']: csrf['token']}, json={}).status_code == 204
         assert client.get('/admin/auth/me').status_code == 401
     report = {'api': API, 'admin': 'http://127.0.0.1:5173',
               'counts': {key: len(snapshot[key]) for key in ['categories', 'articles', 'sources']},
@@ -202,49 +225,56 @@ def verify(config, seed, *, compare_seed=True):
 
 
 def main():
+    global API
     parser = argparse.ArgumentParser()
     parser.add_argument('--stop', action='store_true')
+    parser.add_argument('--portable-database', action='store_true', help='Use an isolated portable PostgreSQL instead of backend/.env')
+    parser.add_argument('--skip-ai', action='store_true', help='Start backend and Admin without FastAPI')
     args = parser.parse_args()
     if os.name != 'nt':
         raise SystemExit('This local launcher targets Windows. Use component setup instructions on other systems.')
     config = configuration()
-    binary = postgres_tools()
     if args.stop:
+        binary = postgres_tools() if (PG_DATA / 'PG_VERSION').exists() else None
         stop_services(binary)
         print('Local services stopped. Database files retained.')
         return
     state = json.loads(STATE_FILE.read_text(encoding='utf-8')) if STATE_FILE.exists() else {}
-    print('Starting the local database...', flush=True)
-    dsn = start_postgres(config, binary)
+    node, npm = shutil.which('node'), shutil.which('npm.cmd')
+    if not node or not npm:
+        raise RuntimeError('Install Node.js and npm as required by backend/package.json and admin/package.json.')
+    backend_env = ROOT / 'backend/.env'
+    if backend_env.exists() and not args.portable_database:
+        result = subprocess.run([node, '-e', "console.log(JSON.stringify(require('node:util').parseEnv(require('node:fs').readFileSync(process.argv[1], 'utf8'))))", str(backend_env)],
+                                capture_output=True, text=True, check=True, creationflags=CREATE_FLAGS)
+        env = {**json.loads(result.stdout), **os.environ}
+        print('Using PostgreSQL configured in backend/.env.', flush=True)
+    else:
+        print('Starting the isolated local database...', flush=True)
+        start_postgres(config, postgres_tools())
+        env = {**os.environ, 'DATABASE_URL': f"postgresql://127.0.0.1:{config['database_port']}/{config['database_name']}",
+               'DB_USER': config['database_user'], 'DB_PASSWORD': config['database_password']}
     seed = build()
     OUTPUT.write_text(json.dumps(seed, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    java_home = None
-    for candidate in [os.environ.get('JAVA_HOME'), 'C:/Program Files/Android/Android Studio/jbr']:
-        if not candidate:
-            continue
-        java = Path(candidate) / 'bin/java.exe'
-        if not java.exists():
-            continue
-        version = subprocess.run([str(java), '-version'], capture_output=True, text=True, creationflags=CREATE_FLAGS)
-        match = re.search(r'version "(\d+)', version.stderr)
-        if match and int(match.group(1)) >= 21:
-            java_home = Path(candidate)
-            break
-    if java_home is None:
-        raise RuntimeError('Set JAVA_HOME to JDK 21 or later.')
-    java = java_home / 'bin/java.exe'
-    env = {**os.environ, 'JAVA_HOME': str(java_home),
-           'DB_URL': f"jdbc:postgresql://127.0.0.1:{config['database_port']}/{config['database_name']}",
-           'DB_USER': config['database_user'], 'DB_PASSWORD': config['database_password'],
-           'ADMIN_SEED_USERNAME': config['admin_username'], 'ADMIN_SEED_PASSWORD': config['admin_password'],
-           'PUBLIC_REGION': 'VN-DN', 'EMERGENCY_NUMBER': '115', 'PUBLIC_LOCALE': 'vi-VN',
-           'SESSION_COOKIE_SECURE': 'false', 'ADMIN_ORIGIN': 'http://127.0.0.1:5173',
-           'AI_BASE_URL': 'http://127.0.0.1:8001', 'AI_INTERNAL_TOKEN': config['internal_token'],
-           'LOGGING_LEVEL_ROOT': 'INFO', 'LOGGING_LEVEL_ORG_SPRINGFRAMEWORK': 'INFO', 'DEBUG': 'false'}
+    for name, fallback in [('SESSION_SECRET', config['session_secret']),
+                           ('ADMIN_SEED_USERNAME', config['admin_username']), ('ADMIN_SEED_PASSWORD', config['admin_password']),
+                           ('PUBLIC_REGION', 'VN-DN'), ('EMERGENCY_NUMBER', '115'), ('PUBLIC_LOCALE', 'vi-VN'),
+                           ('SESSION_COOKIE_SECURE', 'false'), ('ADMIN_ORIGIN', 'http://127.0.0.1:5173'),
+                           ('AI_INTERNAL_TOKEN', config['internal_token'])]:
+        env[name] = env.get(name) or fallback
+    # The launcher owns the local AI endpoint and shares one token with the gateway.
+    env['AI_BASE_URL'] = '' if args.skip_ai else 'http://127.0.0.1:8001'
+    env['HOST'] = '0.0.0.0'
+    config.update(admin_username=env['ADMIN_SEED_USERNAME'], admin_password=env['ADMIN_SEED_PASSWORD'],
+                  internal_token=env['AI_INTERNAL_TOKEN'])
+    save(CONFIG_FILE, config)
+    port = int(env.get('PORT') or env.get('SERVER_PORT') or 8080)
+    API = f'http://127.0.0.1:{port}/api/v1'
     gemini_key = env.pop('GEMINI_API_KEY', '').strip()
     admin_env = {key: value for key, value in os.environ.items() if key != 'GEMINI_API_KEY'}
+    admin_env.update(API_PROXY_TARGET=f'http://127.0.0.1:{port}', VITE_DEMO='false')
     generation_file = LOCAL / 'generation.json'
-    if generation_file.exists():
+    if generation_file.exists() and not args.skip_ai:
         generation = json.loads(generation_file.read_text(encoding='utf-8'))
         if generation.get('mode') not in ('extractive','grounded'):
             raise ValueError('generation.json: mode must be extractive or grounded')
@@ -274,53 +304,71 @@ def main():
     generation_settings['credential_digest']=hashlib.sha256(gemini_key.encode()).hexdigest()
     generation_settings['source']=[path.read_text(encoding='utf-8') for path in sorted((ROOT/'ai/firstaid_rag').glob('*.py'))]
     generation_fingerprint=hashlib.sha256(json.dumps(generation_settings,sort_keys=True).encode()).hexdigest()
-    if not listening(8080):
-        print('Building and starting Spring...', flush=True)
-        run(['cmd.exe', '/c', str(ROOT / 'backend/mvnw.cmd'), '-q', '-DskipTests', 'package'],
-            cwd=ROOT / 'backend', env=env, log=LOCAL / 'backend-build.log')
-        jar = ROOT / 'backend/target/firstAid-0.0.1-SNAPSHOT.jar'
-        asset_keys = sorted({step['asset_key'] for article in seed['articles'] for step in article['steps'] if step.get('asset_key')})
-        process = start([str(java), '-Dfirstaid.assets.allowed-keys=' + ','.join(asset_keys),
-                         '-jar', str(jar)], 'backend', env=env, state=state)
-        wait_http(API + '/categories', process=process)
-    elif 'backend' not in state:
-        raise RuntimeError('Port 8080 belongs to another service. Stop it or configure a separate environment.')
-    print('Loading reviewed data in one transaction...', flush=True)
-    imported = import_data(dsn)
+    if listening(port) and 'backend' not in state:
+        raise RuntimeError(f'Port {port} belongs to another service. Stop it or configure a separate environment.')
+    backend_settings = {key: env.get(key, '') for key in ['DATABASE_URL', 'DB_URL', 'DB_USER', 'DB_PASSWORD', 'SESSION_SECRET',
+        'SESSION_COOKIE_SECURE', 'ADMIN_ORIGIN', 'AI_BASE_URL', 'AI_INTERNAL_TOKEN', 'AI_REQUEST_TIMEOUT_SECONDS',
+        'PUBLIC_REGION', 'PUBLIC_LOCALE', 'EMERGENCY_NUMBER', 'HOST', 'PORT', 'SERVER_PORT']}
+    backend_settings['source'] = [path.read_text(encoding='utf-8') for path in sorted((ROOT / 'backend/src').rglob('*.js'))]
+    backend_fingerprint = hashlib.sha256(json.dumps(backend_settings, sort_keys=True).encode()).hexdigest()
+    if listening(port) and state.get('backend_fingerprint') != backend_fingerprint:
+        stop_owned_process(state, 'backend')
+        deadline = time.monotonic() + 10
+        while listening(port) and time.monotonic() < deadline:
+            time.sleep(.1)
+        if listening(port):
+            raise RuntimeError('The previous local backend did not stop.')
+    if not (ROOT / 'backend/node_modules/express').exists():
+        run(['cmd.exe', '/c', 'npm.cmd', 'ci'], cwd=ROOT / 'backend', env=env, log=LOCAL / 'backend-install.log')
+    print('Migrating and seeding with the Node.js backend...', flush=True)
+    result = subprocess.run([node, str(ROOT / 'backend/scripts/database/seed.js')], cwd=ROOT / 'backend', env=env,
+                            capture_output=True, text=True, creationflags=CREATE_FLAGS)
+    with (LOCAL / 'backend-seed.log').open('a', encoding='utf-8') as stream:
+        stream.write(result.stdout + result.stderr)
+    if result.returncode:
+        raise RuntimeError('Cannot seed backend. See .local/backend-seed.log; existing data is preserved.')
+    imported = json.loads(result.stdout)
     print(json.dumps(imported))
-    snapshot = wait_http(API + '/offline-snapshot?region_code=VN-DN').json()['data']
+    if not listening(port):
+        print('Starting the Node.js API...', flush=True)
+        process = start([node, str(ROOT / 'backend/src/server.js')], 'backend', cwd=ROOT / 'backend', env=env, state=state)
+        wait_http(API + '/categories', process=process)
+    state['backend_fingerprint'] = backend_fingerprint
+    save(STATE_FILE, state)
+    snapshot = wait_http(API + '/offline-snapshot?region_code=' + env['PUBLIC_REGION']).json()['data']
     save(LOCAL / 'server-snapshot.json', snapshot)
-    sys.path.insert(0, str(ROOT / 'ai'))
-    from firstaid_rag.corpus import compile_corpus, write_artifact
-    corpus_path = LOCAL / 'rag-corpus.json'
-    artifact = compile_corpus(snapshot)
-    if listening(8001) and 'ai' in state:
-        health = wait_http('http://127.0.0.1:8001/health', headers={'X-Internal-Token': config['internal_token']}).json()
-        if health['corpus_version'] != artifact['corpus_version'] or state.get('ai_generation_fingerprint') != generation_fingerprint:
-            # This process belongs to this local stack and uses the old artifact.
-            command = ['powershell', '-NoProfile', '-Command',
-                f"$p=Get-CimInstance Win32_Process -Filter 'ProcessId = {int(state['ai'])}'; "
-                "if ($p) { $p.CommandLine }"]
-            result = subprocess.run(command, capture_output=True, text=True, creationflags=CREATE_FLAGS)
-            if str(ROOT).lower() not in result.stdout.lower():
-                raise RuntimeError('Cannot identify the existing local AI process.')
-            subprocess.run(['taskkill', '/PID', str(state['ai']), '/T', '/F'], check=True,
-                           capture_output=True, creationflags=CREATE_FLAGS)
-            deadline = time.monotonic() + 5
-            while listening(8001) and time.monotonic() < deadline:
-                time.sleep(.1)
-    write_artifact(artifact, corpus_path)
-    if not listening(8001):
-        print('Starting source-grounded chat...', flush=True)
-        process = start([sys.executable, '-m', 'uvicorn', 'firstaid_rag.app:create_app', '--factory',
-                         '--host', '127.0.0.1', '--port', '8001', '--no-access-log'],
-                        'ai', cwd=ROOT / 'ai', env={**env, 'GEMINI_API_KEY': gemini_key, 'AI_INDEX_PATH': str(corpus_path),
-                         'AI_PUBLIC_SNAPSHOT_URL': API + '/offline-snapshot?region_code=VN-DN'}, state=state)
-        wait_http('http://127.0.0.1:8001/health', headers={'X-Internal-Token': config['internal_token']}, process=process)
-    elif 'ai' not in state:
-        raise RuntimeError('Port 8001 belongs to another service.')
-    state['ai_generation_fingerprint']=generation_fingerprint
-    save(STATE_FILE,state)
+    if not args.skip_ai:
+        sys.path.insert(0, str(ROOT / 'ai'))
+        from firstaid_rag.corpus import compile_corpus, write_artifact
+        corpus_path = LOCAL / 'rag-corpus.json'
+        artifact = compile_corpus(snapshot)
+        if listening(8001) and 'ai' in state:
+            health = wait_http('http://127.0.0.1:8001/health', headers={'X-Internal-Token': config['internal_token']}).json()
+            if health['corpus_version'] != artifact['corpus_version'] or state.get('ai_generation_fingerprint') != generation_fingerprint:
+                # This process belongs to this local stack and uses the old artifact.
+                command = ['powershell', '-NoProfile', '-Command',
+                    f"$p=Get-CimInstance Win32_Process -Filter 'ProcessId = {int(state['ai'])}'; "
+                    "if ($p) { $p.CommandLine }"]
+                result = subprocess.run(command, capture_output=True, text=True, creationflags=CREATE_FLAGS)
+                if str(ROOT).lower() not in result.stdout.lower():
+                    raise RuntimeError('Cannot identify the existing local AI process.')
+                subprocess.run(['taskkill', '/PID', str(state['ai']), '/T', '/F'], check=True,
+                               capture_output=True, creationflags=CREATE_FLAGS)
+                deadline = time.monotonic() + 5
+                while listening(8001) and time.monotonic() < deadline:
+                    time.sleep(.1)
+        write_artifact(artifact, corpus_path)
+        if not listening(8001):
+            print('Starting source-grounded chat...', flush=True)
+            process = start([sys.executable, '-m', 'uvicorn', 'firstaid_rag.app:create_app', '--factory',
+                             '--host', '127.0.0.1', '--port', '8001', '--no-access-log', '--app-dir', str(ROOT / 'ai')],
+                            'ai', cwd=ROOT / 'ai', env={**env, 'GEMINI_API_KEY': gemini_key, 'AI_INDEX_PATH': str(corpus_path),
+                             'AI_PUBLIC_SNAPSHOT_URL': API + '/offline-snapshot?region_code=' + env['PUBLIC_REGION']}, state=state)
+            wait_http('http://127.0.0.1:8001/health', headers={'X-Internal-Token': config['internal_token']}, process=process)
+        elif 'ai' not in state:
+            raise RuntimeError('Port 8001 belongs to another service.')
+        state['ai_generation_fingerprint']=generation_fingerprint
+        save(STATE_FILE,state)
     if not listening(5173):
         if not (ROOT / 'admin/node_modules/vite/bin/vite.js').exists():
             run(['cmd.exe', '/c', 'npm.cmd', 'ci'], cwd=ROOT / 'admin', env=admin_env, log=LOCAL / 'admin-install.log')
@@ -330,7 +378,7 @@ def main():
         wait_http('http://127.0.0.1:5173', process=process)
     elif 'admin' not in state:
         raise RuntimeError('Port 5173 belongs to another service.')
-    verify(config, seed, compare_seed=imported['status'] != 'preserved_existing_data')
+    verify(config, seed, compare_seed=imported['status'] != 'preserved_existing_data', check_ai=not args.skip_ai, region=env['PUBLIC_REGION'])
     print('Admin login credentials are stored locally in .local/credentials.json')
     print('Run Flutter from mobile/: flutter run')
 

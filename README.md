@@ -14,7 +14,7 @@ FirstAid hỗ trợ giáo dục và phổ biến kiến thức sơ cứu ngoại
 | Thành phần | Công nghệ | Trách nhiệm |
 | --- | --- | --- |
 | Mobile | Flutter, BLoC, SQLite | Hướng dẫn offline, tìm kiếm, hỏi đáp |
-| API | Spring Boot, PostgreSQL | Nội dung, Admin auth, snapshot và gateway AI |
+| API | Node.js, Express, PostgreSQL | Nội dung, Admin auth, snapshot và gateway AI |
 | Web Admin | React + TypeScript | Quản lý bài, danh mục, hình và nguồn |
 | RAG | FastAPI, BM25, Gemini tùy cấu hình | Truy xuất bài có nguồn, giữ đối tượng và citation |
 
@@ -26,7 +26,7 @@ FirstAid hỗ trợ giáo dục và phổ biến kiến thức sơ cứu ngoại
 
 ### Chạy ứng dụng với dữ liệu thật trên Windows
 
-Cần Python 3.11+, Node.js theo `admin/package.json`, JDK 21 và Flutter. Script tự tìm JDK 21 trong Android Studio nếu `JAVA_HOME` chưa phù hợp. Lần đầu script tải PostgreSQL portable từ EDB vào thư mục công cụ của dự án.
+Cần Python 3.11+, Node.js theo `admin/package.json` và Flutter. Backend dùng Node.js. Launcher ưu tiên PostgreSQL cấu hình trong `backend/.env`; nếu chưa có file này, dùng PostgreSQL local riêng (ưu tiên binary đã cài, nếu thiếu mới tải portable). Có thể chỉ định Python bằng `FIRSTAID_PYTHON` hoặc PostgreSQL binary bằng `FIRSTAID_PG_BIN`.
 
 Tại thư mục gốc, chạy:
 
@@ -34,14 +34,17 @@ Tại thư mục gốc, chạy:
 powershell -ExecutionPolicy Bypass -File tools/start-local.ps1
 ```
 
-Lệnh này khởi động PostgreSQL, Spring, chatbot và web Admin, nạp bộ dữ liệu đã biên soạn, rồi kiểm tra API. Mở **http://127.0.0.1:5173** để quản trị. Tài khoản được tạo riêng trên máy và lưu trong `.local/credentials.json`. Database, mật khẩu và log nằm trong `.local/`, được Git bỏ qua.
+Lệnh này khởi động backend Node.js, chatbot và web Admin, chạy migration và nạp bộ dữ liệu đã biên soạn khi chưa có bài, rồi kiểm tra API. Với `backend/.env`, PostgreSQL phải đang chạy. Launcher giữ bài đã chỉnh và dùng cùng token cho backend/AI; không ghi đè `.env`. Mở **http://127.0.0.1:5173** để quản trị. Thông tin đăng nhập và log lưu trong `.local/`, được Git bỏ qua.
+
+Thêm `-SkipAi` khi chỉ cần backend/Admin, hoặc `-PortableDatabase` để dùng database riêng thay cho `backend/.env`. AI mặc định trích xuất nội dung có nguồn, không cần khóa Gemini. Đọc [cấu hình Gemini](ai/GROUNDED_GENERATION.md) khi cần chế độ sinh.
 
 Trong terminal khác, chạy mobile trên Android emulator:
 
 ```powershell
 cd mobile
 flutter pub get
-flutter run
+flutter devices
+flutter run -d <ANDROID_DEVICE_ID>
 ```
 
 Debug mặc định kết nối `http://10.0.2.2:8080/api/v1`. Điện thoại thật cần `--dart-define=API_BASE_URL` trỏ tới máy chủ truy cập được. Bản release cấu hình API HTTPS theo môi trường.
@@ -52,15 +55,15 @@ Dừng các dịch vụ local khi cần:
 powershell -ExecutionPolicy Bypass -File tools/start-local.ps1 -Stop
 ```
 
-Database được giữ lại để lần sau dùng tiếp. Chạy lại lệnh khởi động giữ dữ liệu đã chỉnh bằng Admin.
+Database được giữ lại để lần sau dùng tiếp. Lệnh dừng chỉ dừng tiến trình do launcher quản lý; PostgreSQL đang dùng qua `.env` tiếp tục chạy. Chạy lại lệnh khởi động giữ dữ liệu đã chỉnh bằng Admin.
 
 ### Luồng dữ liệu
 
 1. `mobile/assets/content/reference_library.json` chứa 24 bài, 18 nhóm và 17 nguồn đã biên soạn.
 2. `tools/build_app_data.py` tạo `mobile/assets/content/offline_snapshot.json`. App cài mới đọc được bài và hình đi kèm, không cần mạng.
 3. Lệnh khởi động nạp dữ liệu nội dung vào PostgreSQL khi chưa có bài. Các chỉnh sửa từ Admin được giữ lại.
-4. Spring xuất snapshot. Mobile cập nhật qua **Cài đặt → Kiểm tra cập nhật**, kiểm và ghi SQLite nguyên tử.
-5. Chatbot dùng corpus từ snapshot public của Spring. Gateway kiểm nguồn và revision trước khi trả phản hồi.
+4. Backend Node.js xuất snapshot. Mobile cập nhật qua **Cài đặt → Kiểm tra cập nhật**, kiểm và ghi SQLite nguyên tử.
+5. Chatbot dùng corpus từ snapshot public của backend. Gateway kiểm nguồn và revision trước khi trả phản hồi.
 
 Khi chạy bằng launcher, AI kiểm ETag của snapshot mỗi 30 giây và cập nhật corpus. Sau khi sửa dữ liệu biên soạn, chạy `python tools/build_app_data.py`. Dùng `--check` để đối chiếu bản đóng gói.
 
