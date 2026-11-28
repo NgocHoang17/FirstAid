@@ -44,7 +44,6 @@ Chi tiết một tài nguyên nằm trực tiếp trong `data`. List dùng `data
 | GroupCode | `CIRCULATION`, `TRAUMA`, `ENVIRONMENT`, `OTHER` |
 | AgeGroup | `ADULT`, `CHILD`, `ALL` |
 | ChatStatus | `answered`, `clarification_needed`, `emergency_redirect`, `insufficient_evidence`, `out_of_scope`, `unavailable` |
-| Emergency24h | `YES`, `NO`, `UNKNOWN` |
 | AppViewMode | `quick`, `learn` — giá trị UI, không tạo bảng riêng |
 
 Phạm vi chỉ gồm người lớn và trẻ em, không bao gồm nhũ nhi. `ALL` chỉ có nghĩa dùng chung cho hai nhóm trong phạm vi, không mở rộng sang nhũ nhi.
@@ -145,54 +144,59 @@ API Admin create/update nhận nội dung bài và nested steps/references trong
 
 Validation publish: đủ title, category, variant, age_group, applies_to, summary, recognition, quick_actions, steps, warnings, seek_help, references; bước có text; reference có trang hợp lệ trong nguồn; nội dung đã kiểm tra và checked_at có giá trị. Mảng không áp dụng có thể chứa diễn giải được kiểm tra, không chèn lời khuyên giả để qua validator.
 
-## 5. Facility
+## 5. Giới hạn dữ liệu
+
+### Ảnh hướng dẫn của từng bước
+
+`Step` giữ tương thích các trường `asset_key`, `image_url`, `alt_text` và bổ sung:
 
 ```json
 {
-  "id": "00000000-0000-4000-8000-000000000401",
-  "name": "Cơ sở minh họa — không dùng để liên hệ thật",
-  "region_code": "VN-PILOT",
-  "address": "Địa chỉ phải được thay bằng dữ liệu xác minh",
-  "phone": null,
-  "latitude": null,
-  "longitude": null,
-  "emergency_24h": "UNKNOWN",
-  "verification_note": "Chưa xác minh, chỉ là fixture",
-  "verified_at": null,
-  "is_active": false,
-  "distance_km": null,
-  "distance_type": null
+  "image_layout": "grid",
+  "images": [
+    {
+      "media_id": "00000000-0000-4000-8000-000000000601",
+      "url": "/api/v1/media/00000000-0000-4000-8000-000000000601",
+      "alt_text": "Mô tả nội dung ảnh",
+      "caption": "Chú thích tùy chọn"
+    }
+  ]
 }
 ```
 
-Fixture này không xuất hiện trong danh bạ thật. Cơ sở active cần tên, địa chỉ, vùng, điện thoại được kiểm tra, tọa độ hợp lệ, verification_note và verified_at. Nếu không xác minh được thông tin 24/7, để UNKNOWN và hiển thị rõ.
+Thứ tự mảng là thứ tự hiển thị. Tối đa 6 ảnh mỗi bước; không trùng media_id trong một bước. `image_layout` gồm `stacked`, `grid`, `carousel`, mặc định `stacked`. Khi chữ lớn hoặc màn quá hẹp, lưới chuyển thành xếp dọc. Mô tả ảnh bắt buộc, chú thích tùy chọn.
 
-`distance_km`/`distance_type` là trường tính toán, không lưu cột DB; có vị trí hợp lệ thì distance_type=`straight_line`, nếu không thì cả hai null. Latitude trong [-90,90], longitude trong [-180,180]; không chấp nhận chỉ một trường có giá trị. App và server dùng cùng Haversine để kết quả/sắp xếp nhất quán. Không có ETA trong P0.
+Admin tải một file qua POST `/api/v1/admin/media`, multipart part `file`, có session ADMIN và CSRF. Chỉ nhận JPEG/PNG giải mã được, tối đa 5 MiB và 16 megapixel. Server chuẩn hóa ảnh, bỏ metadata nhúng và trả 201 với `{id,url,width,height}` trong `data`. File vượt giới hạn multipart trả 413. Không lưu tên file như đường dẫn server.
 
-## 6. OfflineSnapshot
+PUT Article gửi media_id, alt_text và caption; server tự tạo URL theo ID, không tin URL client. Bố cục và danh sách ảnh được lưu cùng transaction của bài. Lưu sửa bài public đưa bài về nháp theo quy tắc revision chung.
+
+GET `/api/v1/media/{id}` trả byte ảnh. Admin được xem ảnh đang biên tập. Người dùng công khai chỉ xem ảnh có liên kết tới bài public hợp lệ, danh mục và nguồn đang dùng. Gỡ xuất bản chặn đọc công khai ở request sau. Không cache HTTP công khai ảnh draft hoặc ảnh đã gỡ.
+
+Ảnh được lưu trong PostgreSQL `media_assets`, đi cùng sao lưu database. Ảnh tải lên chưa được gắn bài được giữ lại; không tự xóa tệp khi người biên tập bỏ ảnh khỏi một bước. Chưa có công cụ dọn media không còn tham chiếu.
+
+Ảnh bài học do Admin quản lý khác với ảnh câu hỏi AI ở mục 9.1. Mobile lưu metadata ảnh theo snapshot; tải byte ảnh khi có mạng. Khi chưa tải được, giữ nguyên hướng dẫn chữ và hiển thị trạng thái rõ ràng. Không cam kết ảnh upload mới luôn có sẵn ngoại tuyến; core offline tiếp tục dùng hình bundled.
+
+Các thực thể sản phẩm gồm Category, Article, Step, Source, SourceReference và AdminUser. Không có tài nguyên Facility hoặc dữ liệu định vị.
+
+## 6. OfflineSnapshot giáo dục
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "data_version": "opaque-version-from-server",
-  "generated_at": "2026-10-23T00:00:00Z",
-  "region_code": "VN-PILOT",
-  "app_config": {
-    "locale": "vi-VN",
-    "emergency_number": "115"
-  },
+  "generated_at": "2026-11-17T00:00:00Z",
+  "app_config": {"locale": "vi-VN", "emergency_number": "115"},
   "categories": [],
   "articles": [],
-  "sources": [],
-  "facilities": []
+  "sources": []
 }
 ```
 
-Mảng rỗng chỉ minh họa schema; seed nghiệm thu phải có nội dung cho 18 nhóm. Số hỗ trợ trong ví dụ phải được nhóm xác minh cho khu vực trước sử dụng thật. Không suy số cấp cứu từ locale thiết bị.
+Mảng rỗng chỉ minh họa cấu trúc. Seed phát hành phải có bài đã đối chiếu nguồn. Schema public này khác schema file biên tập reference_library.json dù số phiên bản có thể trùng nhau.
 
-`data_version` là token opaque (ví dụ UUID server), chỉ so bằng/khác; không so thứ tự thời gian từ chuỗi. Backend thay token trong transaction mỗi khi dữ liệu public thay đổi, kể cả gỡ bài/source/facility. API hỗ trợ ETag bằng token; If-None-Match trùng thì 304 không body. Mobile validate schema/ID/references rồi thay nội dung local trong một transaction; không download PDF hoặc tự chạy migration từ server.
+`data_version` là token opaque. Client gửi token trong dấu ngoặc kép qua `If-None-Match`. Server trả cùng token qua `ETag` và trả 304 với body rỗng khi khớp. Mỗi schema dùng token riêng để ETag v1 không làm request v2 nhận 304. Mobile kiểm ID, liên kết, revision và nguồn trước khi thay local trong transaction; lỗi giữ dữ liệu cũ. Bài đang đọc giữ nguyên object.
 
-Nếu snapshot vượt schema hỗ trợ, báo cần cập nhật app; giữ dữ liệu hiện tại. Không lưu nhiều bundle. Bài đang mở giữ object hiện tại; cập nhật chỉ bắt đầu khi đã về trang không đọc bài. Guided route phải được kiểm liên kết sau cập nhật; route không còn bài phù hợp sẽ unavailable, không mở ID cũ.
+Trong giai đoạn chuyển tiếp, GET `/offline-snapshot` nhận `schema_version=2` để trả v2. Request không chỉ định phiên bản nhận v1 và dùng `region_code` như trước. V2 chấp nhận request có hoặc không có tham số vùng. Sau khi gỡ danh bạ, v1 giữ `facilities: []` để tương thích.
 
 ## 7. Public API
 
@@ -205,12 +209,11 @@ Mọi path dưới đây có prefix `/api/v1`.
 | GET | `/articles/{id}` | UUID | `data: Article` public |
 | GET | `/sources` | Không | `data.items: Source[]` active công khai |
 | GET | `/sources/{id}` | UUID | `data: Source` public |
-| GET | `/facilities` | region_code?, latitude?, longitude? | `data.items: Facility[]` active, có distance nếu đủ tọa độ |
-| GET | `/facilities/{id}` | UUID | `data: Facility` public |
-| GET | `/offline-snapshot` | region_code, If-None-Match? | `data: OfflineSnapshot`, hoặc 304 |
+| GET | `/offline-snapshot` | schema_version?, region_code (v1), If-None-Match? | `data: OfflineSnapshot`, hoặc 304 |
 | POST | `/assistant/query` | ChatRequest | `data: ChatResponse` |
+| POST | `/assistant/query-with-image` | Multipart theo mục 9.1 | `data: ChatResponse` |
 
-ArticleSummary chỉ gồm id, category_id, slug, variant_key, title, age_group, summary, content_revision, updated_at. Public list bounded cho dataset đồ án: category ≤ 30, article ≤ 500, facility ≤ 100 mỗi vùng, source ≤ 100. Nếu vượt giới hạn, mở thay đổi contract phân trang; không cắt kết quả âm thầm. Mobile dùng local snapshot cho danh mục/tìm bài, không gọi public API từng bước.
+ArticleSummary chỉ gồm id, category_id, slug, variant_key, title, age_group, summary, content_revision, updated_at. Public list bounded cho dataset đồ án: category ≤ 30, article ≤ 500, source ≤ 100. Nếu vượt giới hạn, mở thay đổi contract phân trang; không cắt kết quả âm thầm. Mobile dùng local snapshot cho danh mục/tìm bài, không gọi public API từng bước.
 
 ## 8. Admin API
 
@@ -225,15 +228,13 @@ Prefix đầy đủ `/api/v1/admin`. Chỉ GET csrf và POST login là không y�
 | GET/POST | `/categories` | List/create Category |
 | GET/PUT/DELETE | `/categories/{id}` | Read/update/delete; chặn delete nếu có bài |
 | GET/POST | `/articles` | List filter status/category/q/page/page_size; create draft |
-| GET/PUT/DELETE | `/articles/{id}` | Full nested article update; delete xử lý child rows trong transaction; mobile guided route resolve thiếu bài phải hiện unsupported |
+| GET/PUT/DELETE | `/articles/{id}` | Full nested article update; delete xử lý child rows trong transaction |
 | POST | `/articles/{id}/publish` | expected_revision; kiểm đủ trường và content_checked |
 | POST | `/articles/{id}/unpublish` | expected_revision; đổi DRAFT và cập nhật data_version |
 | GET/POST | `/sources` | List/create metadata, không upload PDF tùy ý |
 | GET/PUT/DELETE | `/sources/{id}` | Chặn delete/deactivate khi bài public còn tham chiếu |
-| GET/POST | `/facilities` | List/create Facility |
-| GET/PUT/DELETE | `/facilities/{id}` | Read/update/delete hoặc deactivate theo UI |
 
-Khi PUT bài public: nếu chỉ sửa nội dung, server đưa về DRAFT, tăng content_revision và data_version vì bài không còn trong public snapshot; Admin kiểm và publish lại. UI cảnh báo rõ trước lưu. Không cần workflow reviewer. Source file revision thay đổi phải ngăn citation corpus cũ hợp lệ nhầm; AI reindex do nhóm chạy thủ công.
+Khi PUT bài public: nếu chỉ sửa nội dung, server đưa về DRAFT, tăng content_revision và data_version vì bài không còn trong public snapshot; Admin kiểm và publish lại. UI cảnh báo rõ trước lưu. Không cần workflow reviewer. Gateway từ chối citation có revision nguồn đã cũ. Khi đặt `AI_PUBLIC_SNAPSHOT_URL`, dịch vụ AI kiểm ETag theo chu kỳ và chỉ thay chỉ mục khi snapshot mới đã được xác thực. Khi chạy bằng file độc lập, nhóm dựng lại chỉ mục từ snapshot public.
 
 Cookie HttpOnly, Secure khi HTTPS, SameSite phù hợp same-origin. Web gửi credentials; các request ghi kèm CSRF token. Không lưu password hoặc session token vào localStorage. Một tài khoản Admin seed từ biến môi trường/CLI, không endpoint đăng ký công khai. Không yêu cầu JWT nếu session cùng origin đã đủ.
 
@@ -256,7 +257,9 @@ DTO auth để hai bên tích hợp thống nhất:
 }
 ```
 
-`message` 1–2000 ký tự sau trim; age_group nullable enum. context_mode=`learning` hoặc `unspecified`, là gợi ý UI chứ không quyền bỏ qua policy. P0 mỗi request độc lập; không gửi lịch sử hội thoại lên server. UI ghi “Mỗi câu hỏi được xử lý độc lập” và khuyến khích nêu đủ bối cảnh; không tạo cảm giác chatbot nhớ chi tiết nạn nhân.
+`message` 1–2000 ký tự sau trim; age_group nullable enum. context_mode=`learning` hoặc `unspecified` không có quyền bỏ qua policy. Trường tùy chọn `context_messages` chứa tối đa 4 tin nhắn trước của người dùng, mỗi tin tối đa 2000 ký tự. Không gửi câu trả lời của assistant như bằng chứng. Client giữ lịch sử trong bộ nhớ của phiên; server không lưu hội thoại hoặc log raw nội dung. Nút Cuộc trò chuyện mới xóa ngữ cảnh ở client.
+
+Gateway và AI kiểm nguy cơ của tin nhắn hiện tại trước khi dùng ngữ cảnh. Chỉ dùng chủ đề gần nhất cho câu hỏi nối tiếp, không nhập lại đối tượng hoặc chỉ thị cũ. Tin nhắn đổi chủ đề không bị ép vào chủ đề trước. Đối tượng được client gửi rõ ràng và gateway vẫn kiểm với bài/nguồn. Phản hồi tập trung vào phần được hỏi, giữ nguyên các điều kiện, cảnh báo và chỉ dẫn tìm trợ giúp từ nguồn.
 
 ```json
 {
@@ -290,7 +293,7 @@ Mọi key trên luôn có; các trường không dùng là null hoặc mảng r�
 
 | status | Quy tắc output | Hành vi UI |
 | --- | --- | --- |
-| answered | answer_blocks có nội dung; khẳng định y khoa có citation hợp lệ | Hiện câu trả lời và nguồn bấm được |
+| answered | answer_blocks có nội dung; khẳng định y khoa có citation hợp lệ | Bong bóng trả lời dễ đọc; ẩn citation khỏi màn chat, có thể mở bài liên quan |
 | clarification_needed | clarification_question khác null; không kèm lời khuyên theo giả định | Hiện câu hỏi và input cho câu hỏi đầy đủ tiếp theo |
 | emergency_redirect | safety_message_code cố định; suggested category/article có thể null | Thẻ gọi hỗ trợ và mở danh mục/bài local phù hợp; không sinh thủ thuật tự do |
 | insufficient_evidence | Không có bằng chứng đủ; không bịa nguồn | Thông báo và gợi ý tìm bài/nhờ chuyên môn |
@@ -299,15 +302,33 @@ Mọi key trên luôn có; các trường không dùng là null hoặc mảng r�
 
 `suggested_article_id` chỉ được server trả nếu tồn tại, public và đúng đối tượng. Nếu mobile chưa có bài đó, mở category/tìm local; không mở một bài khác tuổi như fallback. Title nguồn/URL không lấy từ LLM mà map từ metadata.
 
+`answer_blocks[].kind` tùy chọn gồm paragraph, heading, steps, warning, help; client cũ vẫn đọc text. `generation_mode` là extractive hoặc grounded theo cách tạo phản hồi thực tế. Grounded Generation dùng bằng chứng đã truy xuất, prompt có version và kiểm đầu ra. Không cho mô hình tự tạo citation. Xem [cấu hình và giới hạn](../../ai/GROUNDED_GENERATION.md).
+
+## 9.1 Câu hỏi kèm hình ảnh
+
+POST `/api/v1/assistant/query-with-image`, Content-Type multipart/form-data.
+
+- Part `request`: JSON ChatRequest như câu hỏi văn bản, UTF-8, Content-Type application/json.
+- Part `image`: một file JPEG hoặc PNG. Tối đa 5 MiB và 16 megapixel sau giải mã.
+- `message` vẫn bắt buộc để nêu mục tiêu học tập. Không có chế độ suy chẩn đoán từ ảnh.
+- Kết quả dùng ChatResponse và các trạng thái đã định nghĩa. Mọi khẳng định kiến thức cần citation hỗ trợ.
+- Sai MIME/không giải mã được: 415 IMAGE_UNSUPPORTED. Quá giới hạn: 413 IMAGE_TOO_LARGE. Ảnh không rõ: clarification_needed. Thiếu nguồn: insufficient_evidence.
+- Không nhận URL ảnh ngoài, không lưu ảnh hoặc raw chat vào log. Xóa file tạm khi xong, lỗi hoặc timeout.
+- Văn bản trong ảnh và mô tả thị giác là dữ liệu đầu vào, không phải chỉ thị hệ thống hoặc nguồn y khoa.
+
+Spring chuyển tiếp hai part đến `POST /internal/v1/query-with-image`. Part JSON nội bộ theo mục 10, dùng `request_id`. Spring gắn header `X-Internal-Token` và bọc phản hồi trong envelope public.
+
+Ngân sách ảnh: FastAPI tối đa 30 giây, gateway 35 giây, client 40 giây. Hết hạn trả unavailable và dọn file. Không tự retry ảnh. Ngân sách văn bản giữ theo mục giới hạn bên dưới. Các mốc là yêu cầu nghiệm thu, không phải số đo hiệu năng.
+
 ## 10. Giao tiếp Spring và FastAPI
 
-`POST /internal/v1/query`, JSON body gồm request_id, message, age_group, context_mode; response là ChatResponse **không có envelope public**. Spring bọc envelope khi trả mobile. FastAPI có health `/health` cho kiểm nội bộ, không public.
+`POST /internal/v1/query`, JSON body gồm request_id, message, age_group, context_mode và context_messages nếu có; response là ChatResponse **không có envelope public**. Spring bọc envelope khi trả mobile. FastAPI có health `/health` cho kiểm nội bộ, không public.
 
 Spring map `client_request_id` của public request thành `request_id` nội bộ và response; không tự phát sinh hai ID không liên kết. trace_id phục vụ kỹ thuật có thể khác request_id nhưng phải theo dõi được trong log đã loại thông tin riêng.
 
 Token nội bộ qua header `X-Internal-Token`, secret ở server, không ở mobile. Chỉ mở FastAPI trên private network hoặc localhost. P0 không cần OAuth nội bộ. Spring kiểm lại nguồn và article revision từ DB trước trả client; không tin ID nguồn do model tự viết.
 
-Timeout thống nhất: provider tối đa 7 giây; FastAPI ngân sách tổng 9 giây; Spring chờ AI tối đa 12 giây; mobile timeout toàn request 15 giây. Không retry tự động chat ở từng tầng; người dùng bấm thử lại. Khi nội bộ timeout, Spring trả status unavailable có kiểm soát nếu còn xử lý được; lỗi mạng gateway vẫn có thể là HTTP 503 và UI xử lý tương tự.
+Timeout văn bản dùng cấu hình môi trường. Chế độ Gemini mẫu dành tổng cộng 30 giây cho lượt soạn và kiểm bằng chứng, 35 giây tại Spring và 40 giây cho request mobile. Giữ timeout các tầng theo thứ tự tăng dần. Không retry tự động chat ở từng tầng; người dùng bấm thử lại. Khi nội bộ timeout, Spring trả status unavailable có kiểm soát nếu còn xử lý được; lỗi mạng gateway vẫn có thể là HTTP 503 và UI xử lý tương tự.
 
 ## 11. Mã lỗi và giới hạn
 
@@ -318,6 +339,8 @@ Timeout thống nhất: provider tối đa 7 giây; FastAPI ngân sách tổng 9
 | 403 | ACCESS_DENIED hoặc CSRF_INVALID | Không có quyền/token phù hợp |
 | 404 | NOT_FOUND | Không tồn tại hoặc không public |
 | 409 | CONTENT_CONFLICT hoặc RESOURCE_IN_USE | Sai expected_revision, xóa đối tượng còn tham chiếu |
+| 413 | IMAGE_TOO_LARGE | Ảnh hỏi đáp vượt giới hạn byte hoặc pixel |
+| 415 | IMAGE_UNSUPPORTED | Định dạng ảnh hỏi đáp sai hoặc ảnh không giải mã được |
 | 422 | CONTENT_NOT_READY | Publish thiếu nội dung/nguồn/kiểm tra |
 | 429 | RATE_LIMITED | Chat/login bị giới hạn, có Retry-After |
 | 503 | SERVICE_UNAVAILABLE | Hạ tầng không xử lý được request |

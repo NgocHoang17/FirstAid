@@ -136,36 +136,8 @@ CREATE TABLE article_references (
 
 CREATE INDEX article_references_source_idx ON article_references (source_id);
 
-CREATE TABLE facilities (
-    id uuid PRIMARY KEY,
-    name varchar(200) NOT NULL,
-    region_code varchar(40) NOT NULL,
-    address text NOT NULL,
-    phone varchar(40),
-    latitude numeric(9,6),
-    longitude numeric(9,6),
-    emergency_24h varchar(7) NOT NULL DEFAULT 'UNKNOWN',
-    verification_note text,
-    verified_at timestamptz,
-    is_active boolean NOT NULL DEFAULT false,
-    CONSTRAINT facility_name_nonblank CHECK (btrim(name) <> ''),
-    CONSTRAINT facility_region_nonblank CHECK (btrim(region_code) <> ''),
-    CONSTRAINT facility_address_nonblank CHECK (btrim(address) <> ''),
-    CONSTRAINT facility_emergency_enum CHECK (emergency_24h IN ('YES', 'NO', 'UNKNOWN')),
-    CONSTRAINT facility_coordinates_pair CHECK ((latitude IS NULL) = (longitude IS NULL)),
-    CONSTRAINT facility_latitude_bounds CHECK (latitude IS NULL OR latitude BETWEEN -90 AND 90),
-    CONSTRAINT facility_longitude_bounds CHECK (longitude IS NULL OR longitude BETWEEN -180 AND 180),
-    CONSTRAINT facility_active_verified CHECK (
-        NOT is_active OR (
-            phone IS NOT NULL AND btrim(phone) <> ''
-            AND latitude IS NOT NULL AND longitude IS NOT NULL
-            AND verification_note IS NOT NULL AND btrim(verification_note) <> ''
-            AND verified_at IS NOT NULL
-        )
-    )
-);
 
-CREATE INDEX facilities_region_active_name_idx ON facilities (region_code, is_active, name);
+
 
 CREATE TABLE public_data_state (
     id smallint PRIMARY KEY DEFAULT 1,
@@ -175,3 +147,21 @@ CREATE TABLE public_data_state (
     CONSTRAINT public_data_state_singleton CHECK (id = 1)
 );
 INSERT INTO public_data_state (id, data_version) VALUES (1, gen_random_uuid());
+
+-- Step media storage and gallery fields.
+CREATE TABLE media_assets (
+    id uuid PRIMARY KEY,
+    mime_type varchar(20) NOT NULL,
+    width integer NOT NULL,
+    height integer NOT NULL,
+    content bytea NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    CHECK (mime_type IN ('image/png','image/jpeg')),
+    CHECK (width > 0 AND height > 0 AND width::bigint * height <= 16000000),
+    CHECK (octet_length(content) <= 5242880)
+);
+ALTER TABLE article_steps ADD COLUMN images_json jsonb NOT NULL DEFAULT '[]';
+ALTER TABLE article_steps ADD COLUMN image_layout varchar(16) NOT NULL DEFAULT 'stacked'
+    CHECK (image_layout IN ('stacked','grid','carousel'));
+ALTER TABLE article_steps ADD CONSTRAINT step_images_array CHECK
+    (jsonb_typeof(images_json) = 'array' AND jsonb_array_length(images_json) <= 6);

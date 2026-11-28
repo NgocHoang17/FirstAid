@@ -1,0 +1,7 @@
+{
+  "mode": "extractive",
+  "provider": "gemini",
+  "model": "gemini-3.8-flash",
+  "generation_timeout_seconds": 30,
+  "gateway_timeout_seconds": 35
+}

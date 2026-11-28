@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../first_aid/data/reference_content_repository.dart';
-import '../../facilities/data/facility.dart';
 import '../../../core/network/app_services.dart';
 import '../../../core/storage/snapshot_store.dart';
+import '../../../core/storage/bundled_snapshot.dart';
 
 enum UpdateStatus { idle, loading, updating, unchanged, success, failed }
 
@@ -39,13 +38,21 @@ class ContentUpdateCubit extends Cubit<ContentState> {
       } catch (_) {
         saved = null;
       }
-      final data =
-          saved ??
-          jsonDecode(await ReferenceContentRepository.bundledText())
-              as Map<String, dynamic>;
-      final library = saved == null
-          ? ReferenceLibrary.parse(jsonEncode(data), includeDrafts: kDebugMode)
-          : ReferenceLibrary.fromSnapshot(data);
+      final data = saved ?? await BundledSnapshot.load();
+      final library =
+          saved == null &&
+              (data['schema_version'] == 1 ||
+                  data.containsKey('region_code')) &&
+              data['region_code'] != AppEnvironment.regionCode
+          ? ReferenceLibrary.fromSnapshot({...data, 'facilities': <dynamic>[]})
+          : validateSnapshot(data);
+      if (saved == null && data['region_code'] == AppEnvironment.regionCode) {
+        try {
+          await store.replace(jsonEncode(data));
+        } catch (_) {
+          // The validated shipped data remains readable if storage is unavailable.
+        }
+      }
       if (!isClosed) {
         emit(
           ContentState(
@@ -70,23 +77,21 @@ class ContentUpdateCubit extends Cubit<ContentState> {
   }
 
   static ReferenceLibrary validateSnapshot(Map<String, dynamic> data) {
-    if (data['schema_version'] != 1) {
+    if (![1, 2].contains(data['schema_version'])) {
       throw const FormatException('Unsupported snapshot schema');
     }
     if ((data['data_version'] as String? ?? '').isEmpty ||
         DateTime.tryParse(data['generated_at'] as String? ?? '') == null ||
-        data['region_code'] != AppEnvironment.regionCode) {
+        ((data['schema_version'] == 1 || data.containsKey('region_code')) &&
+            data['region_code'] != AppEnvironment.regionCode)) {
       throw const FormatException('Invalid snapshot metadata');
     }
     final config = data['app_config'] as Map;
     if (config['locale'] != 'vi-VN' || config['emergency_number'] != '115') {
       throw const FormatException('Unsupported local configuration');
     }
-    final facilities = Facility.parseList(data['facilities'] as List);
-    if (facilities.length > 100 ||
-        facilities.any((f) => f.region != data['region_code'])) {
-      throw const FormatException('Invalid facility region');
-    }
+    // V1 directory fields are ignored; they are outside the education scope.
+    if (data['schema_version'] == 1) data['facilities'] = <dynamic>[];
     return ReferenceLibrary.fromSnapshot(data);
   }
 
@@ -105,7 +110,11 @@ class ContentUpdateCubit extends Cubit<ContentState> {
     try {
       final response = await api.get(
         '/offline-snapshot',
-        query: {'region_code': AppEnvironment.regionCode},
+        query: {
+          'region_code': AppEnvironment.regionCode,
+          if (const bool.fromEnvironment('FIRSTAID_SNAPSHOT_V2'))
+            'schema_version': 2,
+        },
         headers: {
           if (before.downloadedAt != null)
             'If-None-Match': '"${before.version}"',
@@ -115,6 +124,7 @@ class ContentUpdateCubit extends Cubit<ContentState> {
         if (before.downloadedAt == null) {
           throw const FormatException('No downloaded snapshot');
         }
+        if (isClosed) return;
         emit(
           ContentState(
             library: before.library,
@@ -130,6 +140,10 @@ class ContentUpdateCubit extends Cubit<ContentState> {
         (response.data as Map)['data'] as Map,
       );
       final library = validateSnapshot(data);
+      final etag = response.headers.value('etag');
+      if (etag != null && etag != '"${data['data_version']}"') {
+        throw const FormatException('Snapshot version does not match ETag');
+      }
       final downloaded = DateTime.now().toUtc().toIso8601String();
       data['_downloaded_at'] = downloaded;
       await store.replace(jsonEncode(data));

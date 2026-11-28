@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import '../../../core/storage/snapshot_store.dart';
+import '../../../core/storage/bundled_snapshot.dart';
 
 class ReferenceSource {
   ReferenceSource(this.json);
@@ -31,6 +31,9 @@ class ReferenceStep {
   String get instruction => json['instruction'] as String;
   String? get assetKey => json['asset_key'] as String?;
   String? get altText => json['alt_text'] as String?;
+  List<Map<String, dynamic>> get images => (json['images'] as List? ?? [])
+      .map((image) => Map<String, dynamic>.from(image as Map))
+      .toList();
 }
 
 class ReferenceArticle {
@@ -81,7 +84,7 @@ class ReferenceLibrary {
   final Map<String, ReferenceCategory> categories;
   final String reviewNotice;
   factory ReferenceLibrary.fromSnapshot(Map<String, dynamic> data) {
-    if (data['schema_version'] != 1) {
+    if (![1, 2].contains(data['schema_version'])) {
       throw const FormatException('Unsupported snapshot');
     }
     final categories = (data['categories'] as List)
@@ -151,6 +154,7 @@ class ReferenceLibrary {
         'review_notice': '',
       }),
       requireCategoryArticles: false,
+      requireAllCategories: false,
     );
   }
   List<ReferenceArticle> forCategory(String code) =>
@@ -160,6 +164,7 @@ class ReferenceLibrary {
     String text, {
     bool includeDrafts = false,
     bool requireCategoryArticles = true,
+    bool requireAllCategories = true,
   }) {
     final data = jsonDecode(text) as Map<String, dynamic>;
     if (data['schema_version'] != 2 ||
@@ -210,7 +215,7 @@ class ReferenceLibrary {
       }
       categories[category.code] = category;
     }
-    if (categories.length != 18) {
+    if (requireAllCategories && categories.length != 18) {
       throw const FormatException('Expected 18 categories');
     }
     final articles = <ReferenceArticle>[];
@@ -243,6 +248,32 @@ class ReferenceLibrary {
       }
       if (article.steps.isEmpty) throw const FormatException('Missing steps');
       for (final (index, step) in article.steps.indexed) {
+        final gallery = step.json['images'];
+        if (gallery != null && (gallery is! List || gallery.length > 6)) {
+          throw const FormatException('Invalid step gallery');
+        }
+        if (!{
+          'stacked',
+          'grid',
+          'carousel',
+        }.contains(step.json['image_layout'] ?? 'stacked')) {
+          throw const FormatException('Invalid image layout');
+        }
+        final mediaIds = <String>{};
+        for (final image in gallery as List? ?? []) {
+          if (image is! Map ||
+              image['media_id'] is! String ||
+              !RegExp(
+                r'^[a-f0-9-]{36}$',
+              ).hasMatch(image['media_id'] as String) ||
+              !mediaIds.add(image['media_id'] as String) ||
+              image['url'] != '/api/v1/media/${image['media_id']}' ||
+              image['alt_text'] is! String ||
+              (image['alt_text'] as String).trim().isEmpty ||
+              (image['caption'] != null && image['caption'] is! String)) {
+            throw const FormatException('Invalid step image');
+          }
+        }
         if (step.position != index + 1 ||
             step.title.trim().isEmpty ||
             step.instruction.trim().isEmpty ||
@@ -297,7 +328,7 @@ class ReferenceLibrary {
 }
 
 class ReferenceContentRepository {
-  // Editorial drafts are visible in debug builds only until human content review.
+  // Editorial source data used by content tooling and source validation.
   static Future<String> bundledText() async {
     final bytes = await rootBundle.load(
       'assets/content/reference_library.json',
@@ -319,9 +350,6 @@ class ReferenceContentRepository {
     } catch (_) {
       /* Keep the bundled copy accessible if storage is unreadable. */
     }
-    return ReferenceLibrary.parse(
-      await bundledText(),
-      includeDrafts: kDebugMode,
-    );
+    return ReferenceLibrary.fromSnapshot(await BundledSnapshot.load());
   }
 }
