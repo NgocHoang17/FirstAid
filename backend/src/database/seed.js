@@ -8,6 +8,8 @@ async function insert(db, table, record, update = false) {
   const suffix = update ? ' ON CONFLICT(id) DO UPDATE SET ' + keys.filter(k => k !== 'id').map(k => `${k}=EXCLUDED.${k}`).join(',') : '';
   await db.query(`INSERT INTO ${table}(${keys.join(',')}) VALUES(${keys.map((_, i) => '$' + (i + 1)).join(',')})${suffix}`, values);
 }
+
+
 function pick(b, fields) { return Object.fromEntries(fields.split(' ').map(k => [k, b[k] ?? null])); }
 async function seed(pool, config, library, snapshot) {
   if (!Array.isArray(library.categories) || !Array.isArray(library.sources) || !Array.isArray(snapshot.articles)) throw new Error('Invalid seed files');
